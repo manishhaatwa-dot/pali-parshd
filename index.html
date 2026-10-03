@@ -11,20 +11,15 @@
     <meta name="theme-color" content="#0f172a">
 
     <meta name="description"
-          content="Parshd.in - अपने वार्ड के लिए डिजिटल नागरिक सेवा पोर्टल बनाएं।">
-
-    <meta name="robots" content="index, follow">
+          content="Parshd.in - Ward Citizen Service Platform">
 
     <title>Parshd.in | Parshad Portal</title>
 
-    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
 
-    <!-- Fonts -->
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
@@ -35,11 +30,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
 
-    <style>
 
-        /* =========================================
-           PARSHAD LANDING PAGE
-        ========================================== */
+    <style>
 
         * {
             box-sizing: border-box;
@@ -59,17 +51,67 @@
                 sans-serif;
         }
 
-        .parshad-page {
+        .hidden {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           LOADER
+        ===================================================== */
+
+        #appLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+        }
+
+        .loader-box {
+            text-align: center;
+        }
+
+        .loader-logo {
+            width: 58px;
+            height: 58px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .loader-box p {
+            margin-top: 14px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           LANDING PAGE
+        ===================================================== */
+
+        .landing-page {
             min-height: 100vh;
             background: #ffffff;
         }
 
-
-        /* =========================================
-           HEADER
-        ========================================== */
-
-        .parshad-header {
+        .landing-header {
             width: 100%;
             border-bottom: 1px solid #e5e7eb;
             background: #ffffff;
@@ -83,7 +125,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
         }
 
         .brand {
@@ -95,11 +136,12 @@
         .brand-logo {
             width: 44px;
             height: 44px;
-            border-radius: 12px;
 
             display: flex;
             align-items: center;
             justify-content: center;
+
+            border-radius: 12px;
 
             background: #0f172a;
             color: #ffffff;
@@ -120,17 +162,13 @@
         }
 
         .brand-subtitle {
+            margin-top: 3px;
             color: #64748b;
             font-size: 12px;
-            margin-top: 3px;
         }
 
 
-        /* =========================================
-           HERO
-        ========================================== */
-
-        .hero {
+        .landing-hero {
             width: min(1100px, 92%);
             margin: auto;
 
@@ -142,9 +180,9 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
 
             padding: 7px 14px;
+
             border-radius: 999px;
 
             background: #f1f5f9;
@@ -154,35 +192,31 @@
             font-weight: 600;
         }
 
-        .hero h1 {
+        .landing-hero h1 {
             max-width: 780px;
+
             margin: 22px auto 15px;
 
             font-size: clamp(32px, 6vw, 58px);
             line-height: 1.15;
-            font-weight: 800;
 
-            letter-spacing: -1px;
+            font-weight: 800;
         }
 
-        .hero h1 span {
+        .landing-hero h1 span {
             color: #2563eb;
         }
 
         .hero-description {
             max-width: 650px;
-            margin: 0 auto;
+
+            margin: auto;
 
             color: #64748b;
 
             font-size: 17px;
             line-height: 1.8;
         }
-
-
-        /* =========================================
-           ACTION BUTTONS
-        ========================================== */
 
         .hero-actions {
             margin-top: 32px;
@@ -197,24 +231,19 @@
 
         .hero-button {
             min-height: 50px;
+
             padding: 0 24px;
 
             border-radius: 12px;
-            border: 1px solid transparent;
 
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 9px;
 
             text-decoration: none;
 
-            font-family: inherit;
             font-size: 15px;
             font-weight: 700;
-
-            cursor: pointer;
-            transition: 0.2s ease;
         }
 
         .hero-button.primary {
@@ -222,30 +251,17 @@
             color: #ffffff;
         }
 
-        .hero-button.primary:hover {
-            background: #1e293b;
-            transform: translateY(-1px);
-        }
-
         .hero-button.secondary {
             background: #ffffff;
             color: #0f172a;
-            border-color: #cbd5e1;
-        }
 
-        .hero-button.secondary:hover {
-            background: #f8fafc;
+            border: 1px solid #cbd5e1;
         }
 
 
-        /* =========================================
-           HOW IT WORKS
-        ========================================== */
-
-        .steps-section {
+        .landing-section {
             width: min(1050px, 92%);
             margin: auto;
-
             padding: 20px 0 70px;
         }
 
@@ -262,16 +278,14 @@
 
         .section-title h2 {
             margin: 7px 0 0;
-
             font-size: 28px;
             font-weight: 800;
         }
 
-        .steps-grid {
+        .steps-grid,
+        .features-grid {
             display: grid;
-            grid-template-columns:
-                repeat(3, 1fr);
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 18px;
         }
 
@@ -279,6 +293,7 @@
             padding: 25px;
 
             background: #ffffff;
+
             border: 1px solid #e5e7eb;
             border-radius: 18px;
 
@@ -291,53 +306,31 @@
 
             margin: 0 auto 16px;
 
-            border-radius: 50%;
-
             display: flex;
             align-items: center;
             justify-content: center;
 
+            border-radius: 50%;
+
             background: #eff6ff;
             color: #2563eb;
 
-            font-size: 17px;
             font-weight: 800;
         }
 
-        .step-card h3 {
+        .step-card h3,
+        .feature-card h3 {
             margin: 0 0 8px;
-
             font-size: 17px;
             font-weight: 800;
         }
 
-        .step-card p {
+        .step-card p,
+        .feature-card p {
             margin: 0;
-
             color: #64748b;
-
             font-size: 14px;
             line-height: 1.7;
-        }
-
-
-        /* =========================================
-           FEATURES
-        ========================================== */
-
-        .features-section {
-            width: min(1050px, 92%);
-            margin: auto;
-
-            padding-bottom: 70px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 16px;
         }
 
         .feature-card {
@@ -353,27 +346,6 @@
             font-size: 26px;
             margin-bottom: 12px;
         }
-
-        .feature-card h3 {
-            margin: 0 0 7px;
-
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .feature-card p {
-            margin: 0;
-
-            color: #64748b;
-
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-
-        /* =========================================
-           CITIZEN INFO
-        ========================================== */
 
         .citizen-info {
             width: min(850px, 92%);
@@ -391,12 +363,279 @@
 
         .citizen-info h2 {
             margin: 0 0 10px;
-
             font-size: 23px;
-            font-weight: 800;
         }
 
         .citizen-info p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .landing-footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 28px 20px;
+            text-align: center;
+        }
+
+        .landing-footer strong {
+            display: block;
+            font-size: 17px;
+        }
+
+        .landing-footer span {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           CITIZEN WARD PORTAL
+        ===================================================== */
+
+        .citizen-app {
+            min-height: 100vh;
+            background: #ffffff;
+        }
+
+        .citizen-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .citizen-header-inner {
+            width: min(850px, 94%);
+            min-height: 64px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+        }
+
+        .citizen-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            min-width: 0;
+        }
+
+        .party-logo {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #f1f5f9;
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .citizen-brand-text {
+            min-width: 0;
+        }
+
+        .citizen-brand-title {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .citizen-brand-subtitle {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .menu-button {
+            width: 42px;
+            height: 42px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+
+        .citizen-main {
+            width: min(850px, 94%);
+            margin: auto;
+            padding: 25px 0 45px;
+        }
+
+
+        /* PROFILE */
+
+        .profile-card {
+            text-align: center;
+
+            padding: 28px 18px;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .profile-photo {
+            width: 135px;
+            height: 135px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 5px solid #f1f5f9;
+
+            background: #f1f5f9;
+        }
+
+        .profile-card .designation {
+            margin-top: 15px;
+
+            color: #2563eb;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .parshad-name {
+            margin: 5px 0;
+
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .ward-info {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .ward-info strong {
+            color: #0f172a;
+        }
+
+
+        /* COMPLAINT */
+
+        .complaint-card {
+            margin-top: 20px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background: #f8fbff;
+
+            border: 1px solid #dbeafe;
+
+            text-align: center;
+        }
+
+        .complaint-card h2 {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .complaint-card p {
+            margin: 0 0 18px;
+
+            color: #64748b;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .complaint-button {
+            width: 100%;
+
+            min-height: 50px;
+
+            border: 0;
+            border-radius: 12px;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .closed-message {
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background: #fff7ed;
+            color: #9a3412;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* QUICK ACTIONS */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-top: 16px;
+        }
+
+        .quick-button {
+            min-height: 48px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+
+            background: #ffffff;
+            color: #0f172a;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* ABOUT */
+
+        .portal-section {
+            margin-top: 22px;
+
+            padding: 22px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+        }
+
+        .portal-section h2 {
+            margin: 0 0 10px;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .portal-section p {
             margin: 0;
 
             color: #64748b;
@@ -406,69 +645,173 @@
         }
 
 
-        /* =========================================
-           FOOTER
-        ========================================== */
+        /* CONTACT */
 
-        .parshad-footer {
-            border-top: 1px solid #e5e7eb;
+        .contact-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
 
-            padding: 28px 20px;
+            gap: 10px;
+        }
 
-            text-align: center;
+        .contact-button {
+            min-height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .call-button {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .whatsapp-button {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+
+        /* MENU */
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+
+            z-index: 500;
+
+            background: rgba(15, 23, 42, 0.35);
+        }
+
+        .side-menu {
+            position: fixed;
+
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 600;
+
+            width: min(320px, 85%);
+
+            padding: 20px;
 
             background: #ffffff;
+
+            box-shadow: -10px 0 30px rgba(0,0,0,0.12);
+
+            transform: translateX(100%);
+
+            transition: transform 0.25s ease;
         }
 
-        .parshad-footer strong {
-            display: block;
-
-            font-size: 17px;
-            font-weight: 800;
+        .side-menu.active {
+            transform: translateX(0);
         }
 
-        .parshad-footer span {
-            display: block;
+        .menu-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            margin-top: 5px;
-
-            color: #64748b;
-
-            font-size: 12px;
+            margin-bottom: 20px;
         }
 
-        .parshad-footer small {
-            display: block;
+        .menu-head strong {
+            font-size: 19px;
+        }
 
-            margin-top: 15px;
+        .close-menu {
+            width: 38px;
+            height: 38px;
 
-            color: #94a3b8;
+            border: 0;
+            border-radius: 9px;
 
-            font-size: 11px;
+            background: #f1f5f9;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+        .menu-item {
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 8px;
+
+            border: 0;
+            border-radius: 10px;
+
+            background: #f8fafc;
+
+            text-align: left;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
         }
 
 
-        /* =========================================
+        /* ERROR */
+
+        .error-box {
+            width: min(600px, 92%);
+
+            margin: 70px auto;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+
+            text-align: center;
+        }
+
+        .error-box p {
+            color: #991b1b;
+            line-height: 1.7;
+        }
+
+        .reload-button {
+            padding: 11px 18px;
+
+            border: 0;
+            border-radius: 10px;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
            MOBILE
-        ========================================== */
+        ===================================================== */
 
         @media (max-width: 700px) {
 
-            .header-inner {
-                min-height: 64px;
+            .landing-hero {
+                padding: 48px 0 40px;
             }
 
-            .brand-name {
-                font-size: 19px;
-            }
-
-            .hero {
-                padding:
-                    48px 0
-                    40px;
-            }
-
-            .hero h1 {
+            .landing-hero h1 {
                 font-size: 34px;
             }
 
@@ -490,14 +833,22 @@
                 grid-template-columns: 1fr;
             }
 
-            .steps-section,
-            .features-section {
+            .landing-section {
                 padding-bottom: 48px;
             }
 
-            .citizen-info {
-                margin-bottom: 48px;
-                padding: 23px 18px;
+            .quick-actions,
+            .contact-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .parshad-name {
+                font-size: 25px;
+            }
+
+            .profile-photo {
+                width: 120px;
+                height: 120px;
             }
         }
 
@@ -508,14 +859,38 @@
 
 <body>
 
-<div class="parshad-page">
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div id="appLoader">
+
+    <div class="loader-box">
+
+        <div class="loader-logo">
+            P
+        </div>
+
+        <p>
+            Ward information load हो रही है...
+        </p>
+
+    </div>
+
+</div>
 
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
 
-    <header class="parshad-header">
+<!-- =====================================================
+     LANDING PAGE
+===================================================== -->
+
+<div id="landingPage"
+     class="landing-page hidden">
+
+
+    <header class="landing-header">
 
         <div class="header-inner">
 
@@ -544,13 +919,9 @@
     </header>
 
 
-    <!-- =========================================
-         HERO
-    ========================================== -->
-
     <main>
 
-        <section class="hero">
+        <section class="landing-hero">
 
             <span class="hero-badge">
                 🏛️ डिजिटल वार्ड सेवा
@@ -593,11 +964,7 @@
         </section>
 
 
-        <!-- =====================================
-             HOW IT WORKS
-        ====================================== -->
-
-        <section class="steps-section">
+        <section class="landing-section">
 
             <div class="section-title">
 
@@ -614,7 +981,6 @@
 
             <div class="steps-grid">
 
-
                 <div class="step-card">
 
                     <div class="step-number">
@@ -628,7 +994,7 @@
                     <p>
                         अपना नाम, वार्ड और जरूरी
                         प्रोफाइल जानकारी देकर अपना
-                        Parshad account बनाएं।
+                        account बनाएं।
                     </p>
 
                 </div>
@@ -645,7 +1011,7 @@
                     </h3>
 
                     <p>
-                        Dashboard में अपनी profile पूरी करें
+                        Dashboard में profile पूरी करें
                         और अपने वार्ड का unique QR generate करें।
                     </p>
 
@@ -663,8 +1029,8 @@
                     </h3>
 
                     <p>
-                        नागरिक QR scan करके सीधे आपके
-                        ward portal पर शिकायत दर्ज कर सकेंगे।
+                        नागरिक QR scan करके सीधे
+                        ward portal तक पहुंचेंगे।
                     </p>
 
                 </div>
@@ -674,11 +1040,7 @@
         </section>
 
 
-        <!-- =========================================
-             FEATURES
-        ========================================== -->
-
-        <section class="features-section">
+        <section class="landing-section">
 
             <div class="section-title">
 
@@ -694,7 +1056,6 @@
 
 
             <div class="features-grid">
-
 
                 <div class="feature-card">
 
@@ -726,7 +1087,7 @@
 
                     <p>
                         New, Pending और Solved complaints
-                        को एक ही dashboard से manage करें।
+                        manage करें।
                     </p>
 
                 </div>
@@ -743,8 +1104,8 @@
                     </h3>
 
                     <p>
-                        एक unique QR से नागरिक आपके
-                        personalized ward portal तक पहुंचेंगे।
+                        Unique QR से नागरिक personalized
+                        ward portal तक पहुंचेंगे।
                     </p>
 
                 </div>
@@ -761,8 +1122,8 @@
                     </h3>
 
                     <p>
-                        शिकायत के साथ उपलब्ध होने पर
-                        location information भी सुरक्षित रहेगी।
+                        उपलब्ध होने पर complaint location
+                        information भी सुरक्षित रहेगी।
                     </p>
 
                 </div>
@@ -780,7 +1141,7 @@
 
                     <p>
                         नागरिक समस्या की photo और
-                        short video भी भेज सकते हैं।
+                        short video भेज सकते हैं।
                     </p>
 
                 </div>
@@ -797,7 +1158,7 @@
                     </h3>
 
                     <p>
-                        मोबाइल, tablet और desktop पर
+                        Mobile, tablet और desktop पर
                         responsive portal।
                     </p>
 
@@ -808,10 +1169,6 @@
         </section>
 
 
-        <!-- =========================================
-             CITIZEN INFO
-        ========================================== -->
-
         <section class="citizen-info">
 
             <h2>
@@ -821,8 +1178,7 @@
             <p>
                 Citizen को अपने संबंधित Parshad द्वारा दिए गए
                 QR code को scan करना होगा। QR scan करने के बाद
-                सीधे उसी वार्ड का personalized portal खुलेगा
-                और वहीं से शिकायत दर्ज की जा सकेगी।
+                उसी वार्ड का personalized portal खुलेगा।
             </p>
 
         </section>
@@ -830,11 +1186,7 @@
     </main>
 
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
-
-    <footer class="parshad-footer">
+    <footer class="landing-footer">
 
         <strong>
             Parshd.in
@@ -845,7 +1197,7 @@
         </span>
 
         <small>
-            © <span id="currentYear"></span> Parshd.in
+            © <span id="landingYear"></span> Parshd.in
         </small>
 
     </footer>
@@ -853,12 +1205,420 @@
 </div>
 
 
+
+<!-- =====================================================
+     CITIZEN WARD APP
+===================================================== -->
+
+<div id="app"
+     class="citizen-app hidden">
+
+
+    <!-- HEADER -->
+
+    <header class="citizen-header">
+
+        <div class="citizen-header-inner">
+
+            <div class="citizen-brand">
+
+                <img
+                    id="partyLogo"
+                    class="party-logo"
+                    src="assets/images/default-logo.png"
+                    alt="Party Logo"
+                >
+
+                <div class="citizen-brand-text">
+
+                    <div class="citizen-brand-title">
+                        Parshd.in
+                    </div>
+
+                    <div class="citizen-brand-subtitle">
+                        Ward Citizen Service
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="menuButton"
+                class="menu-button"
+                type="button"
+                aria-label="Menu"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="citizen-main">
+
+
+        <!-- PROFILE -->
+
+        <section class="profile-card">
+
+            <img
+                id="parshadPhoto"
+                class="profile-photo"
+                src="assets/images/default-profile.png"
+                alt="Parshad"
+            >
+
+
+            <div
+                id="designation"
+                class="designation"
+            >
+                Ward Parshad
+            </div>
+
+
+            <h1
+                id="parshadName"
+                class="parshad-name"
+            >
+                Parshad
+            </h1>
+
+
+            <div class="ward-info">
+
+                Ward
+                <strong>
+                    <span id="wardNumber"></span>
+                </strong>
+
+                <span id="wardArea"></span>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPLAINT -->
+
+        <section class="complaint-card">
+
+            <h2>
+                अपने वार्ड की शिकायत दर्ज करें
+            </h2>
+
+            <p>
+                सड़क, सफाई, पानी, स्ट्रीट लाइट या
+                किसी अन्य वार्ड समस्या की जानकारी दें।
+            </p>
+
+
+            <button
+                id="registerComplaintButton"
+                class="complaint-button"
+                type="button"
+            >
+                📝 शिकायत दर्ज करें
+            </button>
+
+
+            <div
+                id="complaintClosedMessage"
+                class="closed-message hidden"
+            >
+                Complaint registration is temporarily unavailable.
+                Please try again after some time.
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-actions">
+
+            <button
+                id="trackComplaintButton"
+                class="quick-button"
+                type="button"
+            >
+                🔎 शिकायत ट्रैक करें
+            </button>
+
+
+            <button
+                id="solvedProblemsButton"
+                class="quick-button"
+                type="button"
+            >
+                ✅ Solved Problems
+            </button>
+
+        </div>
+
+
+        <!-- ABOUT -->
+
+        <section
+            id="aboutSection"
+            class="portal-section hidden"
+        >
+
+            <h2>
+                Parshad के बारे में
+            </h2>
+
+            <p id="aboutText"></p>
+
+        </section>
+
+
+        <!-- CONTACT -->
+
+        <section
+            id="contactSection"
+            class="portal-section hidden"
+        >
+
+            <h2>
+                संपर्क करें
+            </h2>
+
+
+            <div class="contact-buttons">
+
+                <a
+                    id="callButton"
+                    class="contact-button call-button hidden"
+                    href="#"
+                >
+                    📞 Call
+                </a>
+
+
+                <a
+                    id="whatsappButton"
+                    class="contact-button whatsapp-button hidden"
+                    href="#"
+                >
+                    💬 WhatsApp
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFO -->
+
+        <section class="portal-section">
+
+            <h2>
+                वार्ड जानकारी
+            </h2>
+
+            <p>
+
+                Ward Number:
+                <strong id="infoWardNumber"></strong>
+
+                <br>
+
+                Area:
+                <strong id="infoWardArea"></strong>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- SIDE MENU -->
+
+    <div
+        id="menuOverlay"
+        class="menu-overlay hidden"
+    ></div>
+
+
+    <aside
+        id="sideMenu"
+        class="side-menu"
+        aria-hidden="true"
+    >
+
+        <div class="menu-head">
+
+            <strong>
+                Menu
+            </strong>
+
+            <button
+                id="closeMenuButton"
+                class="close-menu"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <button
+            id="menuHome"
+            class="menu-item"
+            type="button"
+        >
+            🏠 Home
+        </button>
+
+
+        <button
+            id="menuComplaint"
+            class="menu-item"
+            type="button"
+        >
+            📝 Register Complaint
+        </button>
+
+
+        <button
+            id="menuTrack"
+            class="menu-item"
+            type="button"
+        >
+            🔎 Track Complaint
+        </button>
+
+
+        <button
+            id="menuSolved"
+            class="menu-item"
+            type="button"
+        >
+            ✅ Solved Problems
+        </button>
+
+    </aside>
+
+</div>
+
+
+
+<!-- =====================================================
+     ERROR
+===================================================== -->
+
+<div
+    id="errorMessage"
+    class="error-box hidden"
+>
+
+    <h2>
+        जानकारी उपलब्ध नहीं
+    </h2>
+
+    <p id="errorText">
+        Ward information नहीं मिली।
+    </p>
+
+    <button
+        id="reloadButton"
+        class="reload-button"
+        type="button"
+    >
+        दोबारा प्रयास करें
+    </button>
+
+</div>
+
+
+
 <script>
 
-    document.getElementById("currentYear").textContent =
+    /*
+     * Landing page तभी दिखेगी जब URL में ward नहीं है.
+     * ?ward=44 होने पर Citizen App दिखेगा.
+     */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const ward =
+        params.get("ward");
+
+
+    const landingPage =
+        document.getElementById(
+            "landingPage"
+        );
+
+
+    const appLoader =
+        document.getElementById(
+            "appLoader"
+        );
+
+
+    const app =
+        document.getElementById(
+            "app"
+        );
+
+
+    const errorMessage =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    if (!ward) {
+
+        // Normal root website
+
+        appLoader.style.display =
+            "none";
+
+        landingPage.classList.remove(
+            "hidden"
+        );
+
+    } else {
+
+        // Ward portal
+        // app.js will load Firebase profile
+
+        landingPage.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    document.getElementById(
+        "landingYear"
+    ).textContent =
         new Date().getFullYear();
 
 </script>
+
+
+<!-- =====================================================
+     CITIZEN APP CONTROLLER
+===================================================== -->
+
+<script type="module"
+        src="js/app.js"></script>
+
 
 </body>
 </html>
