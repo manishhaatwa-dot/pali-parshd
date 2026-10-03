@@ -61,18 +61,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         AppState.wardId = getWardFromURL();
 
+
+        // -----------------------------------------
+        // NO WARD
+        // -----------------------------------------
+
         if (!AppState.wardId) {
-            showSystemError(
-                "Ward information नहीं मिली। कृपया सही QR code से website खोलें।"
-            );
+
+            AppState.profile = null;
+
+            hideLoading();
+
+            showNoWardState();
+
             return;
         }
+
+
+        // -----------------------------------------
+        // WARD FOUND
+        // -----------------------------------------
 
         await loadWardProfile();
 
     } catch (error) {
 
-        console.error("Parshd App Error:", error);
+        console.error(
+            "Parshd App Error:",
+            error
+        );
+
+        AppState.loading = false;
+
+        hideLoading();
 
         showSystemError(
             "कुछ तकनीकी समस्या हुई है। कृपया थोड़ी देर बाद फिर प्रयास करें।"
@@ -88,44 +109,70 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function getWardFromURL() {
 
-    const path = window.location.pathname;
+    const path =
+        window.location.pathname;
+
 
     /*
-     Example:
+        Production example:
 
-     parshd.in/ward/44
+        https://parshd.in/ward/44
 
-     Result:
-     44
+        Result:
+        44
     */
 
-    const parts = path
-        .split("/")
-        .filter(Boolean);
+    const parts =
+        path
+            .split("/")
+            .filter(Boolean);
 
-    const wardIndex = parts.indexOf("ward");
+
+    const wardIndex =
+        parts.indexOf("ward");
+
 
     if (
         wardIndex !== -1 &&
         parts[wardIndex + 1]
     ) {
-        return decodeURIComponent(
-            parts[wardIndex + 1]
-        );
+
+        const ward =
+            decodeURIComponent(
+                parts[wardIndex + 1]
+            ).trim();
+
+
+        if (ward) {
+            return ward;
+        }
     }
 
 
-    // Development/testing fallback
+    // -----------------------------------------
+    // Query parameter support
+    // -----------------------------------------
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const wardParam = params.get("ward");
+
+    const wardParam =
+        params.get("ward");
+
 
     if (wardParam) {
-        return wardParam;
+
+        const ward =
+            wardParam.trim();
+
+        if (ward) {
+            return ward;
+        }
     }
+
 
     return null;
 }
@@ -139,25 +186,32 @@ async function loadWardProfile() {
 
     AppState.loading = true;
 
+    showLoading();
+
+
     try {
 
         /*
-         IMPORTANT:
+            IMPORTANT:
 
-         Only Parshd namespace is accessed.
+            Only Parshd namespace is accessed.
 
-         Existing ZenG collections are NOT touched.
+            Existing ZenG collections are NOT touched.
         */
 
-        const profileRef = doc(
-            db,
-            PARSHD_ROOT,
-            "wards",
-            "data",
-            AppState.wardId
-        );
+        const profileRef =
+            doc(
+                db,
+                PARSHD_ROOT,
+                "wards",
+                "data",
+                AppState.wardId
+            );
 
-        const snapshot = await getDoc(profileRef);
+
+        const snapshot =
+            await getDoc(profileRef);
+
 
         if (snapshot.exists()) {
 
@@ -166,23 +220,16 @@ async function loadWardProfile() {
                 ...snapshot.data()
             };
 
+
+            renderProfile();
+
         } else {
 
-            /*
-             Temporary fallback.
+            AppState.profile = null;
 
-             Later the Master Admin approval system
-             will control whether a ward is public.
-            */
-
-            AppState.profile = {
-                ...DEFAULT_PROFILE,
-                wardNumber: AppState.wardId
-            };
+            showWardNotFound();
 
         }
-
-        renderProfile();
 
     } catch (error) {
 
@@ -190,6 +237,10 @@ async function loadWardProfile() {
             "Ward profile loading failed:",
             error
         );
+
+
+        AppState.profile = null;
+
 
         showSystemError(
             "Ward profile load नहीं हो सकी।"
@@ -199,7 +250,10 @@ async function loadWardProfile() {
 
         AppState.loading = false;
 
+        hideLoading();
+
     }
+
 }
 
 
@@ -209,7 +263,9 @@ async function loadWardProfile() {
 
 function renderProfile() {
 
-    const profile = AppState.profile;
+    const profile =
+        AppState.profile;
+
 
     if (!profile) {
         return;
@@ -306,15 +362,18 @@ function renderProfile() {
     // About
     // -----------------------------------------
 
-    const about = document.querySelector(
-        "#aboutText, .about-text, [data-about]"
-    );
+    const about =
+        document.querySelector(
+            "#aboutText, .about-text, [data-about]"
+        );
+
 
     if (about) {
 
         if (profile.about) {
 
-            about.textContent = profile.about;
+            about.textContent =
+                profile.about;
 
         } else {
 
@@ -323,8 +382,10 @@ function renderProfile() {
                     ".about-section"
                 );
 
+
             if (section) {
-                section.style.display = "none";
+                section.style.display =
+                    "none";
             }
         }
     }
@@ -361,18 +422,24 @@ function renderProfile() {
 
 function renderContact(profile) {
 
-    const phone = normalizePhone(
-        profile.phone
-    );
-
-    const whatsapp = normalizePhone(
-        profile.whatsapp || profile.phone
-    );
+    const phone =
+        normalizePhone(
+            profile.phone
+        );
 
 
-    const callButtons = document.querySelectorAll(
-        "[data-call], .call-button"
-    );
+    const whatsapp =
+        normalizePhone(
+            profile.whatsapp ||
+            profile.phone
+        );
+
+
+    const callButtons =
+        document.querySelectorAll(
+            "[data-call], .call-button"
+        );
+
 
     callButtons.forEach(button => {
 
@@ -385,7 +452,8 @@ function renderContact(profile) {
 
         } else {
 
-            button.style.display = "none";
+            button.style.display =
+                "none";
         }
 
     });
@@ -396,6 +464,7 @@ function renderContact(profile) {
             "[data-whatsapp], .whatsapp-button"
         );
 
+
     whatsappButtons.forEach(button => {
 
         if (whatsapp) {
@@ -403,15 +472,18 @@ function renderContact(profile) {
             button.href =
                 `https://wa.me/${whatsapp}`;
 
-            button.target = "_blank";
+            button.target =
+                "_blank";
 
-            button.rel = "noopener noreferrer";
+            button.rel =
+                "noopener noreferrer";
 
             button.style.display = "";
 
         } else {
 
-            button.style.display = "none";
+            button.style.display =
+                "none";
         }
 
     });
@@ -422,12 +494,15 @@ function renderContact(profile) {
             ".contact-section"
         );
 
+
     if (
         contactSection &&
         !phone &&
         !whatsapp
     ) {
-        contactSection.style.display = "none";
+
+        contactSection.style.display =
+            "none";
     }
 
 }
@@ -444,6 +519,7 @@ function renderComplaintStatus(enabled) {
             "#complaintButton, .complaint-btn, [data-complaint-button]"
         );
 
+
     const closedMessage =
         document.querySelector(
             "#complaintClosed, .complaint-closed, [data-complaint-closed]"
@@ -453,23 +529,34 @@ function renderComplaintStatus(enabled) {
     if (enabled === false) {
 
         if (complaintButton) {
-            complaintButton.style.display = "none";
+
+            complaintButton.style.display =
+                "none";
         }
 
+
         if (closedMessage) {
-            closedMessage.style.display = "block";
+
+            closedMessage.style.display =
+                "block";
         }
+
 
         return;
     }
 
 
     if (complaintButton) {
-        complaintButton.style.display = "";
+
+        complaintButton.style.display =
+            "";
     }
 
+
     if (closedMessage) {
-        closedMessage.style.display = "none";
+
+        closedMessage.style.display =
+            "none";
     }
 
 }
@@ -481,12 +568,15 @@ function renderComplaintStatus(enabled) {
 
 function initializeButtons() {
 
+    // -----------------------------------------
     // Complaint
+    // -----------------------------------------
 
     const complaintButtons =
         document.querySelectorAll(
             "#complaintButton, .complaint-btn, [data-complaint-button]"
         );
+
 
     complaintButtons.forEach(button => {
 
@@ -498,12 +588,15 @@ function initializeButtons() {
     });
 
 
+    // -----------------------------------------
     // Track Complaint
+    // -----------------------------------------
 
     const trackButtons =
         document.querySelectorAll(
             "[data-track-complaint], .track-complaint"
         );
+
 
     trackButtons.forEach(button => {
 
@@ -522,12 +615,15 @@ function initializeButtons() {
     });
 
 
+    // -----------------------------------------
     // Solved Problems
+    // -----------------------------------------
 
     const solvedButtons =
         document.querySelectorAll(
             "[data-solved-problems], .solved-problems"
         );
+
 
     solvedButtons.forEach(button => {
 
@@ -554,6 +650,16 @@ function initializeButtons() {
 
 function openComplaint(event) {
 
+    if (!AppState.wardId) {
+
+        event.preventDefault();
+
+        showNoWardState();
+
+        return;
+    }
+
+
     if (
         AppState.profile &&
         AppState.profile.complaintEnabled === false
@@ -568,11 +674,13 @@ function openComplaint(event) {
 
 
     const ward =
-        AppState.wardId || "";
+        AppState.wardId;
 
 
     window.location.href =
-        `complaint.html?ward=${encodeURIComponent(ward)}`;
+        `complaint.html?ward=${encodeURIComponent(
+            ward
+        )}`;
 
 }
 
@@ -588,10 +696,12 @@ function initializeMenu() {
             "#menuButton, .menu-button, [data-menu-button]"
         );
 
+
     const sideMenu =
         document.querySelector(
             "#sideMenu, .side-menu, [data-side-menu]"
         );
+
 
     const overlay =
         document.querySelector(
@@ -612,7 +722,9 @@ function initializeMenu() {
                 "active"
             );
 
+
             if (overlay) {
+
                 overlay.classList.toggle(
                     "active"
                 );
@@ -637,6 +749,7 @@ function initializeMenu() {
             "[data-menu-close], .menu-close"
         );
 
+
     closeButtons.forEach(button => {
 
         button.addEventListener(
@@ -656,6 +769,7 @@ function closeMenu() {
             "#sideMenu, .side-menu, [data-side-menu]"
         );
 
+
     const overlay =
         document.querySelector(
             "#menuOverlay, .menu-overlay, [data-menu-overlay]"
@@ -663,11 +777,18 @@ function closeMenu() {
 
 
     if (sideMenu) {
-        sideMenu.classList.remove("active");
+
+        sideMenu.classList.remove(
+            "active"
+        );
     }
 
+
     if (overlay) {
-        overlay.classList.remove("active");
+
+        overlay.classList.remove(
+            "active"
+        );
     }
 
 }
@@ -677,7 +798,10 @@ function closeMenu() {
 // IMAGE HELPER
 // =========================================================
 
-function setImage(selectors, source) {
+function setImage(
+    selectors,
+    source
+) {
 
     if (!source) {
         return;
@@ -687,7 +811,10 @@ function setImage(selectors, source) {
     for (const selector of selectors) {
 
         const elements =
-            document.querySelectorAll(selector);
+            document.querySelectorAll(
+                selector
+            );
+
 
         if (!elements.length) {
             continue;
@@ -696,14 +823,19 @@ function setImage(selectors, source) {
 
         elements.forEach(element => {
 
-            element.src = source;
+            element.src =
+                source;
+
 
             element.onerror = () => {
 
                 element.onerror = null;
 
+
                 if (
-                    selector.includes("profile")
+                    selector.includes(
+                        "profile"
+                    )
                 ) {
 
                     element.src =
@@ -719,6 +851,7 @@ function setImage(selectors, source) {
 
         });
 
+
         break;
     }
 
@@ -729,12 +862,16 @@ function setImage(selectors, source) {
 // TEXT HELPER
 // =========================================================
 
-function setText(selectors, value) {
+function setText(
+    selectors,
+    value
+) {
 
     if (
         value === undefined ||
         value === null
     ) {
+
         return;
     }
 
@@ -742,7 +879,10 @@ function setText(selectors, value) {
     for (const selector of selectors) {
 
         const elements =
-            document.querySelectorAll(selector);
+            document.querySelectorAll(
+                selector
+            );
+
 
         if (!elements.length) {
             continue;
@@ -751,9 +891,11 @@ function setText(selectors, value) {
 
         elements.forEach(element => {
 
-            element.textContent = value;
+            element.textContent =
+                value;
 
         });
+
 
         break;
     }
@@ -816,7 +958,134 @@ function updatePageTitle(profile) {
 
 
     document.title =
-        `${profile.name} | Ward ${profile.wardNumber || ""} | Parshd`;
+        `${profile.name} | Ward ${
+            profile.wardNumber || ""
+        } | Parshd`;
+
+}
+
+
+// =========================================================
+// LOADING CONTROL
+// =========================================================
+
+function showLoading() {
+
+    const loadingElements =
+        document.querySelectorAll(
+            "#pageLoading, #loadingScreen, .page-loading, .loading-screen, [data-loading]"
+        );
+
+
+    loadingElements.forEach(element => {
+
+        element.style.display =
+            "flex";
+
+    });
+
+}
+
+
+function hideLoading() {
+
+    const loadingElements =
+        document.querySelectorAll(
+            "#pageLoading, #loadingScreen, .page-loading, .loading-screen, [data-loading]"
+        );
+
+
+    loadingElements.forEach(element => {
+
+        element.style.display =
+            "none";
+
+    });
+
+}
+
+
+// =========================================================
+// NO WARD STATE
+// =========================================================
+
+function showNoWardState() {
+
+    const errorBox =
+        document.querySelector(
+            "#systemError, .system-error, [data-system-error]"
+        );
+
+
+    if (errorBox) {
+
+        const messageElement =
+            errorBox.querySelector(
+                "[data-error-message], .error-message"
+            );
+
+
+        if (messageElement) {
+
+            messageElement.textContent =
+                "यह Parshd citizen portal है। कृपया अपने Parshad द्वारा दिया गया Ward QR code scan करें।";
+
+        }
+
+
+        errorBox.style.display =
+            "flex";
+
+
+        return;
+    }
+
+
+    // Fallback:
+    // अगर HTML में error box नहीं है,
+    // तो loading को बस hide कर दें।
+
+    console.info(
+        "No ward ID found. Open this website using a Ward QR code."
+    );
+
+}
+
+
+// =========================================================
+// WARD NOT FOUND
+// =========================================================
+
+function showWardNotFound() {
+
+    const errorBox =
+        document.querySelector(
+            "#systemError, .system-error, [data-system-error]"
+        );
+
+
+    if (!errorBox) {
+        return;
+    }
+
+
+    const messageElement =
+        errorBox.querySelector(
+            "[data-error-message], .error-message"
+        );
+
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            "यह Ward अभी Parshd portal पर उपलब्ध नहीं है।";
+
+    }
+
+
+    errorBox.style.display =
+        "flex";
+
 }
 
 
@@ -847,12 +1116,14 @@ function showSystemError(message) {
 
 
     if (messageElement) {
+
         messageElement.textContent =
             message;
     }
 
 
-    errorBox.style.display = "flex";
+    errorBox.style.display =
+        "flex";
 
 }
 
@@ -864,14 +1135,24 @@ function showSystemError(message) {
 window.ParshdApp = {
 
     getState() {
+
         return {
             ...AppState
         };
+
     },
 
+
     reloadProfile() {
+
+        if (!AppState.wardId) {
+            return;
+        }
+
         return loadWardProfile();
+
     },
+
 
     closeMenu
 
