@@ -1,4 +1,4 @@
-const CACHE_NAME = "parshd-v1";
+const CACHE_NAME = "parshd-v2";
 
 const APP_SHELL = [
   "./",
@@ -18,7 +18,10 @@ const APP_SHELL = [
   "./js/storage.js",
   "./js/profile.js",
   "./js/location.js",
-  "./js/qr.js"
+  "./js/qr.js",
+
+  "./assets/icons/icon-192.png",
+  "./assets/icons/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -50,24 +53,37 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const request = event.request;
 
-  // केवल GET requests को handle करें
+  // केवल GET requests
   if (request.method !== "GET") {
+    return;
+  }
+
+  const url = new URL(request.url);
+
+  // Firebase / Google CDN को cache नहीं करना
+  if (
+    url.hostname.includes("firebaseio.com") ||
+    url.hostname.includes("firebaseapp.com") ||
+    url.hostname.includes("firebasestorage.app") ||
+    url.hostname.includes("googleapis.com") ||
+    url.hostname.includes("gstatic.com")
+  ) {
     return;
   }
 
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
 
-      // पहले cache से
+      // पहले cache
       if (cachedResponse) {
         return cachedResponse;
       }
 
-      // नहीं मिला तो network से
+      // फिर network
       return fetch(request)
         .then((networkResponse) => {
 
-          // केवल valid response cache करें
+          // केवल valid basic response cache करें
           if (
             networkResponse &&
             networkResponse.status === 200 &&
@@ -83,7 +99,7 @@ self.addEventListener("fetch", (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // Network बंद होने पर home page
+          // Offline होने पर home page
           return caches.match("./index.html");
         });
     })
