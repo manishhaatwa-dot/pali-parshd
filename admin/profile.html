@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#0f172a">
+
+    <title>Profile | Parshd</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: #0f172a;
+            font-family:
+                Inter,
+                Arial,
+                "Noto Sans Devanagari",
+                sans-serif;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================== */
+
+        .header {
+            min-height: 70px;
+
+            padding: 0 6%;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 11px;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 18px;
+        }
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        .back-button {
+            padding: 9px 15px;
+
+            border: 1px solid #dbe1e8;
+
+            border-radius: 9px;
+
+            background: #ffffff;
+
+            cursor: pointer;
+
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: #f8fafc;
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================== */
+
+        .container {
+            width: min(1050px, 92%);
+
+            margin: auto;
+
+            padding: 38px 0 70px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 7px;
+
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           GRID
+        ========================================== */
+
+        .profile-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1.6fr;
+
+            gap: 20px;
+
+            align-items: start;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================== */
+
+        .card {
+            border: 1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            padding: 24px;
+        }
+
+        .card-title {
+            margin-bottom: 22px;
+        }
+
+        .card-title h2 {
+            margin: 0 0 5px;
+
+            font-size: 19px;
+        }
+
+        .card-title p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           IMAGE UPLOAD
+        ========================================== */
+
+        .image-box {
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+        .profile-preview {
+            width: 125px;
+            height: 125px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 4px solid #f1f5f9;
+
+            background: #f8fafc;
+
+            display: block;
+        }
+
+        .logo-preview {
+            width: 110px;
+            height: 110px;
+
+            margin: auto;
+
+            border-radius: 18px;
+
+            object-fit: contain;
+
+            border: 1px solid #e5e7eb;
+
+            background: #f8fafc;
+
+            display: block;
+        }
+
+        .image-label {
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 9px 15px;
+
+            border-radius: 9px;
+
+            background: #f1f5f9;
+
+            color: #334155;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .image-label:hover {
+            background: #e2e8f0;
+        }
+
+        .image-input {
+            display: none;
+        }
+
+        .image-help {
+            margin: 8px 0 0;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================== */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #dbe1e8;
+
+            border-radius: 9px;
+
+            background: #ffffff;
+
+            color: #0f172a;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #94a3b8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(148, 163, 184, 0.12);
+        }
+
+        .form-group textarea {
+            min-height: 125px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+        }
+
+        .readonly {
+            background: #f8fafc !important;
+
+            color: #64748b !important;
+        }
+
+
+        /* =========================================
+           SAVE
+        ========================================== */
+
+        .save-area {
+            margin-top: 22px;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+        }
+
+        .save-button {
+            min-height: 44px;
+
+            padding: 0 22px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background: #0f172a;
+
+            color: #ffffff;
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+        .save-button:hover {
+            background: #1e293b;
+        }
+
+
+        /* =========================================
+           COMPLAINT TOGGLE
+        ========================================== */
+
+        .setting-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 17px 0;
+
+            border-top: 1px solid #eef2f7;
+        }
+
+        .setting-info strong {
+            display: block;
+
+            font-size: 14px;
+        }
+
+        .setting-info span {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .toggle {
+            position: relative;
+
+            width: 52px;
+            height: 29px;
+
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: 30px;
+
+            background: #cbd5e1;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .toggle-slider::before {
+            content: "";
+
+            position: absolute;
+
+            width: 21px;
+            height: 21px;
+
+            left: 4px;
+            top: 4px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            transition: 0.2s;
+        }
+
+        .toggle input:checked
+        + .toggle-slider {
+            background: #16a34a;
+        }
+
+        .toggle input:checked
+        + .toggle-slider::before {
+            transform:
+                translateX(23px);
+        }
+
+
+        /* =========================================
+           QR CARD
+        ========================================== */
+
+        .qr-card {
+            margin-top: 20px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            padding: 24px;
+
+            text-align: center;
+
+            background: #ffffff;
+        }
+
+        .qr-card h2 {
+            margin: 0 0 6px;
+
+            font-size: 20px;
+        }
+
+        .qr-card > p {
+            margin: 0 auto 20px;
+
+            max-width: 570px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .qr-preview {
+            width: 240px;
+            height: 240px;
+
+            margin: 0 auto 18px;
+
+            padding: 12px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+        }
+
+        .qr-preview img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+        .qr-placeholder {
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .ward-url {
+            max-width: 600px;
+
+            margin: 0 auto 16px;
+
+            padding: 11px 13px;
+
+            border-radius: 9px;
+
+            background: #f8fafc;
+
+            color: #334155;
+
+            font-size: 12px;
+
+            word-break: break-all;
+        }
+
+        .qr-actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            flex-wrap: wrap;
+        }
+
+        .qr-button {
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            border: 1px solid #dbe1e8;
+
+            background: #ffffff;
+
+            color: #0f172a;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .qr-button:hover {
+            background: #f8fafc;
+        }
+
+        .qr-button.primary {
+            background: #0f172a;
+
+            color: #ffffff;
+
+            border-color: #0f172a;
+        }
+
+        .qr-button.primary:hover {
+            background: #1e293b;
+        }
+
+
+        /* =========================================
+           MESSAGE
+        ========================================== */
+
+        .message {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 12px 14px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .message.success {
+            display: block;
+
+            background: #ecfdf5;
+
+            color: #047857;
+        }
+
+        .message.error {
+            display: block;
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 800px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 0 4%;
+            }
+
+            .container {
+                width: 92%;
+
+                padding-top: 28px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .card,
+            .qr-card {
+                padding: 19px;
+            }
+
+            .save-area {
+                justify-content: stretch;
+            }
+
+            .save-button {
+                width: 100%;
+            }
+
+            .qr-preview {
+                width: 220px;
+                height: 220px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================== -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            P
+        </div>
+
+        <div class="brand-text">
+
+            <strong>
+                Parshd
+            </strong>
+
+            <span>
+                Profile Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        id="backButton"
+        class="back-button"
+        type="button"
+    >
+        ← Dashboard
+    </button>
+
+</header>
+
+
+
+<!-- =========================================
+     MAIN
+========================================== -->
+
+<main class="container">
+
+
+    <div class="page-heading">
+
+        <h1>
+            Profile
+        </h1>
+
+        <p>
+            अपनी public ward profile और complaint settings manage करें।
+        </p>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+
+    <!-- =====================================
+         PROFILE GRID
+    ====================================== -->
+
+    <div class="profile-grid">
+
+
+        <!-- ===================================
+             IMAGES
+        ==================================== -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <h2>
+                    Profile Images
+                </h2>
+
+                <p>
+                    नागरिकों को आपके ward portal पर ये images दिखाई देंगी।
+                </p>
+
+            </div>
+
+
+            <!-- Profile -->
+
+            <div class="image-box">
+
+                <img
+                    id="profilePreview"
+                    class="profile-preview"
+                    src="../assets/images/default-profile.png"
+                    alt="Profile"
+                >
+
+                <label
+                    class="image-label"
+                    for="profilePhoto"
+                >
+                    📷 Profile Photo
+                </label>
+
+                <input
+                    id="profilePhoto"
+                    class="image-input"
+                    type="file"
+                    accept="image/*"
+                >
+
+                <p class="image-help">
+                    JPG, PNG या WebP
+                </p>
+
+            </div>
+
+
+            <!-- Logo -->
+
+            <div class="image-box">
+
+                <img
+                    id="logoPreview"
+                    class="logo-preview"
+                    src="../assets/images/default-logo.png"
+                    alt="Party Logo"
+                >
+
+                <label
+                    class="image-label"
+                    for="partyLogo"
+                >
+                    🏳️ Party / Organization Logo
+                </label>
+
+                <input
+                    id="partyLogo"
+                    class="image-input"
+                    type="file"
+                    accept="image/*"
+                >
+
+                <p class="image-help">
+                    JPG, PNG या WebP
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===================================
+             DETAILS
+        ==================================== -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <h2>
+                    Public Profile
+                </h2>
+
+                <p>
+                    ये information आपके ward के नागरिकों को दिखाई जाएगी।
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- Name -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        नाम
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        placeholder="Parshad का नाम"
+                    >
+
+                </div>
+
+
+                <!-- Designation -->
+
+                <div class="form-group">
+
+                    <label for="designation">
+                        Designation
+                    </label>
+
+                    <input
+                        id="designation"
+                        type="text"
+                        placeholder="Ward Parshad"
+                    >
+
+                </div>
+
+
+                <!-- Ward -->
+
+                <div class="form-group">
+
+                    <label for="ward">
+                        Ward Number
+                    </label>
+
+                    <input
+                        id="ward"
+                        class="readonly"
+                        type="text"
+                        readonly
+                    >
+
+                </div>
+
+
+                <!-- Area -->
+
+                <div class="form-group">
+
+                    <label for="area">
+                        Ward Area
+                    </label>
+
+                    <input
+                        id="area"
+                        type="text"
+                        placeholder="Area / Colony name"
+                    >
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="tel"
+                        inputmode="numeric"
+                        placeholder="10 digit mobile number"
+                    >
+
+                </div>
+
+
+                <!-- WhatsApp -->
+
+                <div class="form-group">
+
+                    <label for="whatsapp">
+                        WhatsApp
+                    </label>
+
+                    <input
+                        id="whatsapp"
+                        type="tel"
+                        inputmode="numeric"
+                        placeholder="WhatsApp number"
+                    >
+
+                </div>
+
+
+                <!-- Party -->
+
+                <div class="form-group full">
+
+                    <label for="party">
+                        Party / Organization
+                    </label>
+
+                    <input
+                        id="party"
+                        type="text"
+                        placeholder="Party या Organization name"
+                    >
+
+                </div>
+
+
+                <!-- About -->
+
+                <div class="form-group full">
+
+                    <label for="about">
+                        About
+                    </label>
+
+                    <textarea
+                        id="about"
+                        placeholder="अपने बारे में और अपने वार्ड के बारे में संक्षिप्त जानकारी लिखें..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- Complaint Setting -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <strong>
+                        Complaint Registration
+                    </strong>
+
+                    <span>
+                        ON रहने पर नागरिक complaint दर्ज कर पाएंगे।
+                    </span>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        id="complaintEnabled"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span
+                        class="toggle-slider"
+                    ></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Save -->
+
+            <div class="save-area">
+
+                <button
+                    id="saveButton"
+                    class="save-button"
+                    type="button"
+                >
+                    💾 Save Profile
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =========================================
+         QR SECTION
+    ========================================== -->
+
+    <section class="qr-card">
+
+        <h2>
+            📱 Your Ward QR
+        </h2>
+
+        <p>
+            इस QR को अपने वार्ड के नागरिकों के साथ share करें।
+            QR scan करते ही आपके ward का personalized portal खुलेगा,
+            जहाँ नागरिक सीधे complaint दर्ज कर सकेंगे।
+        </p>
+
+
+        <div
+            id="qrPreview"
+            class="qr-preview"
+        >
+
+            <div class="qr-placeholder">
+                पहले profile save करें,
+                फिर Ward QR generate करें।
+            </div>
+
+        </div>
+
+
+        <div
+            id="wardUrl"
+            class="ward-url"
+            style="display:none;"
+        ></div>
+
+
+        <div class="qr-actions">
+
+            <button
+                id="generateQrButton"
+                class="qr-button primary"
+                type="button"
+            >
+                Generate QR
+            </button>
+
+
+            <button
+                id="shareQrButton"
+                class="qr-button"
+                type="button"
+                style="display:none;"
+            >
+                📤 Share QR
+            </button>
+
+
+            <button
+                id="downloadQrButton"
+                class="qr-button"
+                type="button"
+                style="display:none;"
+            >
+                ⬇️ Download QR
+            </button>
+
+
+            <button
+                id="openPortalButton"
+                class="qr-button"
+                type="button"
+                style="display:none;"
+            >
+                🌐 Open Ward Portal
+            </button>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================
+     QR LIBRARY
+========================================== -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+</script>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script type="module">
+
+    import {
+        getDemoSession,
+        requireDemoLogin
+    } from "./login.js";
+
+
+    // ========================================
+    // SESSION
+    // ========================================
+
+    const session =
+        getDemoSession();
+
+
+    if (!session) {
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+    // ========================================
+    // ELEMENTS
+    // ========================================
+
+    const nameInput =
+        document.getElementById("name");
+
+    const designationInput =
+        document.getElementById("designation");
+
+    const wardInput =
+        document.getElementById("ward");
+
+    const areaInput =
+        document.getElementById("area");
+
+    const phoneInput =
+        document.getElementById("phone");
+
+    const whatsappInput =
+        document.getElementById("whatsapp");
+
+    const partyInput =
+        document.getElementById("party");
+
+    const aboutInput =
+        document.getElementById("about");
+
+    const complaintEnabledInput =
+        document.getElementById(
+            "complaintEnabled"
+        );
+
+    const profilePreview =
+        document.getElementById(
+            "profilePreview"
+        );
+
+    const logoPreview =
+        document.getElementById(
+            "logoPreview"
+        );
+
+    const profilePhotoInput =
+        document.getElementById(
+            "profilePhoto"
+        );
+
+    const partyLogoInput =
+        document.getElementById(
+            "partyLogo"
+        );
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+    const qrPreview =
+        document.getElementById(
+            "qrPreview"
+        );
+
+    const wardUrl =
+        document.getElementById(
+            "wardUrl"
+        );
+
+    const generateQrButton =
+        document.getElementById(
+            "generateQrButton"
+        );
+
+    const shareQrButton =
+        document.getElementById(
+            "shareQrButton"
+        );
+
+    const downloadQrButton =
+        document.getElementById(
+            "downloadQrButton"
+        );
+
+    const openPortalButton =
+        document.getElementById(
+            "openPortalButton"
+        );
+
+
+    // ========================================
+    // ACCOUNT
+    // ========================================
+
+    const account =
+        JSON.parse(
+            localStorage.getItem(
+                "parshd_demo_account"
+            ) || "null"
+        );
+
+
+    if (!account) {
+
+        window.location.href =
+            "register.html";
+
+    }
+
+
+    // ========================================
+    // WARD
+    // ========================================
+
+    const wardNumber =
+        account?.ward || "";
+
+
+    wardInput.value =
+        wardNumber;
+
+
+    // ========================================
+    // PROFILE DATA
+    // ========================================
+
+    let profile =
+        JSON.parse(
+            localStorage.getItem(
+                "parshd_demo_profile"
+            ) || "null"
+        );
+
+
+    if (!profile) {
+
+        profile = {
+            name:
+                account?.name || "",
+
+            designation:
+                "Ward Parshad",
+
+            ward:
+                wardNumber,
+
+            area:
+                account?.area || "",
+
+            phone:
+                account?.mobile || "",
+
+            whatsapp:
+                account?.mobile || "",
+
+            party:
+                "",
+
+            about:
+                "",
+
+            profilePhoto:
+                "../assets/images/default-profile.png",
+
+            partyLogo:
+                "../assets/images/default-logo.png",
+
+            complaintEnabled:
+                true
+        };
+
+    }
+
+
+    // ========================================
+    // LOAD PROFILE
+    // ========================================
+
+    function loadProfile() {
+
+        nameInput.value =
+            profile.name || "";
+
+
+        designationInput.value =
+            profile.designation ||
+            "Ward Parshad";
+
+
+        wardInput.value =
+            profile.ward ||
+            wardNumber;
+
+
+        areaInput.value =
+            profile.area || "";
+
+
+        phoneInput.value =
+            profile.phone || "";
+
+
+        whatsappInput.value =
+            profile.whatsapp || "";
+
+
+        partyInput.value =
+            profile.party || "";
+
+
+        aboutInput.value =
+            profile.about || "";
+
+
+        complaintEnabledInput.checked =
+            profile.complaintEnabled !== false;
+
+
+        if (profile.profilePhoto) {
+
+            profilePreview.src =
+                profile.profilePhoto;
+        }
+
+
+        if (profile.partyLogo) {
+
+            logoPreview.src =
+                profile.partyLogo;
+        }
+
+
+        if (
+            profile.qrUrl
+        ) {
+
+            generateQR(
+                profile.qrUrl
+            );
+        }
+
+    }
+
+
+    // ========================================
+    // IMAGE READER
+    // ========================================
+
+    function readImage(
+        file,
+        callback
+    ) {
+
+        if (!file) {
+            return;
+        }
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            showMessage(
+                "कृपया केवल image file चुनें।",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // Demo limit
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            showMessage(
+                "Image 5 MB से छोटी होनी चाहिए।",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            event => {
+
+                callback(
+                    event.target.result
+                );
+
+            };
+
+
+        reader.readAsDataURL(
+            file
+        );
+
+    }
+
+
+    // ========================================
+    // PROFILE PHOTO
+    // ========================================
+
+    profilePhotoInput
+        .addEventListener(
+            "change",
+            () => {
+
+                const file =
+                    profilePhotoInput
+                        .files[0];
+
+
+                readImage(
+                    file,
+                    data => {
+
+                        profilePreview.src =
+                            data;
+
+                        profile.profilePhoto =
+                            data;
+                    }
+                );
+
+            }
+        );
+
+
+    // ========================================
+    // PARTY LOGO
+    // ========================================
+
+    partyLogoInput
+        .addEventListener(
+            "change",
+            () => {
+
+                const file =
+                    partyLogoInput
+                        .files[0];
+
+
+                readImage(
+                    file,
+                    data => {
+
+                        logoPreview.src =
+                            data;
+
+                        profile.partyLogo =
+                            data;
+                    }
+                );
+
+            }
+        );
+
+
+    // ========================================
+    // SAVE PROFILE
+    // ========================================
+
+    saveButton
+        .addEventListener(
+            "click",
+            saveProfile
+        );
+
+
+    function saveProfile() {
+
+        const name =
+            nameInput.value.trim();
+
+
+        const ward =
+            wardInput.value.trim();
+
+
+        if (!name) {
+
+            showMessage(
+                "Parshad का नाम भरें।",
+                "error"
+            );
+
+            nameInput.focus();
+
+            return;
+        }
+
+
+        if (!ward) {
+
+            showMessage(
+                "Ward number उपलब्ध नहीं है।",
+                "error"
+            );
+
+            return;
+        }
+
+
+        profile = {
+
+            ...profile,
+
+            name,
+
+            designation:
+                designationInput.value.trim() ||
+                "Ward Parshad",
+
+            ward,
+
+            area:
+                areaInput.value.trim(),
+
+            phone:
+                phoneInput.value.trim(),
+
+            whatsapp:
+                whatsappInput.value.trim(),
+
+            party:
+                partyInput.value.trim(),
+
+            about:
+                aboutInput.value.trim(),
+
+            complaintEnabled:
+                complaintEnabledInput.checked
+        };
+
+
+        // ------------------------------------
+        // SAVE ACCOUNT PROFILE
+        // ------------------------------------
+
+        localStorage.setItem(
+            "parshd_demo_profile",
+            JSON.stringify(
+                profile
+            )
+        );
+
+
+        // ------------------------------------
+        // Also update demo account
+        // ------------------------------------
+
+        const updatedAccount = {
+
+            ...account,
+
+            name,
+
+            area:
+                profile.area,
+
+            mobile:
+                profile.phone ||
+                account.mobile,
+
+            complaintEnabled:
+                profile.complaintEnabled
+        };
+
+
+        localStorage.setItem(
+            "parshd_demo_account",
+            JSON.stringify(
+                updatedAccount
+            )
+        );
+
+
+        showMessage(
+            "Profile successfully save हो गई।",
+            "success"
+        );
+
+
+        // ------------------------------------
+        // If QR already exists
+        // ------------------------------------
+
+        if (profile.qrUrl) {
+
+            generateQR(
+                profile.qrUrl
+            );
+        }
+
+    }
+
+
+    // ========================================
+    // WARD URL
+    // ========================================
+
+    function getWardPortalURL() {
+
+        const ward =
+            encodeURIComponent(
+                wardInput.value.trim()
+            );
+
+
+        if (!ward) {
+            return "";
+        }
+
+
+        /*
+         * Current GitHub Pages structure:
+         *
+         * /pali-parshd/ward/11
+         *
+         * Later custom domain:
+         *
+         * /ward/11
+         */
+
+        const base =
+            window.location.origin +
+            window.location.pathname
+                .split("/admin/")[0];
+
+
+        return (
+            base +
+            `/ward/${ward}`
+        );
+
+    }
+
+
+    // ========================================
+    // GENERATE QR
+    // ========================================
+
+    generateQrButton
+        .addEventListener(
+            "click",
+            () => {
+
+                // Must save first
+                const savedProfile =
+                    localStorage.getItem(
+                        "parshd_demo_profile"
+                    );
+
+
+                if (!savedProfile) {
+
+                    showMessage(
+                        "पहले Profile Save करें।",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                const url =
+                    getWardPortalURL();
+
+
+                if (!url) {
+
+                    showMessage(
+                        "Ward number नहीं मिला।",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                profile.qrUrl =
+                    url;
+
+
+                localStorage.setItem(
+                    "parshd_demo_profile",
+                    JSON.stringify(
+                        profile
+                    )
+                );
+
+
+                generateQR(
+                    url
+                );
+
+
+                showMessage(
+                    "Ward QR successfully generate हो गया।",
+                    "success"
+                );
+
+            }
+        );
+
+
+    // ========================================
+    // QR RENDER
+    // ========================================
+
+    function generateQR(
+        url
+    ) {
+
+        qrPreview.innerHTML =
+            "";
+
+
+        if (
+            typeof QRCode ===
+            "undefined"
+        ) {
+
+            qrPreview.innerHTML = `
+
+                <div class="qr-placeholder">
+                    QR library load नहीं हुई।
+                    Internet connection check करें।
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        new QRCode(
+            qrPreview,
+            {
+                text: url,
+
+                width: 210,
+
+                height: 210,
+
+                colorDark:
+                    "#000000",
+
+                colorLight:
+                    "#ffffff",
+
+                correctLevel:
+                    QRCode.CorrectLevel.H
+            }
+        );
+
+
+        wardUrl.textContent =
+            url;
+
+        wardUrl.style.display =
+            "block";
+
+
+        shareQrButton.style.display =
+            "inline-flex";
+
+
+        downloadQrButton.style.display =
+            "inline-flex";
+
+
+        openPortalButton.style.display =
+            "inline-flex";
+
+
+        // ------------------------------------
+        // Store generated URL
+        // ------------------------------------
+
+        profile.qrUrl =
+            url;
+
+
+        localStorage.setItem(
+            "parshd_demo_profile",
+            JSON.stringify(
+                profile
+            )
+        );
+
+    }
+
+
+    // ========================================
+    // SHARE QR / URL
+    // ========================================
+
+    shareQrButton
+        .addEventListener(
+            "click",
+            async () => {
+
+                const url =
+                    profile.qrUrl ||
+                    getWardPortalURL();
+
+
+                if (!url) {
+                    return;
+                }
+
+
+                const shareData = {
+
+                    title:
+                        `${profile.name || "Parshad"} - Ward ${profile.ward}`,
+
+                    text:
+                        `मेरे वार्ड की नागरिक सेवा और शिकायत दर्ज करने के लिए इस लिंक को खोलें:\n${url}`,
+
+                    url
+                };
+
+
+                try {
+
+                    if (
+                        navigator.share
+                    ) {
+
+                        await navigator.share(
+                            shareData
+                        );
+
+                    } else {
+
+                        await navigator.clipboard.writeText(
+                            url
+                        );
+
+
+                        showMessage(
+                            "Ward portal link copy हो गया।",
+                            "success"
+                        );
+                    }
+
+                } catch (error) {
+
+                    console.log(
+                        "Share cancelled:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+    // ========================================
+    // DOWNLOAD QR
+    // ========================================
+
+    downloadQrButton
+        .addEventListener(
+            "click",
+            () => {
+
+                const canvas =
+                    qrPreview.querySelector(
+                        "canvas"
+                    );
+
+
+                const image =
+                    qrPreview.querySelector(
+                        "img"
+                    );
+
+
+                let source = "";
+
+
+                if (canvas) {
+
+                    source =
+                        canvas.toDataURL(
+                            "image/png"
+                        );
+
+                } else if (image) {
+
+                    source =
+                        image.src;
+
+                }
+
+
+                if (!source) {
+
+                    showMessage(
+                        "पहले QR generate करें।",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    source;
+
+
+                link.download =
+                    `parshd-ward-${profile.ward || "qr"}.png`;
+
+
+                document.body.appendChild(
+                    link
+                );
+
+
+                link.click();
+
+
+                link.remove();
+
+            }
+        );
+
+
+    // ========================================
+    // OPEN PORTAL
+    // ========================================
+
+    openPortalButton
+        .addEventListener(
+            "click",
+            () => {
+
+                const url =
+                    profile.qrUrl ||
+                    getWardPortalURL();
+
+
+                if (!url) {
+                    return;
+                }
+
+
+                window.open(
+                    url,
+                    "_blank"
+                );
+
+            }
+        );
+
+
+    // ========================================
+    // MESSAGE
+    // ========================================
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.textContent =
+            text;
+
+
+        message.className =
+            `message ${type}`;
+
+
+        clearTimeout(
+            showMessage.timer
+        );
+
+
+        showMessage.timer =
+            setTimeout(
+                () => {
+
+                    message.className =
+                        "message";
+
+                },
+                3500
+            );
+
+    }
+
+
+    // ========================================
+    // BACK
+    // ========================================
+
+    document
+        .getElementById(
+            "backButton"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+        );
+
+
+    // ========================================
+    // START
+    // ========================================
+
+    loadProfile();
+
+</script>
+
+</body>
+</html>
