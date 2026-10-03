@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
 
     <meta charset="UTF-8">
@@ -18,893 +19,766 @@
     <link rel="stylesheet"
           href="../css/responsive.css">
 
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #ffffff;
-    color: #111827;
-    font-family: Arial, sans-serif;
-}
-
-.profile-page {
-    width: 100%;
-    max-width: 850px;
-    margin: auto;
-    padding: 20px;
-}
-
-
-/* =====================================================
-   TOPBAR
-===================================================== */
-
-.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.back-btn {
-    border: 0;
-    background: #f3f4f6;
-    color: #111827;
-    padding: 10px 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.page-title {
-    font-size: 24px;
-    font-weight: 800;
-    margin: 0;
-}
-
-
-/* =====================================================
-   CARD
-===================================================== */
-
-.card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 18px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-}
-
-.section-title {
-    margin: 0 0 15px;
-    font-size: 18px;
-    font-weight: 800;
-}
-
-
-/* =====================================================
-   PROFILE
-===================================================== */
-
-.preview-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.preview-box {
-    text-align: center;
-}
-
-.preview-box span {
-    display: block;
-    font-size: 13px;
-    color: #6b7280;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.profile-preview {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #f3f4f6;
-    background: #f3f4f6;
-}
-
-.logo-preview {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #f3f4f6;
-    background: #f3f4f6;
-}
-
-
-/* =====================================================
-   FORM
-===================================================== */
-
-.field {
-    margin-bottom: 15px;
-}
-
-.field label {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 7px;
-}
-
-.field input,
-.field textarea,
-.field select {
-    width: 100%;
-    padding: 12px 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    outline: none;
-    font-size: 15px;
-    background: #fff;
-}
-
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
-    border-color: #2563eb;
-}
-
-.field textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.file-info {
-    margin-top: 6px;
-    font-size: 12px;
-    color: #6b7280;
-}
-
-
-/* =====================================================
-   SWITCH
-===================================================== */
-
-.switch-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 14px;
-    background: #f9fafb;
-    border-radius: 12px;
-}
-
-.switch-title {
-    font-weight: 700;
-}
-
-.switch-description {
-    font-size: 12px;
-    color: #6b7280;
-    margin-top: 4px;
-}
-
-.switch {
-    position: relative;
-    width: 52px;
-    height: 29px;
-    flex-shrink: 0;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    inset: 0;
-    background: #d1d5db;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.slider:before {
-    content: "";
-    position: absolute;
-    width: 21px;
-    height: 21px;
-    left: 4px;
-    top: 4px;
-    background: white;
-    border-radius: 50%;
-    transition: 0.2s;
-}
-
-.switch input:checked + .slider {
-    background: #16a34a;
-}
-
-.switch input:checked + .slider:before {
-    transform: translateX(23px);
-}
-
-
-/* =====================================================
-   SAVE
-===================================================== */
-
-.save-btn {
-    width: 100%;
-    border: 0;
-    background: #2563eb;
-    color: white;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.save-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-.message {
-    display: none;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.success {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.error {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-
-/* =====================================================
-   QR POSTER
-===================================================== */
-
-.qr-box {
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    padding: 28px 18px 24px;
-}
-
-
-/* =====================================================
-   BLUE CORNER LINES
-===================================================== */
-
-.qr-box::before,
-.qr-box::after {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    pointer-events: none;
-    z-index: 1;
-}
-
-
-/* TOP LEFT */
-
-.qr-box::before {
-    left: 0;
-    top: 0;
-
-    border-top: 7px solid #2563eb;
-    border-left: 7px solid #2563eb;
-
-    border-top-left-radius: 28px;
-}
-
-
-/* BOTTOM RIGHT */
-
-.qr-box::after {
-    right: 0;
-    bottom: 0;
-
-    border-right: 7px solid #2563eb;
-    border-bottom: 7px solid #2563eb;
-
-    border-bottom-right-radius: 28px;
-}
-
-
-/* Extra corner lines */
-
-.qr-box {
-    background:
-        linear-gradient(
-            #2563eb,
-            #2563eb
-        ) 100% 0 / 90px 7px no-repeat,
-
-        linear-gradient(
-            #2563eb,
-            #2563eb
-        ) 0 100% / 90px 7px no-repeat,
-
-        #ffffff;
-}
-
-
-/* =====================================================
-   POSTER HEADER
-===================================================== */
-
-.qr-poster-header {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    margin-bottom: 17px;
-}
-
-.qr-top-logo {
-    width: 82px;
-    height: 82px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 7px;
-}
-
-.qr-area-name {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #087f45;
-}
-
-.qr-area-lines {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 5px auto 8px;
-}
-
-.qr-area-lines span {
-    width: 70px;
-    height: 3px;
-    display: block;
-}
-
-.qr-area-lines span:first-child {
-    background: #ff7900;
-}
-
-.qr-area-lines span:last-child {
-    background: #16a34a;
-}
-
-.qr-main-title {
-    margin: 0;
-    font-size: 30px;
-    line-height: 1.05;
-    font-weight: 900;
-    letter-spacing: 1px;
-    color: #103f39;
-    text-transform: uppercase;
-}
-
-.qr-tagline {
-    margin: 7px 0 15px;
-    font-size: 13px;
-    color: #374151;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-
-/* =====================================================
-   POSTER CONTENT
-===================================================== */
-
-.qr-poster-content {
-    position: relative;
-    z-index: 2;
-
-    display: grid;
-
-    grid-template-columns: 165px 1fr 175px;
-
-    align-items: center;
-
-    gap: 12px;
-
-    max-width: 790px;
-
-    margin: 0 auto;
-}
-
-
-/* =====================================================
-   FEATURES
-===================================================== */
-
-.qr-feature-column {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.qr-feature {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    text-align: left;
-}
-
-.qr-feature-icon {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    font-size: 25px;
-
-    box-shadow:
-        0 3px 8px rgba(0,0,0,0.12);
-}
-
-
-/* COLOURS */
-
-.qr-feature:nth-child(1) .qr-feature-icon {
-    background: #f97316;
-}
-
-.qr-feature:nth-child(2) .qr-feature-icon {
-    background: #0f9d8a;
-}
-
-.qr-feature:nth-child(3) .qr-feature-icon {
-    background: #1976d2;
-}
-
-.qr-feature:nth-child(4) .qr-feature-icon {
-    background: #7040c5;
-}
-
-.qr-feature:nth-child(5) .qr-feature-icon {
-    background: #263238;
-}
-
-.qr-feature-text {
-    font-size: 12px;
-    line-height: 1.2;
-    font-weight: 800;
-    color: #172033;
-}
-
-
-/* =====================================================
-   QR CENTER
-===================================================== */
-
-.qr-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.qr-frame {
-    position: relative;
-
-    padding: 14px;
-
-    background: #ffffff;
-
-    border: 4px solid #ff7900;
-
-    box-shadow:
-        inset 0 0 0 4px #ffffff,
-        inset 0 0 0 7px #159447;
-
-    min-width: 230px;
-    min-height: 230px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#qrCode {
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: white;
-}
-
-#qrCode img,
-#qrCode canvas {
-    width: 200px !important;
-    height: 200px !important;
-    display: block;
-}
-
-
-/* =====================================================
-   SCAN BUTTON
-===================================================== */
-
-.scan-decor {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.scan-line {
-    width: 32px;
-    height: 4px;
-    border-radius: 5px;
-}
-
-.scan-line.orange {
-    background: #ff7900;
-    transform: rotate(35deg);
-}
-
-.scan-line.green {
-    background: #16a34a;
-    transform: rotate(-35deg);
-}
-
-.scan-button {
-    min-width: 205px;
-
-    padding: 11px 18px;
-
-    border-radius: 35px;
-
-    background: #087f45;
-
-    color: white;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    font-size: 19px;
-
-    font-weight: 900;
-
-    box-shadow:
-        0 5px 14px rgba(0,0,0,0.13);
-}
-
-.scan-phone {
-    font-size: 25px;
-}
-
-.scan-subtext {
-    display: block;
-    font-size: 9px;
-    font-weight: 500;
-    margin-top: 2px;
-}
-
-
-/* =====================================================
-   RIGHT SIDE - ONLY PARSHAD PHOTO
-===================================================== */
-
-.qr-right-profile {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-}
-
-
-/* BIG SQUARE PHOTO */
-
-.qr-side-photo {
-    width: 150px;
-    height: 175px;
-
-    object-fit: cover;
-
-    border-radius: 14px;
-
-    border: 5px solid #ffffff;
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,0.18);
-
-    background: #f3f4f6;
-}
-
-
-/* =====================================================
-   ORGANIZATION
-===================================================== */
-
-.qr-organization {
-    position: relative;
-    z-index: 2;
-
-    margin: 18px auto 8px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    color: #172033;
-
-    font-size: 14px;
-
-    font-weight: 800;
-}
-
-.qr-organization-line {
-    width: 55px;
-    height: 2px;
-    background: #2563eb;
-}
-
-.qr-organization-line:last-child {
-    background: #2563eb;
-}
-
-
-/* =====================================================
-   URL
-===================================================== */
-
-.qr-url {
-    position: relative;
-    z-index: 2;
-
-    word-break: break-all;
-
-    color: #6b7280;
-
-    font-size: 11px;
-
-    margin: 10px auto;
-
-    max-width: 600px;
-}
-
-
-/* =====================================================
-   ACTIONS
-===================================================== */
-
-.qr-actions {
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-
-    margin-top: 10px;
-}
-
-.secondary-btn {
-    border: 0;
-
-    background: #f3f4f6;
-
-    color: #111827;
-
-    padding: 10px 15px;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    font-weight: 700;
-}
-
-.secondary-btn:hover {
-    background: #e5e7eb;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 700px) {
-
-    .profile-page {
-        padding: 14px;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .page-title {
-        font-size: 20px;
-    }
-
-    .qr-box {
-        padding: 22px 10px;
-    }
-
-    .qr-main-title {
-        font-size: 24px;
-    }
-
-    .qr-area-name {
-        font-size: 15px;
-        letter-spacing: 1px;
-    }
-
-    .qr-poster-content {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    /* QR */
-
-    .qr-center {
-        order: 1;
-    }
-
-    /* FEATURES */
-
-    .qr-feature-column {
-        order: 2;
-
-        display: grid;
-
-        grid-template-columns: 1fr 1fr;
-
-        gap: 9px;
-    }
-
-    .qr-feature {
-        padding: 7px;
-
-        background: #f9fafb;
-
-        border-radius: 11px;
-    }
-
-    .qr-feature-icon {
-        width: 43px;
-        height: 43px;
-        min-width: 43px;
-
-        font-size: 21px;
-    }
-
-    .qr-feature-text {
-        font-size: 10px;
-    }
-
-    /* PARSHAD PHOTO */
-
-    .qr-right-profile {
-        order: 3;
-    }
-
-    .qr-side-photo {
-        width: 145px;
-        height: 165px;
-    }
-
-    .qr-frame {
-        min-width: 224px;
-        min-height: 224px;
-    }
-
-    #qrCode {
-        width: 196px;
-        height: 196px;
-    }
-
-    #qrCode img,
-    #qrCode canvas {
-        width: 196px !important;
-        height: 196px !important;
-    }
-
-    .qr-box::before,
-    .qr-box::after {
-        width: 100px;
-        height: 100px;
-    }
-}
-
-
-@media (max-width: 390px) {
-
-    .qr-feature-column {
-        grid-template-columns: 1fr;
-    }
-
-    .qr-main-title {
-        font-size: 21px;
-    }
-
-    .qr-side-photo {
-        width: 135px;
-        height: 155px;
-    }
-
-}
-
-</style>
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: #111827;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-page {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            border: 0;
+            background: #f3f4f6;
+            color: #111827;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        /* CARD */
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+        }
+
+        .section-title {
+            margin: 0 0 16px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* PREVIEW */
+
+        .preview-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 45px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .preview-box {
+            text-align: center;
+        }
+
+        .preview-box span {
+            display: block;
+            margin-bottom: 8px;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .profile-preview {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f3f4f6;
+            background: #f3f4f6;
+        }
+
+        .logo-preview {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 3px solid #f3f4f6;
+            background: #f3f4f6;
+        }
+
+        /* FORM */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: #fff;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: #2563eb;
+        }
+
+        .field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-info {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* SWITCH */
+
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .switch-title {
+            font-weight: 700;
+        }
+
+        .switch-description {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .switch {
+            position: relative;
+            width: 52px;
+            height: 29px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #d1d5db;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            left: 4px;
+            top: 4px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .2s;
+        }
+
+        .switch input:checked + .slider {
+            background: #16a34a;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(23px);
+        }
+
+        /* SAVE */
+
+        .save-btn {
+            width: 100%;
+            border: 0;
+            background: #2563eb;
+            color: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .save-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        /* QR POSTER */
+
+        .qr-box {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 28px 18px 25px;
+        }
+
+        .qr-box::before,
+        .qr-box::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+        }
+
+        .qr-box::before {
+            left: 0;
+            top: 0;
+            border-top: 7px solid #2563eb;
+            border-left: 7px solid #2563eb;
+            border-top-left-radius: 28px;
+        }
+
+        .qr-box::after {
+            right: 0;
+            bottom: 0;
+            border-right: 7px solid #2563eb;
+            border-bottom: 7px solid #2563eb;
+            border-bottom-right-radius: 28px;
+        }
+
+        .qr-poster-header {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 18px;
+        }
+
+        .qr-top-logo {
+            width: 82px;
+            height: 82px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 8px;
+        }
+
+        .qr-area-name {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #087f45;
+            text-transform: uppercase;
+        }
+
+        .qr-area-lines {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 5px auto 8px;
+        }
+
+        .qr-area-lines span {
+            width: 70px;
+            height: 3px;
+            display: block;
+        }
+
+        .qr-area-lines span:first-child {
+            background: #ff7900;
+        }
+
+        .qr-area-lines span:last-child {
+            background: #16a34a;
+        }
+
+        .qr-main-title {
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.05;
+            font-weight: 900;
+            color: #103f39;
+            text-transform: uppercase;
+        }
+
+        .qr-tagline {
+            margin: 8px 0 15px;
+            font-size: 13px;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .qr-poster-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 165px 1fr 175px;
+            align-items: center;
+            gap: 12px;
+            max-width: 790px;
+            margin: auto;
+        }
+
+        /* FEATURES */
+
+        .qr-feature-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .qr-feature {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-align: left;
+        }
+
+        .qr-feature-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            box-shadow: 0 3px 8px rgba(0,0,0,.12);
+        }
+
+        .qr-feature:nth-child(1) .qr-feature-icon {
+            background: #f97316;
+        }
+
+        .qr-feature:nth-child(2) .qr-feature-icon {
+            background: #0f9d8a;
+        }
+
+        .qr-feature:nth-child(3) .qr-feature-icon {
+            background: #1976d2;
+        }
+
+        .qr-feature:nth-child(4) .qr-feature-icon {
+            background: #7040c5;
+        }
+
+        .qr-feature:nth-child(5) .qr-feature-icon {
+            background: #263238;
+        }
+
+        .qr-feature-text {
+            font-size: 12px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #172033;
+        }
+
+        /* QR */
+
+        .qr-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-frame {
+            position: relative;
+            padding: 14px;
+            background: #fff;
+            border: 4px solid #ff7900;
+            box-shadow:
+                inset 0 0 0 4px #fff,
+                inset 0 0 0 7px #159447;
+            min-width: 230px;
+            min-height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qrCode {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        #qrCode img,
+        #qrCode canvas {
+            width: 200px !important;
+            height: 200px !important;
+            display: block;
+        }
+
+        .scan-decor {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .scan-line {
+            width: 32px;
+            height: 4px;
+            border-radius: 5px;
+        }
+
+        .scan-line.orange {
+            background: #ff7900;
+            transform: rotate(35deg);
+        }
+
+        .scan-line.green {
+            background: #16a34a;
+            transform: rotate(-35deg);
+        }
+
+        .scan-button {
+            min-width: 205px;
+            padding: 11px 18px;
+            border-radius: 35px;
+            background: #087f45;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 0 5px 14px rgba(0,0,0,.13);
+        }
+
+        .scan-phone {
+            font-size: 25px;
+        }
+
+        .scan-subtext {
+            display: block;
+            font-size: 9px;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* PHOTO */
+
+        .qr-right-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .qr-side-photo {
+            width: 150px;
+            height: 175px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 18px rgba(0,0,0,.18);
+            background: #f3f4f6;
+        }
+
+        /* ORGANIZATION */
+
+        .qr-organization {
+            position: relative;
+            z-index: 2;
+            margin: 18px auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #172033;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .qr-organization-line {
+            width: 55px;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        .qr-url {
+            position: relative;
+            z-index: 2;
+            word-break: break-all;
+            color: #6b7280;
+            font-size: 11px;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+
+        .qr-actions {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .secondary-btn {
+            border: 0;
+            background: #f3f4f6;
+            color: #111827;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .secondary-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* LOADING */
+
+        .page-loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,.96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-box {
+            text-align: center;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .profile-page {
+                padding: 14px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .qr-box {
+                padding: 22px 10px;
+            }
+
+            .qr-main-title {
+                font-size: 24px;
+            }
+
+            .qr-area-name {
+                font-size: 15px;
+                letter-spacing: 1px;
+            }
+
+            .qr-poster-content {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .qr-center {
+                order: 1;
+            }
+
+            .qr-feature-column {
+                order: 2;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .qr-feature {
+                padding: 7px;
+                background: #f9fafb;
+                border-radius: 11px;
+            }
+
+            .qr-feature-icon {
+                width: 43px;
+                height: 43px;
+                min-width: 43px;
+                font-size: 21px;
+            }
+
+            .qr-feature-text {
+                font-size: 10px;
+            }
+
+            .qr-right-profile {
+                order: 3;
+            }
+
+            .qr-side-photo {
+                width: 145px;
+                height: 165px;
+            }
+
+            .qr-frame {
+                min-width: 224px;
+                min-height: 224px;
+            }
+
+            #qrCode {
+                width: 196px;
+                height: 196px;
+            }
+
+            #qrCode img,
+            #qrCode canvas {
+                width: 196px !important;
+                height: 196px !important;
+            }
+
+            .qr-box::before,
+            .qr-box::after {
+                width: 100px;
+                height: 100px;
+            }
+
+        }
+
+        @media (max-width: 390px) {
+
+            .qr-feature-column {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-main-title {
+                font-size: 21px;
+            }
+
+            .qr-side-photo {
+                width: 135px;
+                height: 155px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
+
+
+<!-- =====================================================
+     LOADING
+====================================================== -->
+
+<div id="pageLoading"
+     class="page-loading">
+
+    <div class="loading-box">
+
+        <div class="spinner"></div>
+
+        <div>
+            Profile loading...
+        </div>
+
+    </div>
+
+</div>
+
 
 <div class="profile-page">
 
@@ -932,24 +806,25 @@ body {
 
     <!-- MESSAGE -->
 
-    <div
-        id="successMessage"
-        class="message success">
+    <div id="successMessage"
+         class="message success">
     </div>
 
-    <div
-        id="errorMessage"
-        class="message error">
+    <div id="errorMessage"
+         class="message error">
     </div>
 
 
-    <!-- PROFILE IMAGES -->
+    <!-- =================================================
+         PROFILE IMAGES
+    ================================================== -->
 
     <div class="card">
 
         <h2 class="section-title">
             Profile & Organization
         </h2>
+
 
         <div class="preview-row">
 
@@ -998,7 +873,7 @@ body {
                 <input
                     type="file"
                     id="profilePhoto"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                 >
 
                 <div class="file-info">
@@ -1017,7 +892,7 @@ body {
                 <input
                     type="file"
                     id="partyLogo"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                 >
 
                 <div class="file-info">
@@ -1031,7 +906,9 @@ body {
     </div>
 
 
-    <!-- BASIC DETAILS -->
+    <!-- =================================================
+         BASIC DETAILS
+    ================================================== -->
 
     <div class="card">
 
@@ -1039,7 +916,9 @@ body {
             Basic Details
         </h2>
 
+
         <div class="grid">
+
 
             <div class="field">
 
@@ -1080,6 +959,7 @@ body {
                 <input
                     type="text"
                     id="ward"
+                    inputmode="numeric"
                     placeholder="Example: 44"
                 >
 
@@ -1125,8 +1005,9 @@ body {
                 <input
                     type="tel"
                     id="phone"
-                    placeholder="10 digit mobile number"
+                    inputmode="numeric"
                     maxlength="10"
+                    placeholder="10 digit mobile number"
                 >
 
             </div>
@@ -1141,11 +1022,13 @@ body {
                 <input
                     type="tel"
                     id="whatsapp"
-                    placeholder="10 digit WhatsApp number"
+                    inputmode="numeric"
                     maxlength="10"
+                    placeholder="10 digit WhatsApp number"
                 >
 
             </div>
+
 
         </div>
 
@@ -1166,13 +1049,16 @@ body {
     </div>
 
 
-    <!-- COMPLAINT SETTING -->
+    <!-- =================================================
+         COMPLAINT SETTINGS
+    ================================================== -->
 
     <div class="card">
 
         <h2 class="section-title">
             Complaint Settings
         </h2>
+
 
         <div class="switch-row">
 
@@ -1187,6 +1073,7 @@ body {
                 </div>
 
             </div>
+
 
             <label class="switch">
 
@@ -1205,7 +1092,9 @@ body {
     </div>
 
 
-    <!-- SAVE -->
+    <!-- =================================================
+         SAVE
+    ================================================== -->
 
     <div class="card">
 
@@ -1227,11 +1116,8 @@ body {
     <div class="card qr-box">
 
 
-        <!-- HEADER -->
-
         <div class="qr-poster-header">
 
-            <!-- TOP LOGO -->
 
             <img
                 id="qrTopLogo"
@@ -1240,8 +1126,6 @@ body {
                 alt="Organization Logo"
             >
 
-
-            <!-- AREA -->
 
             <div class="qr-area-lines">
 
@@ -1268,8 +1152,6 @@ body {
             </div>
 
 
-            <!-- WARD -->
-
             <h2
                 id="qrMainTitle"
                 class="qr-main-title">
@@ -1290,14 +1172,13 @@ body {
         </div>
 
 
-        <!-- CONTENT -->
-
         <div class="qr-poster-content">
 
 
-            <!-- LEFT -->
+            <!-- FEATURES -->
 
             <div class="qr-feature-column">
+
 
                 <div class="qr-feature">
 
@@ -1368,10 +1249,11 @@ body {
 
                 </div>
 
+
             </div>
 
 
-            <!-- CENTER QR -->
+            <!-- QR -->
 
             <div class="qr-center">
 
@@ -1413,7 +1295,7 @@ body {
             </div>
 
 
-            <!-- RIGHT : ONLY PHOTO -->
+            <!-- PARSHAD PHOTO -->
 
             <div class="qr-right-profile">
 
@@ -1426,14 +1308,13 @@ body {
 
             </div>
 
+
         </div>
 
 
         <!-- ORGANIZATION -->
 
-        <div
-            id="qrOrganization"
-            class="qr-organization">
+        <div class="qr-organization">
 
             <span class="qr-organization-line"></span>
 
@@ -1477,20 +1358,35 @@ body {
 
         </div>
 
+
     </div>
+
 
 </div>
 
 
-<!-- QR LIBRARY -->
+<!-- =====================================================
+     QR LIBRARY
+====================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 
+<!-- =====================================================
+     FIREBASE PROFILE SCRIPT
+====================================================== -->
+
 <script type="module">
 
-import { db }
-    from "../js/firebase-config.js";
+import {
+    auth,
+    db
+} from "../js/firebase-config.js";
+
+
+import {
+    requireParshadLogin
+} from "./login.js";
 
 
 import {
@@ -1499,13 +1395,25 @@ import {
     setDoc,
     deleteDoc,
     serverTimestamp
-}
-from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+} from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const pageLoading =
+    document.getElementById("pageLoading");
+
+const successMessage =
+    document.getElementById("successMessage");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const saveButton =
+    document.getElementById("saveButton");
 
 const nameInput =
     document.getElementById("name");
@@ -1546,9 +1454,6 @@ const profilePreview =
 const logoPreview =
     document.getElementById("logoPreview");
 
-
-/* QR */
-
 const qrTopLogo =
     document.getElementById("qrTopLogo");
 
@@ -1564,15 +1469,6 @@ const qrMainTitle =
 const qrOrganizationText =
     document.getElementById("qrOrganizationText");
 
-const saveButton =
-    document.getElementById("saveButton");
-
-const successMessage =
-    document.getElementById("successMessage");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
 const qrCode =
     document.getElementById("qrCode");
 
@@ -1580,84 +1476,137 @@ const qrUrl =
     document.getElementById("qrUrl");
 
 
-/* =====================================================
-   DEMO ACCOUNT
-===================================================== */
+// =====================================================
+// STATE
+// =====================================================
 
-const accountRaw =
-    localStorage.getItem(
-        "parshd_demo_account"
-    );
+let currentUser = null;
+
+let account = null;
+
+let currentProfile = null;
+
+let oldWardNumber = "";
 
 
-if (!accountRaw) {
+// =====================================================
+// FIRESTORE PATHS
+// =====================================================
 
-    alert("Please login first.");
+const PARSHADS_PATH = [
+    "parshd",
+    "parshads",
+    "data"
+];
 
-    window.location.href =
-        "./index.html";
+const WARDS_PATH = [
+    "parshd",
+    "wards",
+    "data"
+];
+
+
+// =====================================================
+// MESSAGE HELPERS
+// =====================================================
+
+function hideMessages() {
+
+    if (successMessage) {
+        successMessage.style.display = "none";
+    }
+
+    if (errorMessage) {
+        errorMessage.style.display = "none";
+    }
 
 }
 
 
-let account = {};
+function showSuccess(message) {
 
+    if (!successMessage) {
+        return;
+    }
 
-try {
+    successMessage.textContent =
+        message;
 
-    account =
-        JSON.parse(accountRaw);
+    successMessage.style.display =
+        "block";
 
-} catch (error) {
-
-    localStorage.removeItem(
-        "parshd_demo_account"
-    );
-
-    window.location.href =
-        "./index.html";
+    if (errorMessage) {
+        errorMessage.style.display =
+            "none";
+    }
 
 }
 
 
-const parshadId =
-    account.parshadId ||
-    ("demo_" + Date.now());
+function showError(message) {
+
+    if (!errorMessage) {
+        return;
+    }
+
+    errorMessage.textContent =
+        message;
+
+    errorMessage.style.display =
+        "block";
+
+    if (successMessage) {
+        successMessage.style.display =
+            "none";
+    }
+
+}
 
 
-/* =====================================================
-   IMAGE COMPRESS
-===================================================== */
+// =====================================================
+// LOADING
+// =====================================================
+
+function hidePageLoading() {
+
+    if (pageLoading) {
+        pageLoading.style.display =
+            "none";
+    }
+
+}
+
+
+// =====================================================
+// IMAGE COMPRESS
+// =====================================================
 
 function compressImage(
     file,
-    maxSize = 600
+    maxSize
 ) {
 
     return new Promise(
         (resolve, reject) => {
 
             if (!file) {
-
                 resolve("");
-
                 return;
             }
-
 
             const reader =
                 new FileReader();
 
 
             reader.onload =
-                function(event) {
+                event => {
 
                     const img =
                         new Image();
 
 
                     img.onload =
-                        function() {
+                        () => {
 
                             let width =
                                 img.width;
@@ -1666,46 +1615,33 @@ function compressImage(
                                 img.height;
 
 
+                            const largest =
+                                Math.max(
+                                    width,
+                                    height
+                                );
+
+
                             if (
-                                width >
-                                height
+                                largest >
+                                maxSize
                             ) {
 
-                                if (
-                                    width >
-                                    maxSize
-                                ) {
+                                const ratio =
+                                    maxSize /
+                                    largest;
 
-                                    height =
-                                        Math.round(
-                                            height *
-                                            maxSize /
-                                            width
-                                        );
+                                width =
+                                    Math.round(
+                                        width *
+                                        ratio
+                                    );
 
-                                    width =
-                                        maxSize;
-
-                                }
-
-                            } else {
-
-                                if (
-                                    height >
-                                    maxSize
-                                ) {
-
-                                    width =
-                                        Math.round(
-                                            width *
-                                            maxSize /
-                                            height
-                                        );
-
-                                    height =
-                                        maxSize;
-
-                                }
+                                height =
+                                    Math.round(
+                                        height *
+                                        ratio
+                                    );
 
                             }
 
@@ -1723,13 +1659,13 @@ function compressImage(
                                 height;
 
 
-                            const ctx =
+                            const context =
                                 canvas.getContext(
                                     "2d"
                                 );
 
 
-                            ctx.drawImage(
+                            context.drawImage(
                                 img,
                                 0,
                                 0,
@@ -1749,7 +1685,15 @@ function compressImage(
 
 
                     img.onerror =
-                        reject;
+                        () => {
+
+                            reject(
+                                new Error(
+                                    "Image load failed."
+                                )
+                            );
+
+                        };
 
 
                     img.src =
@@ -1759,7 +1703,15 @@ function compressImage(
 
 
             reader.onerror =
-                reject;
+                () => {
+
+                    reject(
+                        new Error(
+                            "File read failed."
+                        )
+                    );
+
+                };
 
 
             reader.readAsDataURL(file);
@@ -1770,37 +1722,35 @@ function compressImage(
 }
 
 
-/* =====================================================
-   QR POSTER RENDER
-===================================================== */
+// =====================================================
+// RENDER QR PROFILE
+// =====================================================
 
-function renderQRProfile(profile) {
+function renderQRProfile(data) {
 
     const ward =
-        profile.wardNumber ||
-        profile.ward ||
+        data?.wardNumber ||
+        data?.wardId ||
         wardInput.value ||
         "";
 
-
     const area =
-        profile.areaName ||
-        profile.area ||
+        data?.areaName ||
+        data?.area ||
+        areaInput.value ||
         "";
 
-
     const organization =
-        profile.organizationName ||
+        data?.organizationName ||
+        organizationNameInput.value ||
         "Organization";
 
-
     const photo =
-        profile.profilePhoto ||
+        data?.profilePhoto ||
         "../assets/images/default-profile.png";
 
-
     const logo =
-        profile.partyLogo ||
+        data?.partyLogo ||
         "../assets/images/default-logo.png";
 
 
@@ -1810,288 +1760,357 @@ function renderQRProfile(profile) {
 
 
     qrMainTitle.textContent =
-        "WARD " +
-        String(ward || "") +
-        " COMPLAINT PORTAL";
+        ward
+            ? `WARD ${ward} COMPLAINT PORTAL`
+            : "WARD COMPLAINT PORTAL";
 
 
     qrOrganizationText.textContent =
         organization;
 
 
-    /* ONLY TOP LOGO */
-
     qrTopLogo.src =
         logo;
 
 
-    /* ONLY PARSHAD PHOTO */
-
     qrSidePhoto.src =
         photo;
 
-}
+
+    qrTopLogo.onerror =
+        function() {
+
+            this.onerror = null;
+
+            this.src =
+                "../assets/images/default-logo.png";
+
+        };
 
 
-/* =====================================================
-   PROFILE PHOTO PREVIEW
-===================================================== */
+    qrSidePhoto.onerror =
+        function() {
 
-profilePhotoInput.addEventListener(
-    "change",
-    async () => {
+            this.onerror = null;
 
-        const file =
-            profilePhotoInput.files[0];
+            this.src =
+                "../assets/images/default-profile.png";
 
-        if (!file) return;
-
-        try {
-
-            const image =
-                await compressImage(
-                    file,
-                    600
-                );
-
-            profilePreview.src =
-                image;
-
-            qrSidePhoto.src =
-                image;
-
-        } catch (error) {
-
-            showError(
-                "Profile photo load nahi ho payi."
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   PARTY LOGO PREVIEW
-===================================================== */
-
-partyLogoInput.addEventListener(
-    "change",
-    async () => {
-
-        const file =
-            partyLogoInput.files[0];
-
-        if (!file) return;
-
-        try {
-
-            const image =
-                await compressImage(
-                    file,
-                    350
-                );
-
-            logoPreview.src =
-                image;
-
-            qrTopLogo.src =
-                image;
-
-        } catch (error) {
-
-            showError(
-                "Logo load nahi ho paya."
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   LOAD PROFILE
-===================================================== */
-
-async function loadProfile() {
-
-    try {
-
-        const localProfileRaw =
-            localStorage.getItem(
-                "parshd_demo_profile"
-            );
-
-
-        if (localProfileRaw) {
-
-            try {
-
-                const localProfile =
-                    JSON.parse(
-                        localProfileRaw
-                    );
-
-                fillForm(
-                    localProfile
-                );
-
-            } catch (e) {}
-
-        }
-
-
-        const currentWard =
-            account.ward ||
-            wardInput.value;
-
-
-        if (!currentWard) {
-
-            generateQR();
-
-            return;
-        }
-
-
-        const profileRef =
-            doc(
-                db,
-                "parshd",
-                "wards",
-                "data",
-                String(currentWard)
-            );
-
-
-        const snapshot =
-            await getDoc(
-                profileRef
-            );
-
-
-        if (
-            snapshot.exists()
-        ) {
-
-            const data =
-                snapshot.data();
-
-
-            if (
-                !data.parshadId ||
-                data.parshadId ===
-                parshadId
-            ) {
-
-                fillForm(
-                    data
-                );
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Profile load error:",
-            error
-        );
-
-    }
-
-    generateQR();
+        };
 
 }
 
 
-/* =====================================================
-   FILL FORM
-===================================================== */
+// =====================================================
+// FILL FORM
+// =====================================================
 
 function fillForm(data) {
 
     nameInput.value =
-        data.name || "";
+        data?.name ||
+        account?.name ||
+        "";
 
     designationInput.value =
-        data.designation || "";
+        data?.designation ||
+        "Ward Parshad";
 
     wardInput.value =
-        data.wardNumber ||
-        data.ward ||
-        account.ward ||
+        data?.wardNumber ||
+        data?.wardId ||
+        account?.ward ||
         "";
 
     areaInput.value =
-        data.areaName ||
-        data.area ||
+        data?.areaName ||
+        data?.area ||
+        account?.area ||
         "";
 
     organizationNameInput.value =
-        data.organizationName ||
+        data?.organizationName ||
         "";
 
     phoneInput.value =
-        data.phone ||
-        account.mobile ||
+        data?.phone ||
+        account?.mobile ||
         "";
 
     whatsappInput.value =
-        data.whatsapp ||
+        data?.whatsapp ||
+        account?.mobile ||
         "";
 
     aboutInput.value =
-        data.about ||
+        data?.about ||
         "";
 
     complaintEnabledInput.checked =
-        data.complaintEnabled !== false;
+        data?.complaintEnabled !== false;
 
 
-    if (
-        data.profilePhoto
-    ) {
+    profilePreview.src =
+        data?.profilePhoto ||
+        "../assets/images/default-profile.png";
 
-        profilePreview.src =
-            data.profilePhoto;
+
+    logoPreview.src =
+        data?.partyLogo ||
+        "../assets/images/default-logo.png";
+
+
+    renderQRProfile(
+        data
+    );
+
+}
+
+
+// =====================================================
+// LOAD REAL FIREBASE ACCOUNT
+// =====================================================
+
+async function loadAccount() {
+
+    if (!currentUser) {
+        throw new Error(
+            "Firebase user not available."
+        );
+    }
+
+
+    const accountRef =
+        doc(
+            db,
+            ...PARSHADS_PATH,
+            currentUser.uid
+        );
+
+
+    const snapshot =
+        await getDoc(
+            accountRef
+        );
+
+
+    if (!snapshot.exists()) {
+
+        throw new Error(
+            "Parshad account record not found."
+        );
 
     }
 
 
+    const data =
+        snapshot.data();
+
+
     if (
-        data.partyLogo
+        data.status !== "approved" ||
+        data.approved !== true
     ) {
 
-        logoPreview.src =
-            data.partyLogo;
+        throw new Error(
+            "Parshad account is not approved."
+        );
 
     }
 
 
-    renderQRProfile(data);
+    return data;
+
+}
+
+
+// =====================================================
+// LOAD WARD PROFILE
+// =====================================================
+
+async function loadWardProfile() {
+
+    const ward =
+        String(
+            account?.ward ||
+            ""
+        ).trim();
+
+
+    if (!ward) {
+
+        fillForm({
+
+            name:
+                account?.name || "",
+
+            designation:
+                "Ward Parshad",
+
+            wardNumber:
+                "",
+
+            areaName:
+                account?.area || "",
+
+            organizationName:
+                "",
+
+            phone:
+                account?.mobile || "",
+
+            whatsapp:
+                account?.mobile || "",
+
+            about:
+                "",
+
+            profilePhoto:
+                "../assets/images/default-profile.png",
+
+            partyLogo:
+                "../assets/images/default-logo.png",
+
+            complaintEnabled:
+                true
+
+        });
+
+        generateQR();
+
+        return;
+
+    }
+
+
+    const profileRef =
+        doc(
+            db,
+            ...WARDS_PATH,
+            ward
+        );
+
+
+    const snapshot =
+        await getDoc(
+            profileRef
+        );
+
+
+    if (!snapshot.exists()) {
+
+        fillForm({
+
+            name:
+                account?.name || "",
+
+            designation:
+                "Ward Parshad",
+
+            wardNumber:
+                ward,
+
+            areaName:
+                account?.area || "",
+
+            organizationName:
+                "",
+
+            phone:
+                account?.mobile || "",
+
+            whatsapp:
+                account?.mobile || "",
+
+            about:
+                "",
+
+            profilePhoto:
+                "../assets/images/default-profile.png",
+
+            partyLogo:
+                "../assets/images/default-logo.png",
+
+            complaintEnabled:
+                true
+
+        });
+
+        oldWardNumber =
+            ward;
+
+        generateQR();
+
+        return;
+
+    }
+
+
+    const data =
+        snapshot.data();
+
+
+    // -----------------------------------------
+    // TENANT SAFETY
+    // -----------------------------------------
+
+    if (
+        data.parshadId &&
+        data.parshadId !==
+        currentUser.uid
+    ) {
+
+        throw new Error(
+            "This ward profile belongs to another Parshad."
+        );
+
+    }
+
+
+    currentProfile =
+        data;
+
+
+    oldWardNumber =
+        String(
+            data.wardNumber ||
+            data.wardId ||
+            ward
+        );
+
+
+    fillForm(
+        data
+    );
+
 
     generateQR();
 
 }
 
 
-/* =====================================================
-   SAVE
-===================================================== */
-
-saveButton.addEventListener(
-    "click",
-    saveProfile
-);
-
+// =====================================================
+// SAVE PROFILE
+// =====================================================
 
 async function saveProfile() {
 
     hideMessages();
+
+
+    currentUser =
+        auth.currentUser;
+
+
+    if (!currentUser) {
+
+        showError(
+            "Login session nahi mila. Please login again."
+        );
+
+        return;
+
+    }
 
 
     const name =
@@ -2122,6 +2141,10 @@ async function saveProfile() {
         complaintEnabledInput.checked;
 
 
+    // -----------------------------------------
+    // VALIDATION
+    // -----------------------------------------
+
     if (!name) {
 
         showError(
@@ -2129,6 +2152,7 @@ async function saveProfile() {
         );
 
         return;
+
     }
 
 
@@ -2139,18 +2163,18 @@ async function saveProfile() {
         );
 
         return;
+
     }
 
 
-    if (
-        !/^[0-9]+$/.test(ward)
-    ) {
+    if (!/^[0-9]+$/.test(ward)) {
 
         showError(
             "Ward number sirf numbers me hona chahiye."
         );
 
         return;
+
     }
 
 
@@ -2164,6 +2188,7 @@ async function saveProfile() {
         );
 
         return;
+
     }
 
 
@@ -2177,6 +2202,7 @@ async function saveProfile() {
         );
 
         return;
+
     }
 
 
@@ -2189,41 +2215,23 @@ async function saveProfile() {
 
     try {
 
-        const oldProfileRaw =
-            localStorage.getItem(
-                "parshd_demo_profile"
-            );
-
-
-        let oldProfile =
-            null;
-
-
-        if (oldProfileRaw) {
-
-            try {
-
-                oldProfile =
-                    JSON.parse(
-                        oldProfileRaw
-                    );
-
-            } catch (e) {}
-
-        }
-
+        // -----------------------------------------
+        // IMAGE DATA
+        // -----------------------------------------
 
         let profilePhoto =
-            profilePreview.src || "";
+            profilePreview.src ||
+            "../assets/images/default-profile.png";
 
 
         let partyLogo =
-            logoPreview.src || "";
+            logoPreview.src ||
+            "../assets/images/default-logo.png";
 
 
         if (
             profilePhotoInput.files &&
-            profilePhotoInput.files[0]
+            profilePhotoInput.files.length > 0
         ) {
 
             profilePhoto =
@@ -2237,7 +2245,7 @@ async function saveProfile() {
 
         if (
             partyLogoInput.files &&
-            partyLogoInput.files[0]
+            partyLogoInput.files.length > 0
         ) {
 
             partyLogo =
@@ -2249,10 +2257,14 @@ async function saveProfile() {
         }
 
 
+        // -----------------------------------------
+        // PROFILE OBJECT
+        // -----------------------------------------
+
         const profile = {
 
             parshadId:
-                parshadId,
+                currentUser.uid,
 
             wardId:
                 String(ward),
@@ -2264,7 +2276,8 @@ async function saveProfile() {
                 name,
 
             designation:
-                designation,
+                designation ||
+                "Ward Parshad",
 
             areaName:
                 area,
@@ -2273,10 +2286,15 @@ async function saveProfile() {
                 organizationName,
 
             phone:
-                phone,
+                phone ||
+                account?.mobile ||
+                "",
 
             whatsapp:
-                whatsapp,
+                whatsapp ||
+                phone ||
+                account?.mobile ||
+                "",
 
             about:
                 about,
@@ -2294,92 +2312,49 @@ async function saveProfile() {
                 true,
 
             updatedAt:
-                new Date().toISOString()
+                serverTimestamp()
 
         };
 
 
-        const profileRef =
+        // -----------------------------------------
+        // NEW WARD
+        // -----------------------------------------
+
+        const newWardRef =
             doc(
                 db,
-                "parshd",
-                "wards",
-                "data",
+                ...WARDS_PATH,
                 String(ward)
             );
 
 
-        await setDoc(
-            profileRef,
-            {
-                ...profile,
+        // -----------------------------------------
+        // CHECK EXISTING WARD
+        // -----------------------------------------
 
-                updatedAt:
-                    serverTimestamp()
+        const existingWard =
+            await getDoc(
+                newWardRef
+            );
 
-            },
-            {
-                merge: true
-            }
-        );
-
-
-        /* OLD WARD */
 
         if (
-            oldProfile &&
-            oldProfile.wardNumber &&
-            String(
-                oldProfile.wardNumber
-            ) !== String(ward)
+            existingWard.exists()
         ) {
 
-            try {
-
-                const oldWardRef =
-                    doc(
-                        db,
-                        "parshd",
-                        "wards",
-                        "data",
-                        String(
-                            oldProfile.wardNumber
-                        )
-                    );
+            const existingData =
+                existingWard.data();
 
 
-                const oldSnapshot =
-                    await getDoc(
-                        oldWardRef
-                    );
+            if (
+                existingData.parshadId &&
+                existingData.parshadId !==
+                currentUser.uid
+            ) {
 
-
-                if (
-                    oldSnapshot.exists()
-                ) {
-
-                    const oldData =
-                        oldSnapshot.data();
-
-
-                    if (
-                        oldData.parshadId ===
-                        parshadId
-                    ) {
-
-                        await deleteDoc(
-                            oldWardRef
-                        );
-
-                    }
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Old ward cleanup failed:",
-                    error
+                throw new Error(
+                    "This ward is already assigned to another Parshad."
                 );
 
             }
@@ -2387,17 +2362,85 @@ async function saveProfile() {
         }
 
 
-        localStorage.setItem(
-            "parshd_demo_profile",
-            JSON.stringify(profile)
+        // -----------------------------------------
+        // SAVE
+        // -----------------------------------------
+
+        await setDoc(
+            newWardRef,
+            profile,
+            {
+                merge: true
+            }
         );
+
+
+        // -----------------------------------------
+        // OLD WARD CLEANUP
+        // -----------------------------------------
+
+        if (
+            oldWardNumber &&
+            String(oldWardNumber) !==
+            String(ward)
+        ) {
+
+            const oldWardRef =
+                doc(
+                    db,
+                    ...WARDS_PATH,
+                    String(oldWardNumber)
+                );
+
+
+            const oldSnapshot =
+                await getDoc(
+                    oldWardRef
+                );
+
+
+            if (
+                oldSnapshot.exists()
+            ) {
+
+                const oldData =
+                    oldSnapshot.data();
+
+
+                if (
+                    oldData.parshadId ===
+                    currentUser.uid
+                ) {
+
+                    await deleteDoc(
+                        oldWardRef
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        // -----------------------------------------
+        // UPDATE STATE
+        // -----------------------------------------
+
+        oldWardNumber =
+            String(ward);
+
+        currentProfile =
+            profile;
 
 
         account.ward =
             String(ward);
 
+
         account.name =
             name;
+
 
         account.mobile =
             phone ||
@@ -2405,16 +2448,13 @@ async function saveProfile() {
             "";
 
 
-        localStorage.setItem(
-            "parshd_demo_account",
-            JSON.stringify(account)
-        );
-
+        // -----------------------------------------
+        // UPDATE QR
+        // -----------------------------------------
 
         renderQRProfile(
             profile
         );
-
 
         generateQR();
 
@@ -2423,30 +2463,31 @@ async function saveProfile() {
             "Profile successfully save ho gayi."
         );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "PROFILE FIREBASE ERROR:",
+            "PROFILE SAVE ERROR:",
             error
         );
 
 
         showError(
-            "Firebase Error: " +
             (
-                error.code ||
-                "unknown"
+                error.code
+                    ? error.code + " — "
+                    : ""
             ) +
-            " — " +
             (
                 error.message ||
-                "Unknown error"
+                "Profile save nahi ho payi."
             )
         );
 
+    }
 
-    } finally {
+    finally {
 
         saveButton.disabled =
             false;
@@ -2459,9 +2500,9 @@ async function saveProfile() {
 }
 
 
-/* =====================================================
-   GENERATE QR
-===================================================== */
+// =====================================================
+// GENERATE QR
+// =====================================================
 
 function generateQR() {
 
@@ -2475,27 +2516,17 @@ function generateQR() {
             "";
 
         qrUrl.textContent =
-            "Ward number save karne ke baad QR generate hoga.";
+            "Ward number enter karne ke baad QR generate hoga.";
 
         return;
+
     }
 
 
-    const baseUrl =
-        window.location.origin +
-        window.location.pathname
-            .replace(
-                /\/admin\/profile\.html$/,
-                ""
-            );
-
-
     const portalUrl =
-        baseUrl +
-        "/?ward=" +
-        encodeURIComponent(
+        `${window.location.origin}/?ward=${encodeURIComponent(
             ward
-        );
+        )}`;
 
 
     qrCode.innerHTML =
@@ -2503,8 +2534,7 @@ function generateQR() {
 
 
     if (
-        typeof QRCode !==
-        "undefined"
+        typeof QRCode !== "undefined"
     ) {
 
         new QRCode(
@@ -2533,22 +2563,114 @@ function generateQR() {
 }
 
 
+// =====================================================
+// PHOTO PREVIEW
+// =====================================================
+
+profilePhotoInput.addEventListener(
+    "change",
+    async () => {
+
+        const file =
+            profilePhotoInput.files?.[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        try {
+
+            const image =
+                await compressImage(
+                    file,
+                    600
+                );
+
+
+            profilePreview.src =
+                image;
+
+            qrSidePhoto.src =
+                image;
+
+        }
+
+        catch (error) {
+
+            showError(
+                "Profile photo load nahi ho payi."
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// LOGO PREVIEW
+// =====================================================
+
+partyLogoInput.addEventListener(
+    "change",
+    async () => {
+
+        const file =
+            partyLogoInput.files?.[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        try {
+
+            const image =
+                await compressImage(
+                    file,
+                    350
+                );
+
+
+            logoPreview.src =
+                image;
+
+            qrTopLogo.src =
+                image;
+
+        }
+
+        catch (error) {
+
+            showError(
+                "Logo load nahi ho paya."
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// LIVE QR
+// =====================================================
+
 wardInput.addEventListener(
     "input",
     () => {
 
+        const ward =
+            wardInput.value.trim();
+
+
         qrMainTitle.textContent =
-            "WARD " +
-            (
-                wardInput.value.trim() ||
-                ""
-            ) +
-            " COMPLAINT PORTAL";
-
-
-        qrAreaName.textContent =
-            areaInput.value.trim() ||
-            "WARD AREA";
+            ward
+                ? `WARD ${ward} COMPLAINT PORTAL`
+                : "WARD COMPLAINT PORTAL";
 
 
         generateQR();
@@ -2581,14 +2703,22 @@ organizationNameInput.addEventListener(
 );
 
 
-/* =====================================================
-   COPY LINK
-===================================================== */
+// =====================================================
+// SAVE BUTTON
+// =====================================================
+
+saveButton.addEventListener(
+    "click",
+    saveProfile
+);
+
+
+// =====================================================
+// COPY LINK
+// =====================================================
 
 document
-    .getElementById(
-        "copyQrUrlButton"
-    )
+    .getElementById("copyQrUrlButton")
     .addEventListener(
         "click",
         async () => {
@@ -2604,24 +2734,14 @@ document
                 );
 
                 return;
+
             }
 
 
-            const baseUrl =
-                window.location.origin +
-                window.location.pathname
-                    .replace(
-                        /\/admin\/profile\.html$/,
-                        ""
-                    );
-
-
             const url =
-                baseUrl +
-                "/?ward=" +
-                encodeURIComponent(
+                `${window.location.origin}/?ward=${encodeURIComponent(
                     ward
-                );
+                )}`;
 
 
             try {
@@ -2635,8 +2755,9 @@ document
                     "Ward portal link copy ho gaya."
                 );
 
+            }
 
-            } catch (error) {
+            catch (error) {
 
                 showError(
                     "Link copy nahi ho paya."
@@ -2648,14 +2769,12 @@ document
     );
 
 
-/* =====================================================
-   OPEN PORTAL
-===================================================== */
+// =====================================================
+// OPEN PORTAL
+// =====================================================
 
 document
-    .getElementById(
-        "openPortalButton"
-    )
+    .getElementById("openPortalButton")
     .addEventListener(
         "click",
         () => {
@@ -2671,24 +2790,18 @@ document
                 );
 
                 return;
+
             }
 
 
-            const baseUrl =
-                window.location.origin +
-                window.location.pathname
-                    .replace(
-                        /\/admin\/profile\.html$/,
-                        ""
-                    );
+            const url =
+                `${window.location.origin}/?ward=${encodeURIComponent(
+                    ward
+                )}`;
 
 
             window.open(
-                baseUrl +
-                "/?ward=" +
-                encodeURIComponent(
-                    ward
-                ),
+                url,
                 "_blank"
             );
 
@@ -2696,14 +2809,12 @@ document
     );
 
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+// =====================================================
+// BACK BUTTON
+// =====================================================
 
 document
-    .getElementById(
-        "backButton"
-    )
+    .getElementById("backButton")
     .addEventListener(
         "click",
         () => {
@@ -2715,76 +2826,100 @@ document
     );
 
 
-/* =====================================================
-   MESSAGES
-===================================================== */
+// =====================================================
+// INITIALIZE
+// =====================================================
 
-function hideMessages() {
+async function initializeProfile() {
 
-    successMessage.style.display =
-        "none";
+    try {
 
-    errorMessage.style.display =
-        "none";
+        hideMessages();
+
+
+        // -----------------------------------------
+        // REAL FIREBASE LOGIN
+        // -----------------------------------------
+
+        const allowed =
+            await requireParshadLogin(
+                "./index.html"
+            );
+
+
+        if (!allowed) {
+            return;
+        }
+
+
+        // -----------------------------------------
+        // CURRENT FIREBASE USER
+        // -----------------------------------------
+
+        currentUser =
+            auth.currentUser;
+
+
+        if (!currentUser) {
+
+            window.location.replace(
+                "./index.html"
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------------------
+        // ACCOUNT
+        // -----------------------------------------
+
+        account =
+            await loadAccount();
+
+
+        // -----------------------------------------
+        // PROFILE
+        // -----------------------------------------
+
+        await loadWardProfile();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "PROFILE INITIALIZATION ERROR:",
+            error
+        );
+
+
+        showError(
+            error.message ||
+            "Profile load nahi ho payi."
+        );
+
+    }
+
+    finally {
+
+        hidePageLoading();
+
+    }
 
 }
 
 
-function showSuccess(
-    message
-) {
+// =====================================================
+// START
+// =====================================================
 
-    successMessage.textContent =
-        message;
-
-    successMessage.style.display =
-        "block";
-
-    errorMessage.style.display =
-        "none";
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-function showError(
-    message
-) {
-
-    errorMessage.textContent =
-        message;
-
-    errorMessage.style.display =
-        "block";
-
-    successMessage.style.display =
-        "none";
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
-
-loadProfile();
+initializeProfile();
 
 </script>
+
 
 </body>
 </html>
