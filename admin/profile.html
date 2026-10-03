@@ -1410,19 +1410,21 @@
             );
 
 
-        } catch (error) {
+      } catch (error) {
 
-            console.error(
-                "Profile save error:",
-                error
-            );
+    console.error(
+        "PROFILE FIREBASE ERROR:",
+        error
+    );
 
+    showError(
+        "Firebase Error: " +
+        (error.code || "unknown") +
+        " — " +
+        (error.message || "Unknown error")
+    );
 
-            showError(
-                "Profile save nahi ho payi. Firebase connection/rules check karein."
-            );
-
-        } finally {
+} finally {
 
             saveButton.disabled =
                 false;
