@@ -11,7 +11,8 @@ import {
 import {
     signInWithEmailAndPassword,
     signOut,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import {
@@ -47,11 +48,6 @@ const loginButton =
         'button[type="submit"]'
     );
 
-
-// =====================================================
-// MESSAGE ELEMENT
-// =====================================================
-
 const message =
     document.getElementById("message") ||
     document.getElementById("loginMessage") ||
@@ -60,7 +56,7 @@ const message =
 
 
 // =====================================================
-// SHOW MESSAGE
+// MESSAGE
 // =====================================================
 
 function showMessage(
@@ -70,7 +66,7 @@ function showMessage(
 
     if (!message) {
 
-        alert(text);
+        console.log(text);
 
         return;
 
@@ -91,9 +87,7 @@ function showMessage(
         message.style.color =
             "#166534";
 
-    }
-
-    else {
+    } else {
 
         message.style.background =
             "#fee2e2";
@@ -105,10 +99,6 @@ function showMessage(
 
 }
 
-
-// =====================================================
-// HIDE MESSAGE
-// =====================================================
 
 function hideMessage() {
 
@@ -123,10 +113,16 @@ function hideMessage() {
 
 
 // =====================================================
-// GET PARSHAD RECORD
+// GET PARSHAD FIRESTORE RECORD
 // =====================================================
 
 async function getParshadRecord(uid) {
+
+    if (!uid) {
+
+        return null;
+
+    }
 
     const ref =
         doc(
@@ -135,22 +131,57 @@ async function getParshadRecord(uid) {
             uid
         );
 
-
-    const snap =
+    const snapshot =
         await getDoc(ref);
 
-
-    if (!snap.exists()) {
+    if (!snapshot.exists()) {
 
         return null;
 
     }
 
-
     return {
-        id: snap.id,
-        ...snap.data()
+        id: snapshot.id,
+        ...snapshot.data()
     };
+
+}
+
+
+// =====================================================
+// CHECK APPROVED PARSHAD
+// =====================================================
+
+async function isApprovedParshad(user) {
+
+    if (!user) {
+
+        return false;
+
+    }
+
+    // Email verification required
+    if (!user.emailVerified) {
+
+        return false;
+
+    }
+
+    const account =
+        await getParshadRecord(
+            user.uid
+        );
+
+    if (!account) {
+
+        return false;
+
+    }
+
+    return (
+        account.status === "approved" &&
+        account.approved === true
+    );
 
 }
 
@@ -211,7 +242,12 @@ function firebaseErrorMessage(error) {
 
         case "permission-denied":
 
-            return "Firestore permission denied. Firebase rules check karni hongi.";
+            return "Firestore permission denied. Firebase Rules check karein.";
+
+
+        case "failed-precondition":
+
+            return "Firebase configuration check karein.";
 
 
         default:
@@ -307,7 +343,7 @@ async function loginUser() {
 
         // =================================================
         // STEP 1
-        // FIREBASE AUTH LOGIN
+        // FIREBASE AUTH
         // =================================================
 
         const credential =
@@ -336,11 +372,13 @@ async function loginUser() {
         if (!user.emailVerified) {
 
             showMessage(
-                "Email verify nahi hua hai. Apne Inbox/Spam me Firebase verification email check karein."
+                "Email verify nahi hua hai. Inbox/Spam me Firebase verification email check karein."
             );
 
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
             return;
 
@@ -349,7 +387,7 @@ async function loginUser() {
 
         // =================================================
         // STEP 3
-        // PARSHAD FIRESTORE RECORD
+        // FIRESTORE PARSHAD RECORD
         // =================================================
 
         let account;
@@ -372,7 +410,9 @@ async function loginUser() {
             );
 
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
 
             showMessage(
@@ -391,7 +431,9 @@ async function loginUser() {
 
         if (!account) {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
 
             showMessage(
@@ -419,7 +461,9 @@ async function loginUser() {
             "approved"
         ) {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
 
             if (
@@ -452,14 +496,13 @@ async function loginUser() {
 
             }
 
-
             return;
 
         }
 
 
         // =================================================
-        // APPROVED FLAG CHECK
+        // APPROVED FLAG
         // =================================================
 
         if (
@@ -467,7 +510,9 @@ async function loginUser() {
             true
         ) {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
 
             showMessage(
@@ -481,7 +526,7 @@ async function loginUser() {
 
 
         // =================================================
-        // LOGIN SUCCESS
+        // SUCCESS
         // =================================================
 
         showMessage(
@@ -495,10 +540,7 @@ async function loginUser() {
         );
 
 
-        // =================================================
-        // AUTH STATE SETTLE
-        // =================================================
-
+        // Firebase auth state ko settle hone ka time
         await new Promise(
             resolve =>
                 setTimeout(
@@ -508,12 +550,9 @@ async function loginUser() {
         );
 
 
-        // =================================================
-        // OPEN DASHBOARD
-        // =================================================
-
-        window.location.href =
-            "./dashboard.html";
+        window.location.replace(
+            "./dashboard.html"
+        );
 
     }
 
@@ -524,10 +563,6 @@ async function loginUser() {
             error
         );
 
-
-        // =================================================
-        // CLEAN AUTH SESSION
-        // =================================================
 
         try {
 
@@ -560,6 +595,311 @@ async function loginUser() {
                 "Login";
 
         }
+
+    }
+
+}
+
+
+// =====================================================
+// REQUIRE PARSHAD LOGIN
+// Dashboard / Profile ke liye
+// =====================================================
+
+async function requireParshadLogin(
+    redirectPath = "./index.html"
+) {
+
+    return new Promise(
+        resolve => {
+
+            let finished = false;
+
+            const finish = (
+                result
+            ) => {
+
+                if (finished) {
+
+                    return;
+
+                }
+
+                finished = true;
+
+                unsubscribe();
+
+                resolve(result);
+
+            };
+
+
+            const unsubscribe =
+                onAuthStateChanged(
+                    auth,
+                    async user => {
+
+                        try {
+
+                            // =================================
+                            // USER LOGIN NAHI HAI
+                            // =================================
+
+                            if (!user) {
+
+                                console.log(
+                                    "No Firebase user found."
+                                );
+
+
+                                window.location.replace(
+                                    redirectPath
+                                );
+
+
+                                finish(
+                                    false
+                                );
+
+                                return;
+
+                            }
+
+
+                            console.log(
+                                "Auth user found:",
+                                user.uid
+                            );
+
+
+                            // =================================
+                            // EMAIL VERIFICATION
+                            // =================================
+
+                            if (
+                                !user.emailVerified
+                            ) {
+
+                                console.log(
+                                    "Email is not verified."
+                                );
+
+
+                                await signOut(
+                                    auth
+                                );
+
+
+                                window.location.replace(
+                                    redirectPath
+                                );
+
+
+                                finish(
+                                    false
+                                );
+
+                                return;
+
+                            }
+
+
+                            // =================================
+                            // FIRESTORE PARSHAD RECORD
+                            // =================================
+
+                            let account;
+
+                            try {
+
+                                account =
+                                    await getParshadRecord(
+                                        user.uid
+                                    );
+
+                            }
+
+                            catch (error) {
+
+                                console.error(
+                                    "PARSHAD RECORD READ ERROR:",
+                                    error
+                                );
+
+
+                                await signOut(
+                                    auth
+                                );
+
+
+                                window.location.replace(
+                                    redirectPath
+                                );
+
+
+                                finish(
+                                    false
+                                );
+
+                                return;
+
+                            }
+
+
+                            // =================================
+                            // RECORD NOT FOUND
+                            // =================================
+
+                            if (!account) {
+
+                                console.log(
+                                    "Parshad record not found."
+                                );
+
+
+                                await signOut(
+                                    auth
+                                );
+
+
+                                window.location.replace(
+                                    redirectPath
+                                );
+
+
+                                finish(
+                                    false
+                                );
+
+                                return;
+
+                            }
+
+
+                            // =================================
+                            // APPROVAL CHECK
+                            // =================================
+
+                            if (
+                                account.status !==
+                                    "approved" ||
+                                account.approved !==
+                                    true
+                            ) {
+
+                                console.log(
+                                    "Parshad is not approved.",
+                                    account.status,
+                                    account.approved
+                                );
+
+
+                                await signOut(
+                                    auth
+                                );
+
+
+                                window.location.replace(
+                                    redirectPath
+                                );
+
+
+                                finish(
+                                    false
+                                );
+
+                                return;
+
+                            }
+
+
+                            // =================================
+                            // EVERYTHING OK
+                            // =================================
+
+                            console.log(
+                                "Parshad session verified:",
+                                user.uid
+                            );
+
+
+                            finish(
+                                true
+                            );
+
+                        }
+
+                        catch (error) {
+
+                            console.error(
+                                "requireParshadLogin ERROR:",
+                                error
+                            );
+
+
+                            try {
+
+                                await signOut(
+                                    auth
+                                );
+
+                            }
+
+                            catch (_) {}
+
+
+                            window.location.replace(
+                                redirectPath
+                            );
+
+
+                            finish(
+                                false
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+async function parshadLogout() {
+
+    try {
+
+        await signOut(
+            auth
+        );
+
+
+        console.log(
+            "Parshad logged out."
+        );
+
+
+        window.location.replace(
+            "./index.html"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "LOGOUT ERROR:",
+            error
+        );
+
+        throw error;
 
     }
 
@@ -633,37 +973,6 @@ async function forgotPassword() {
 
 
 // =====================================================
-// PARSHAD LOGOUT
-// =====================================================
-
-async function parshadLogout() {
-
-    try {
-
-        await signOut(
-            auth
-        );
-
-
-        window.location.replace(
-            "./index.html"
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "LOGOUT ERROR:",
-            error
-        );
-
-    }
-
-}
-
-
-// =====================================================
 // FORGOT PASSWORD BUTTON
 // =====================================================
 
@@ -713,7 +1022,7 @@ if (loginButton) {
 
 
 // =====================================================
-// FORM SUBMIT
+// LOGIN FORM
 // =====================================================
 
 const loginForm =
@@ -767,11 +1076,12 @@ if (passwordInput) {
 
 // =====================================================
 // EXPORTS
-// Dashboard / Profile can use these
 // =====================================================
 
 export {
     loginUser,
     getParshadRecord,
+    isApprovedParshad,
+    requireParshadLogin,
     parshadLogout
 };
