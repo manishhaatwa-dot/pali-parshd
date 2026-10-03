@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Parshd Manager Setup</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 460px;
+            background: #ffffff;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 25px;
+        }
+
+        .sub {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d5dbe5;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            border: 0;
+            border-radius: 10px;
+            background: #1769e0;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+            line-height: 1.5;
+        }
+
+        #message.success {
+            display: block;
+            background: #e9f8ee;
+            color: #16733a;
+        }
+
+        #message.error {
+            display: block;
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .uid {
+            word-break: break-all;
+            margin-top: 8px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Parshd Manager Setup</h1>
+
+    <div class="sub">
+        यह page सिर्फ पहली बार Master Manager
+        document बनाने के लिए है।
+    </div>
+
+    <form id="setupForm">
+
+        <label for="email">
+            Manager Email
+        </label>
+
+        <input
+            id="email"
+            type="email"
+            value="Digiprofiles.web@gmail.com"
+            readonly
+        >
+
+        <label for="password">
+            Firebase Manager Password
+        </label>
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Firebase password डालें"
+            required
+        >
+
+        <button
+            id="setupButton"
+            type="submit"
+        >
+            Create Manager
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+</div>
+
+
+<script type="module">
+
+    import {
+        signInWithEmailAndPassword,
+        signOut
+    } from
+        "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    import {
+        doc,
+        setDoc,
+        serverTimestamp
+    } from
+        "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    import {
+        auth,
+        db
+    } from "../js/firebase-config.js";
+
+
+    const MANAGER_UID =
+        "fpmYlP4c8FQL8oGSSQaymXfgH1B3";
+
+    const MANAGER_EMAIL =
+        "Digiprofiles.web@gmail.com";
+
+
+    const form =
+        document.getElementById("setupForm");
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.getElementById("setupButton");
+
+    const message =
+        document.getElementById("message");
+
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className = type;
+    }
+
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            showMessage("", "");
+
+            button.disabled = true;
+
+            button.textContent =
+                "Creating Manager...";
+
+
+            try {
+
+                // =====================================
+                // FIREBASE LOGIN
+                // =====================================
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        MANAGER_EMAIL,
+                        password.value
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                // =====================================
+                // UID SECURITY CHECK
+                // =====================================
+
+                if (
+                    user.uid !==
+                    MANAGER_UID
+                ) {
+
+                    await signOut(auth);
+
+                    throw new Error(
+                        "यह Firebase account authorized Manager account नहीं है।"
+                    );
+                }
+
+
+                // =====================================
+                // CREATE MANAGER DOCUMENT
+                // =====================================
+
+                const managerRef =
+                    doc(
+                        db,
+                        "parshd",
+                        "managers",
+                        "data",
+                        MANAGER_UID
+                    );
+
+
+                await setDoc(
+                    managerRef,
+                    {
+                        email:
+                            MANAGER_EMAIL,
+
+                        name:
+                            "Parshd Manager",
+
+                        role:
+                            "manager",
+
+                        active:
+                            true,
+
+                        createdAt:
+                            serverTimestamp()
+                    }
+                );
+
+
+                // =====================================
+                // LOGOUT
+                // =====================================
+
+                await signOut(auth);
+
+
+                showMessage(
+                    "Manager successfully create हो गया। अब इस page को दोबारा use करने की जरूरत नहीं है।",
+                    "success"
+                );
+
+
+                button.textContent =
+                    "Manager Created";
+
+
+                password.value = "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Manager setup error:",
+                    error
+                );
+
+
+                let msg =
+                    error.message ||
+                    "Manager create नहीं हो सका।";
+
+
+                if (
+                    error.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    msg =
+                        "Manager email या password गलत है।";
+                }
+
+
+                showMessage(
+                    msg,
+                    "error"
+                );
+
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Create Manager";
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
