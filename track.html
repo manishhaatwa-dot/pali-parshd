@@ -163,6 +163,30 @@
             color: #16a34a;
         }
 
+
+        /* ================================================
+           EXPECTED RESOLUTION MESSAGE
+        ================================================ */
+
+        .resolution-note {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .resolution-note strong {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+
         .info-row {
             padding: 13px 0;
             border-bottom: 1px solid #edf0f4;
@@ -269,6 +293,29 @@
                         class="status-value"
                     >
                         —
+                    </div>
+
+
+                    <!-- 7 DAY INFORMATION -->
+
+                    <div
+                        id="resolutionNote"
+                        class="resolution-note"
+                    >
+
+                        <strong>
+                            Expected Resolution
+                        </strong>
+
+                        समस्या का समाधान
+                        <strong style="display:inline;">
+                            7 दिनों के भीतर
+                        </strong>
+                        करने का प्रयास किया जाएगा।
+
+                        कुछ समस्याओं में आवश्यक प्रक्रिया
+                        के कारण अतिरिक्त समय भी लग सकता है।
+
                     </div>
 
                 </div>
@@ -414,6 +461,11 @@
             "result"
         );
 
+    const resolutionNote =
+        document.getElementById(
+            "resolutionNote"
+        );
+
 
     // =====================================================
     // URL COMPLAINT ID
@@ -545,15 +597,7 @@
 
 
         // =================================================
-        // CITIZEN STATUS DISPLAY
-        // =================================================
-        // Database status:
-        // new     -> Under Process
-        // pending -> Under Process
-        // solved  -> Solved ✓
-        //
-        // Admin dashboard ka actual status change
-        // bilkul nahi kiya ja raha.
+        // CITIZEN STATUS
         // =================================================
 
         if (status === "solved") {
@@ -565,7 +609,17 @@
                 "status-solved"
             );
 
+
+            // Solved होने पर 7-day message hide
+
+            resolutionNote.style.display =
+                "none";
+
+
         } else {
+
+            // new + pending
+            // Citizen को Under Process दिखे
 
             statusElement.textContent =
                 "Under Process";
@@ -573,6 +627,10 @@
             statusElement.classList.add(
                 "status-pending"
             );
+
+
+            resolutionNote.style.display =
+                "block";
 
         }
 
