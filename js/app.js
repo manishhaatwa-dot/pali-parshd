@@ -23,19 +23,29 @@ const PARSHD_ROOT = "parshd";
 // =========================================================
 
 const DEFAULT_PROFILE = {
+
     name: "Parshad",
+
     wardNumber: "",
+
     areaName: "",
+
     designation: "Ward Parshad",
 
-    profilePhoto: "assets/images/default-profile.png",
-    partyLogo: "assets/images/default-logo.png",
+    profilePhoto:
+        "assets/images/default-profile.png",
+
+    partyLogo:
+        "assets/images/default-logo.png",
 
     phone: "",
+
     whatsapp: "",
+
     about: "",
 
     complaintEnabled: true
+
 };
 
 
@@ -44,9 +54,13 @@ const DEFAULT_PROFILE = {
 // =========================================================
 
 const AppState = {
+
     wardId: null,
+
     profile: null,
+
     loading: false
+
 };
 
 
@@ -54,51 +68,67 @@ const AppState = {
 // PAGE START
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    try {
+        try {
 
-        initializeMenu();
-        initializeButtons();
-        initializeFooter();
+            initializeMenu();
 
-        // -----------------------------------------
-        // GET WARD FROM URL
-        // -----------------------------------------
+            initializeButtons();
 
-        AppState.wardId = getWardFromURL();
-
-        console.log("Detected Ward:", AppState.wardId);
+            initializeFooter();
 
 
-        // -----------------------------------------
-        // NO WARD
-        // -----------------------------------------
+            // -----------------------------------------
+            // GET WARD
+            // -----------------------------------------
 
-        if (!AppState.wardId) {
+            AppState.wardId =
+                getWardFromURL();
 
-            showNoWardState();
 
-            return;
+            console.log(
+                "Detected Ward:",
+                AppState.wardId
+            );
+
+
+            // -----------------------------------------
+            // NO WARD
+            // -----------------------------------------
+
+            if (!AppState.wardId) {
+
+                showNoWardState();
+
+                return;
+            }
+
+
+            // -----------------------------------------
+            // LOAD PROFILE
+            // -----------------------------------------
+
+            await loadWardProfile();
+
+        } catch (error) {
+
+            console.error(
+                "Parshd App Error:",
+                error
+            );
+
+
+            showSystemError(
+                "कुछ तकनीकी समस्या हुई है। कृपया थोड़ी देर बाद फिर प्रयास करें।"
+            );
+
         }
 
-
-        // -----------------------------------------
-        // LOAD WARD
-        // -----------------------------------------
-
-        await loadWardProfile();
-
-    } catch (error) {
-
-        console.error("Parshd App Error:", error);
-
-        showSystemError(
-            "कुछ तकनीकी समस्या हुई है। कृपया थोड़ी देर बाद फिर प्रयास करें।"
-        );
     }
-
-});
+);
 
 
 // =========================================================
@@ -107,18 +137,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function getWardFromURL() {
 
-    const path = window.location.pathname;
+    const path =
+        window.location.pathname;
 
-    const parts = path
-        .split("/")
-        .filter(Boolean);
+
+    const parts =
+        path
+            .split("/")
+            .filter(Boolean);
 
 
     // -----------------------------------------
     // /ward/44
     // -----------------------------------------
 
-    const wardIndex = parts.indexOf("ward");
+    const wardIndex =
+        parts.indexOf("ward");
+
 
     if (
         wardIndex !== -1 &&
@@ -128,6 +163,7 @@ function getWardFromURL() {
         return decodeURIComponent(
             parts[wardIndex + 1]
         );
+
     }
 
 
@@ -135,18 +171,25 @@ function getWardFromURL() {
     // ?ward=44
     // -----------------------------------------
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const wardParam = params.get("ward");
+
+    const wardParam =
+        params.get("ward");
+
 
     if (wardParam) {
+
         return wardParam;
+
     }
 
 
     return null;
+
 }
 
 
@@ -163,33 +206,46 @@ async function loadWardProfile() {
 
     try {
 
-        const profileRef = doc(
-            db,
-            PARSHD_ROOT,
-            "wards",
-            "data",
-            String(AppState.wardId)
-        );
+        const profileRef =
+            doc(
+                db,
+                PARSHD_ROOT,
+                "wards",
+                "data",
+                String(
+                    AppState.wardId
+                )
+            );
 
 
-        const snapshot = await getDoc(profileRef);
+        const snapshot =
+            await getDoc(
+                profileRef
+            );
 
 
         // -----------------------------------------
-        // WARD FOUND
+        // PROFILE FOUND
         // -----------------------------------------
 
         if (snapshot.exists()) {
 
+            const firebaseProfile =
+                snapshot.data();
+
+
             console.log(
                 "Ward profile found:",
-                snapshot.data()
+                firebaseProfile
             );
 
 
             AppState.profile = {
+
                 ...DEFAULT_PROFILE,
-                ...snapshot.data()
+
+                ...firebaseProfile
+
             };
 
 
@@ -198,11 +254,12 @@ async function loadWardProfile() {
             showApp();
 
             return;
+
         }
 
 
         // -----------------------------------------
-        // WARD NOT FOUND
+        // NOT FOUND
         // -----------------------------------------
 
         console.warn(
@@ -232,6 +289,7 @@ async function loadWardProfile() {
         AppState.loading = false;
 
         hideLoader();
+
     }
 
 }
@@ -243,14 +301,18 @@ async function loadWardProfile() {
 
 function renderProfile() {
 
-    const profile = AppState.profile;
+    const profile =
+        AppState.profile;
 
-    if (!profile) return;
+
+    if (!profile) {
+        return;
+    }
 
 
-    // -----------------------------------------
-    // PARTY LOGO
-    // -----------------------------------------
+    // =====================================================
+    // PARTY / ORGANIZATION LOGO
+    // =====================================================
 
     setImage(
         [
@@ -262,9 +324,9 @@ function renderProfile() {
     );
 
 
-    // -----------------------------------------
-    // PROFILE PHOTO
-    // -----------------------------------------
+    // =====================================================
+    // PARSHAD PHOTO
+    // =====================================================
 
     setImage(
         [
@@ -277,9 +339,9 @@ function renderProfile() {
     );
 
 
-    // -----------------------------------------
+    // =====================================================
     // NAME
-    // -----------------------------------------
+    // =====================================================
 
     setText(
         [
@@ -287,13 +349,14 @@ function renderProfile() {
             ".parshad-name",
             "[data-parshad-name]"
         ],
-        profile.name
+        profile.name ||
+        DEFAULT_PROFILE.name
     );
 
 
-    // -----------------------------------------
+    // =====================================================
     // DESIGNATION
-    // -----------------------------------------
+    // =====================================================
 
     setText(
         [
@@ -301,13 +364,21 @@ function renderProfile() {
             ".designation",
             "[data-designation]"
         ],
-        profile.designation
+        profile.designation ||
+        DEFAULT_PROFILE.designation
     );
 
 
-    // -----------------------------------------
+    // =====================================================
     // WARD NUMBER
-    // -----------------------------------------
+    // =====================================================
+
+    const wardNumber =
+        profile.wardNumber ||
+        profile.wardId ||
+        AppState.wardId ||
+        "";
+
 
     setText(
         [
@@ -316,15 +387,19 @@ function renderProfile() {
             ".ward-number",
             "[data-ward-number]"
         ],
-        profile.wardNumber
-            ? profile.wardNumber
-            : AppState.wardId
+        wardNumber
     );
 
 
-    // -----------------------------------------
+    // =====================================================
     // AREA
-    // -----------------------------------------
+    // =====================================================
+
+    const areaName =
+        profile.areaName ||
+        profile.area ||
+        "";
+
 
     setText(
         [
@@ -335,38 +410,84 @@ function renderProfile() {
             ".area-name",
             "[data-ward-area]"
         ],
-        profile.areaName || ""
+        areaName
     );
 
 
-    // -----------------------------------------
+    // =====================================================
+    // HEADER AREA
+    // =====================================================
+
+    setText(
+        [
+            "#headerWardArea"
+        ],
+        areaName ||
+        `Ward ${wardNumber}`
+    );
+
+
+    // =====================================================
+    // HEADER WARD
+    // =====================================================
+
+    setText(
+        [
+            "#headerWardNumber"
+        ],
+        wardNumber
+            ? `Ward No. ${wardNumber}`
+            : "Parshd.in"
+    );
+
+
+    // =====================================================
+    // HERO ADDRESS / AREA
+    // =====================================================
+
+    setText(
+        [
+            "#profileAddress"
+        ],
+        areaName ||
+        "Ward Area"
+    );
+
+
+    // =====================================================
     // ABOUT
-    // -----------------------------------------
+    // =====================================================
 
-    renderAbout(profile);
-
-
-    // -----------------------------------------
-    // CONTACT
-    // -----------------------------------------
-
-    renderContact(profile);
+    renderAbout(
+        profile
+    );
 
 
-    // -----------------------------------------
+    // =====================================================
+    // WHATSAPP
+    // =====================================================
+
+    renderContact(
+        profile
+    );
+
+
+    // =====================================================
     // COMPLAINT STATUS
-    // -----------------------------------------
+    // =====================================================
 
     renderComplaintStatus(
         profile.complaintEnabled
     );
 
 
-    // -----------------------------------------
-    // TITLE
-    // -----------------------------------------
+    // =====================================================
+    // PAGE TITLE
+    // =====================================================
 
-    updatePageTitle(profile);
+    updatePageTitle(
+        profile
+    );
 
 }
 
@@ -378,106 +499,109 @@ function renderProfile() {
 function renderAbout(profile) {
 
     const aboutSection =
-        document.querySelector("#aboutSection");
+        document.querySelector(
+            "#aboutSection"
+        );
 
 
     const aboutText =
-        document.querySelector("#aboutText");
+        document.querySelector(
+            "#aboutText"
+        );
 
 
-    if (!aboutSection || !aboutText) {
+    if (
+        !aboutSection ||
+        !aboutText
+    ) {
+
         return;
+
     }
 
 
-    if (profile.about) {
+    if (
+        profile.about &&
+        String(profile.about).trim()
+    ) {
 
         aboutText.textContent =
             profile.about;
 
-        aboutSection.classList.remove("hidden");
+
+        aboutSection.classList.remove(
+            "hidden"
+        );
 
     } else {
 
-        aboutSection.classList.add("hidden");
+        aboutSection.classList.add(
+            "hidden"
+        );
+
     }
 
 }
 
 
 // =========================================================
-// CONTACT
+// CONTACT - WHATSAPP ONLY
 // =========================================================
 
 function renderContact(profile) {
 
-    const phone =
-        normalizePhone(profile.phone);
-
-
     const whatsapp =
-        normalizePhone(
+        normalizeWhatsApp(
             profile.whatsapp ||
-            profile.phone
+            ""
         );
 
 
     const contactSection =
-        document.querySelector("#contactSection");
-
-
-    const callButton =
-        document.querySelector("#callButton");
+        document.querySelector(
+            "#contactSection"
+        );
 
 
     const whatsappButton =
-        document.querySelector("#whatsappButton");
-
-
-    let hasContact = false;
-
-
-    // -----------------------------------------
-    // CALL
-    // -----------------------------------------
-
-    if (callButton && phone) {
-
-        callButton.href =
-            `tel:${phone}`;
-
-        callButton.classList.remove("hidden");
-
-        hasContact = true;
-
-    } else if (callButton) {
-
-        callButton.classList.add("hidden");
-    }
+        document.querySelector(
+            "#whatsappButton"
+        );
 
 
     // -----------------------------------------
     // WHATSAPP
     // -----------------------------------------
 
-    if (whatsappButton && whatsapp) {
+    if (
+        whatsappButton &&
+        whatsapp
+    ) {
 
         whatsappButton.href =
             `https://wa.me/${whatsapp}`;
 
+
         whatsappButton.target =
             "_blank";
+
 
         whatsappButton.rel =
             "noopener noreferrer";
 
-        whatsappButton.classList.remove("hidden");
 
-        hasContact = true;
+        whatsappButton.classList.remove(
+            "hidden"
+        );
 
-    } else if (whatsappButton) {
+    } else if (
+        whatsappButton
+    ) {
 
-        whatsappButton.classList.add("hidden");
+        whatsappButton.classList.add(
+            "hidden"
+        );
+
     }
 
 
@@ -487,7 +611,10 @@ function renderContact(profile) {
 
     if (contactSection) {
 
-        if (hasContact) {
+        if (
+            whatsappButton &&
+            whatsapp
+        ) {
 
             contactSection.classList.remove(
                 "hidden"
@@ -498,7 +625,9 @@ function renderContact(profile) {
             contactSection.classList.add(
                 "hidden"
             );
+
         }
+
     }
 
 }
@@ -508,7 +637,9 @@ function renderContact(profile) {
 // COMPLAINT STATUS
 // =========================================================
 
-function renderComplaintStatus(enabled) {
+function renderComplaintStatus(
+    enabled
+) {
 
     const complaintButton =
         document.querySelector(
@@ -522,13 +653,20 @@ function renderComplaintStatus(enabled) {
         );
 
 
-    if (enabled === false) {
+    // -----------------------------------------
+    // OFF
+    // -----------------------------------------
+
+    if (
+        enabled === false
+    ) {
 
         if (complaintButton) {
 
             complaintButton.classList.add(
                 "hidden"
             );
+
         }
 
 
@@ -537,15 +675,17 @@ function renderComplaintStatus(enabled) {
             closedMessage.classList.remove(
                 "hidden"
             );
+
         }
 
 
         return;
+
     }
 
 
     // -----------------------------------------
-    // ENABLED
+    // ON
     // -----------------------------------------
 
     if (complaintButton) {
@@ -553,6 +693,7 @@ function renderComplaintStatus(enabled) {
         complaintButton.classList.remove(
             "hidden"
         );
+
     }
 
 
@@ -561,6 +702,7 @@ function renderComplaintStatus(enabled) {
         closedMessage.classList.add(
             "hidden"
         );
+
     }
 
 }
@@ -571,7 +713,6 @@ function renderComplaintStatus(enabled) {
 // =========================================================
 
 function initializeButtons() {
-
 
     // -----------------------------------------
     // REGISTER COMPLAINT
@@ -589,6 +730,7 @@ function initializeButtons() {
             "click",
             openComplaint
         );
+
     }
 
 
@@ -610,14 +752,17 @@ function initializeButtons() {
 
                 const ward =
                     encodeURIComponent(
-                        AppState.wardId || ""
+                        AppState.wardId ||
+                        ""
                     );
 
 
                 window.location.href =
                     `track.html?ward=${ward}`;
+
             }
         );
+
     }
 
 
@@ -639,14 +784,17 @@ function initializeButtons() {
 
                 const ward =
                     encodeURIComponent(
-                        AppState.wardId || ""
+                        AppState.wardId ||
+                        ""
                     );
 
 
                 window.location.href =
                     `track.html?ward=${ward}&status=solved`;
+
             }
         );
+
     }
 
 }
@@ -663,22 +811,33 @@ function openComplaint(event) {
         AppState.profile.complaintEnabled === false
     ) {
 
-        event.preventDefault();
+        if (event) {
 
-        renderComplaintStatus(false);
+            event.preventDefault();
+
+        }
+
+
+        renderComplaintStatus(
+            false
+        );
+
 
         return;
+
     }
 
 
     const ward =
         encodeURIComponent(
-            AppState.wardId || ""
+            AppState.wardId ||
+            ""
         );
 
 
     window.location.href =
         `complaint.html?ward=${ward}`;
+
 }
 
 
@@ -712,8 +871,13 @@ function initializeMenu() {
         );
 
 
-    if (!menuButton || !sideMenu) {
+    if (
+        !menuButton ||
+        !sideMenu
+    ) {
+
         return;
+
     }
 
 
@@ -729,6 +893,7 @@ function initializeMenu() {
             "click",
             closeMenu
         );
+
     }
 
 
@@ -738,6 +903,7 @@ function initializeMenu() {
             "click",
             closeMenu
         );
+
     }
 
 
@@ -746,7 +912,9 @@ function initializeMenu() {
     // -----------------------------------------
 
     const menuHome =
-        document.querySelector("#menuHome");
+        document.querySelector(
+            "#menuHome"
+        );
 
 
     if (menuHome) {
@@ -757,12 +925,15 @@ function initializeMenu() {
 
                 closeMenu();
 
+
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
                 });
+
             }
         );
+
     }
 
 
@@ -784,11 +955,14 @@ function initializeMenu() {
 
                 closeMenu();
 
+
                 openComplaint({
                     preventDefault() {}
                 });
+
             }
         );
+
     }
 
 
@@ -797,7 +971,9 @@ function initializeMenu() {
     // -----------------------------------------
 
     const menuTrack =
-        document.querySelector("#menuTrack");
+        document.querySelector(
+            "#menuTrack"
+        );
 
 
     if (menuTrack) {
@@ -808,12 +984,16 @@ function initializeMenu() {
 
                 closeMenu();
 
+
                 window.location.href =
                     `track.html?ward=${encodeURIComponent(
-                        AppState.wardId || ""
+                        AppState.wardId ||
+                        ""
                     )}`;
+
             }
         );
+
     }
 
 
@@ -822,7 +1002,9 @@ function initializeMenu() {
     // -----------------------------------------
 
     const menuSolved =
-        document.querySelector("#menuSolved");
+        document.querySelector(
+            "#menuSolved"
+        );
 
 
     if (menuSolved) {
@@ -833,12 +1015,16 @@ function initializeMenu() {
 
                 closeMenu();
 
+
                 window.location.href =
                     `track.html?ward=${encodeURIComponent(
-                        AppState.wardId || ""
+                        AppState.wardId ||
+                        ""
                     )}&status=solved`;
+
             }
         );
+
     }
 
 }
@@ -868,10 +1054,12 @@ function openMenu() {
             "active"
         );
 
+
         sideMenu.setAttribute(
             "aria-hidden",
             "false"
         );
+
     }
 
 
@@ -881,9 +1069,11 @@ function openMenu() {
             "hidden"
         );
 
+
         overlay.classList.add(
             "active"
         );
+
     }
 
 }
@@ -913,10 +1103,12 @@ function closeMenu() {
             "active"
         );
 
+
         sideMenu.setAttribute(
             "aria-hidden",
             "true"
         );
+
     }
 
 
@@ -926,9 +1118,11 @@ function closeMenu() {
             "active"
         );
 
+
         overlay.classList.add(
             "hidden"
         );
+
     }
 
 }
@@ -956,6 +1150,7 @@ function showLoader() {
 
         loader.style.display =
             "flex";
+
     }
 
 
@@ -964,6 +1159,7 @@ function showLoader() {
         app.classList.add(
             "hidden"
         );
+
     }
 
 }
@@ -985,6 +1181,7 @@ function hideLoader() {
 
         loader.style.display =
             "none";
+
     }
 
 }
@@ -1013,6 +1210,7 @@ function showApp() {
         app.classList.remove(
             "hidden"
         );
+
     }
 
 
@@ -1021,6 +1219,7 @@ function showApp() {
         error.classList.add(
             "hidden"
         );
+
     }
 
 
@@ -1049,6 +1248,7 @@ function showNoWardState() {
         app.classList.add(
             "hidden"
         );
+
     }
 
 
@@ -1079,6 +1279,7 @@ function showWardNotFound() {
         app.classList.add(
             "hidden"
         );
+
     }
 
 
@@ -1120,6 +1321,7 @@ function showSystemError(message) {
 
         errorText.textContent =
             message;
+
     }
 
 
@@ -1128,12 +1330,9 @@ function showSystemError(message) {
         errorBox.classList.remove(
             "hidden"
         );
+
     }
 
-
-    // -----------------------------------------
-    // RELOAD
-    // -----------------------------------------
 
     const reloadButton =
         document.querySelector(
@@ -1155,8 +1354,10 @@ function showSystemError(message) {
             () => {
 
                 window.location.reload();
+
             }
         );
+
     }
 
 }
@@ -1171,7 +1372,9 @@ function setImage(
     source
 ) {
 
-    if (!source) return;
+    if (!source) {
+        return;
+    }
 
 
     for (
@@ -1219,13 +1422,17 @@ function setImage(
 
                             element.src =
                                 "assets/images/default-logo.png";
+
                         }
+
                     };
+
             }
         );
 
 
         break;
+
     }
 
 }
@@ -1244,7 +1451,9 @@ function setText(
         value === undefined ||
         value === null
     ) {
+
         return;
+
     }
 
 
@@ -1268,57 +1477,85 @@ function setText(
 
                 element.textContent =
                     value;
+
             }
         );
 
 
         break;
+
     }
 
 }
 
 
 // =========================================================
-// PHONE NORMALIZER
+// WHATSAPP NORMALIZER
 // =========================================================
 
-function normalizePhone(phone) {
+function normalizeWhatsApp(
+    whatsapp
+) {
 
-    if (!phone) {
+    if (!whatsapp) {
         return "";
     }
 
 
     let value =
-        String(phone)
+        String(whatsapp)
             .replace(
-                /[^\d+]/g,
+                /\D/g,
                 ""
             );
 
 
+    // -----------------------------------------
+    // 10 digit Indian number
+    // -----------------------------------------
+
     if (
-        value.startsWith("0") &&
         value.length === 10
     ) {
 
         value =
-            "+91" +
-            value.substring(1);
+            "91" +
+            value;
+
     }
 
 
-    if (
-        /^\d{10}$/.test(value)
+    // -----------------------------------------
+    // 0XXXXXXXXXX
+    // -----------------------------------------
+
+    else if (
+        value.length === 11 &&
+        value.startsWith("0")
     ) {
 
         value =
-            "+91" +
-            value;
+            "91" +
+            value.substring(1);
+
     }
 
 
-    return value;
+    // -----------------------------------------
+    // Already 91XXXXXXXXXX
+    // -----------------------------------------
+
+    if (
+        value.length === 12 &&
+        value.startsWith("91")
+    ) {
+
+        return value;
+
+    }
+
+
+    return "";
 
 }
 
@@ -1327,7 +1564,9 @@ function normalizePhone(phone) {
 // PAGE TITLE
 // =========================================================
 
-function updatePageTitle(profile) {
+function updatePageTitle(
+    profile
+) {
 
     if (!profile.name) {
         return;
@@ -1339,7 +1578,7 @@ function updatePageTitle(profile) {
             profile.wardNumber ||
             AppState.wardId ||
             ""
-        } | Parshd`;
+        } | Parshd.in`;
 
 }
 
@@ -1360,6 +1599,7 @@ function initializeFooter() {
 
         year.textContent =
             new Date().getFullYear();
+
     }
 
 }
@@ -1376,12 +1616,14 @@ window.ParshdApp = {
         return {
             ...AppState
         };
+
     },
 
 
     reloadProfile() {
 
         return loadWardProfile();
+
     },
 
 
