@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,11 +10,16 @@
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
-    <meta name="theme-color" content="#ffffff">
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
     <title>Create Parshad Account | Parshd</title>
 
+
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -36,12 +43,6 @@
                 sans-serif;
 
             color: #111827;
-
-            padding:
-                env(safe-area-inset-top)
-                env(safe-area-inset-right)
-                env(safe-area-inset-bottom)
-                env(safe-area-inset-left);
         }
 
         .page {
@@ -139,7 +140,8 @@
             border-color: #111827;
 
             box-shadow:
-                0 0 0 3px rgba(17, 24, 39, 0.08);
+                0 0 0 3px
+                rgba(17, 24, 39, 0.08);
         }
 
         .button {
@@ -162,6 +164,7 @@
 
         .button:disabled {
             opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .message {
@@ -169,13 +172,15 @@
 
             margin-top: 15px;
 
-            padding: 11px;
+            padding: 13px;
 
             border-radius: 9px;
 
             text-align: center;
 
             font-size: 14px;
+
+            line-height: 1.55;
         }
 
         .message.show {
@@ -190,6 +195,53 @@
         .message.success {
             background: #f0fdf4;
             color: #15803d;
+        }
+
+        .approval-box {
+            display: none;
+
+            margin-top: 16px;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .approval-box.show {
+            display: block;
+        }
+
+        .approval-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            padding: 11px 16px;
+
+            border-radius: 9px;
+
+            background: #16a34a;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-weight: 700;
         }
 
         .login-link {
@@ -224,14 +276,19 @@
                 font-size: 23px;
             }
         }
+
     </style>
+
 </head>
 
+
 <body>
+
 
 <main class="page">
 
     <section class="box">
+
 
         <header class="header">
 
@@ -241,16 +298,19 @@
                 class="logo"
             >
 
-            <h1>Create Parshad Account</h1>
+            <h1>
+                Create Parshad Account
+            </h1>
 
             <p class="subtitle">
-                Demo ke liye apna Parshad account banayein
+                अपना Parshad account registration करें
             </p>
 
         </header>
 
 
         <form id="registerForm">
+
 
             <div class="form-group">
 
@@ -348,6 +408,7 @@
                     id="password"
                     placeholder="Create password"
                     autocomplete="new-password"
+                    minlength="6"
                     required
                 >
 
@@ -359,7 +420,7 @@
                 id="createButton"
                 class="button"
             >
-                Create Parshad Account
+                Submit Registration
             </button>
 
 
@@ -367,6 +428,41 @@
                 id="message"
                 class="message"
             ></div>
+
+
+            <div
+                id="approvalBox"
+                class="approval-box"
+            >
+
+                <div class="approval-title">
+                    Registration Pending Approval
+                </div>
+
+                आपका registration submit हो गया है।
+                <br>
+
+                Account activate होने के लिए
+                Manager approval जरूरी है।
+
+                <br>
+
+                नीचे WhatsApp से approval के लिए
+                संपर्क करें।
+
+                <br>
+
+                <a
+                    id="whatsappButton"
+                    class="whatsapp-button"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    WhatsApp पर संपर्क करें
+                </a>
+
+            </div>
+
 
         </form>
 
@@ -378,168 +474,444 @@
             Already have an account? Login
         </a>
 
+
     </section>
 
 </main>
 
 
-<script>
+<script type="module">
 
-const form =
-    document.getElementById("registerForm");
-
-const message =
-    document.getElementById("message");
-
-const createButton =
-    document.getElementById("createButton");
+    import {
+        createUserWithEmailAndPassword,
+        signOut
+    } from
+        "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 
-function showMessage(text, type) {
-
-    message.textContent = text;
-
-    message.className =
-        `message show ${type}`;
-}
-
-
-form.addEventListener("submit", (event) => {
-
-    event.preventDefault();
+    import {
+        doc,
+        setDoc,
+        serverTimestamp
+    } from
+        "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
-    const name =
-        document.getElementById("name")
-            .value.trim();
-
-    const email =
-        document.getElementById("email")
-            .value.trim();
-
-    const mobile =
-        document.getElementById("mobile")
-            .value.trim();
-
-    const ward =
-        document.getElementById("ward")
-            .value.trim();
-
-    const area =
-        document.getElementById("area")
-            .value.trim();
-
-    const password =
-        document.getElementById("password")
-            .value;
+    import {
+        auth,
+        db
+    } from "../js/firebase-config.js";
 
 
-    if (!name || !email || !mobile ||
-        !ward || !area || !password) {
+    // =================================================
+    // ELEMENTS
+    // =================================================
 
-        showMessage(
-            "सभी details भरें।",
-            "error"
+    const form =
+        document.getElementById(
+            "registerForm"
         );
 
-        return;
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    const approvalBox =
+        document.getElementById(
+            "approvalBox"
+        );
+
+    const whatsappButton =
+        document.getElementById(
+            "whatsappButton"
+        );
+
+    const createButton =
+        document.getElementById(
+            "createButton"
+        );
+
+
+    // =================================================
+    // YOUR APPROVAL CONTACT
+    // =================================================
+    //
+    // IMPORTANT:
+    // Yahan baad me tumhara actual WhatsApp
+    // number डालेंगे.
+    //
+    // Abhi placeholder hai.
+    //
+    // =================================================
+
+    const MANAGER_WHATSAPP =
+        "91XXXXXXXXXX";
+
+
+    // =================================================
+    // MESSAGE
+    // =================================================
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.textContent =
+            text;
+
+        message.className =
+            `message show ${type}`;
     }
 
 
-    if (!/^\d{10}$/.test(mobile)) {
+    // =================================================
+    // FORM
+    // =================================================
 
-        showMessage(
-            "Mobile number 10 digit का होना चाहिए।",
-            "error"
-        );
+    form.addEventListener(
+        "submit",
+        async (event) => {
 
-        return;
-    }
-
-
-    if (password.length < 6) {
-
-        showMessage(
-            "Password कम से कम 6 characters का रखें।",
-            "error"
-        );
-
-        return;
-    }
+            event.preventDefault();
 
 
-    const parshadId =
-        "P" +
-        Date.now().toString(36).toUpperCase();
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
 
 
-    const account = {
-
-        parshadId,
-
-        name,
-
-        email,
-
-        mobile,
-
-        ward,
-
-        area,
-
-        password,
-
-        createdAt: Date.now(),
-
-        status: "active",
-
-        complaintEnabled: true
-
-    };
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
 
 
-    localStorage.setItem(
-        "parshd_demo_account",
-        JSON.stringify(account)
+            const mobile =
+                document
+                    .getElementById("mobile")
+                    .value
+                    .trim();
+
+
+            const ward =
+                document
+                    .getElementById("ward")
+                    .value
+                    .trim();
+
+
+            const area =
+                document
+                    .getElementById("area")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            // =========================================
+            // VALIDATION
+            // =========================================
+
+            if (
+                !name ||
+                !email ||
+                !mobile ||
+                !ward ||
+                !area ||
+                !password
+            ) {
+
+                showMessage(
+                    "सभी details भरें।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                !/^\d{10}$/.test(
+                    mobile
+                )
+            ) {
+
+                showMessage(
+                    "Mobile number 10 digit का होना चाहिए।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                !/^\d+$/.test(
+                    ward
+                )
+            ) {
+
+                showMessage(
+                    "Ward number सही भरें।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "Password कम से कम 6 characters का रखें।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            // =========================================
+            // BUTTON
+            // =========================================
+
+            createButton.disabled =
+                true;
+
+            createButton.textContent =
+                "Submitting...";
+
+
+            try {
+
+                // =====================================
+                // CREATE FIREBASE AUTH USER
+                // =====================================
+
+                const credential =
+                    await
+                    createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                const uid =
+                    user.uid;
+
+
+                // =====================================
+                // FIRESTORE PARSHAD DOCUMENT
+                // =====================================
+
+                const parshadRef =
+                    doc(
+                        db,
+                        "parshd",
+                        "parshads",
+                        "data",
+                        uid
+                    );
+
+
+                await setDoc(
+                    parshadRef,
+                    {
+
+                        parshadId:
+                            uid,
+
+                        name:
+                            name,
+
+                        email:
+                            email,
+
+                        mobile:
+                            mobile,
+
+                        ward:
+                            ward,
+
+                        area:
+                            area,
+
+                        status:
+                            "pending",
+
+                        approved:
+                            false,
+
+                        complaintEnabled:
+                            true,
+
+                        createdAt:
+                            serverTimestamp(),
+
+                        approvedAt:
+                            null,
+
+                        rejectedAt:
+                            null
+
+                    }
+                );
+
+
+                // =====================================
+                // SIGN OUT
+                // =====================================
+                //
+                // IMPORTANT:
+                // Registration ke baad automatically
+                // login nahi hoga.
+                //
+                // =====================================
+
+                await signOut(auth);
+
+
+                // =====================================
+                // SUCCESS UI
+                // =====================================
+
+                showMessage(
+                    "Registration successfully submit हो गया है।",
+                    "success"
+                );
+
+
+                approvalBox
+                    .classList
+                    .add("show");
+
+
+                // =====================================
+                // WHATSAPP MESSAGE
+                // =====================================
+
+                const whatsappText =
+                    `Hello, मैंने Parshad registration किया है.%0A%0A` +
+                    `Name: ${encodeURIComponent(name)}%0A` +
+                    `Ward: ${encodeURIComponent(ward)}%0A` +
+                    `Area: ${encodeURIComponent(area)}%0A` +
+                    `Email: ${encodeURIComponent(email)}%0A%0A` +
+                    `Please approve my Parshd account.`;
+
+
+                whatsappButton.href =
+                    `https://wa.me/${MANAGER_WHATSAPP}?text=${whatsappText}`;
+
+
+                // =====================================
+                // DISABLE FORM
+                // =====================================
+
+                createButton.textContent =
+                    "Registration Submitted";
+
+
+                createButton.disabled =
+                    true;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Parshad registration error:",
+                    error
+                );
+
+
+                let errorMessage =
+                    "Registration नहीं हो सका।";
+
+
+                if (
+                    error.code ===
+                    "auth/email-already-in-use"
+                ) {
+
+                    errorMessage =
+                        "इस email से account पहले से registered है।";
+
+                } else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    errorMessage =
+                        "Email सही नहीं है।";
+
+                } else if (
+                    error.code ===
+                    "auth/weak-password"
+                ) {
+
+                    errorMessage =
+                        "Password कम से कम 6 characters का रखें।";
+
+                } else if (
+                    error.code ===
+                    "permission-denied"
+                ) {
+
+                    errorMessage =
+                        "Registration save करने की permission नहीं मिली।";
+                }
+
+
+                showMessage(
+                    errorMessage,
+                    "error"
+                );
+
+
+                createButton.disabled =
+                    false;
+
+                createButton.textContent =
+                    "Submit Registration";
+
+
+                // -------------------------------------
+                // IMPORTANT:
+                // अगर Auth user बन गया लेकिन Firestore
+                // save नहीं हुआ तो current session हटाएँ.
+                // -------------------------------------
+
+                try {
+
+                    await signOut(auth);
+
+                } catch (_) {}
+
+            }
+
+        }
     );
-
-
-    localStorage.setItem(
-        "parshd_demo_session",
-        JSON.stringify({
-
-            loggedIn: true,
-
-            parshadId,
-
-            loginTime: Date.now()
-
-        })
-    );
-
-
-    createButton.disabled = true;
-
-    createButton.textContent =
-        "Account Created...";
-
-
-    showMessage(
-        "Parshad account successfully create हो गया।",
-        "success"
-    );
-
-
-    setTimeout(() => {
-
-        window.location.href =
-            "./dashboard.html";
-
-    }, 700);
-
-});
 
 </script>
 
+
 </body>
+
 </html>
