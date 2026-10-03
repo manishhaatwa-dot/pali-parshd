@@ -28,6 +28,7 @@
 
     <title>Parshd Dashboard</title>
 
+
     <link
         rel="apple-touch-icon"
         href="../assets/icons/icon-192.png"
@@ -43,20 +44,25 @@
         href="../css/responsive.css"
     >
 
+
     <style>
 
         * {
             box-sizing: border-box;
         }
 
+
         html,
         body {
             margin: 0;
             padding: 0;
+
             width: 100%;
             min-height: 100%;
+
             background: #ffffff;
         }
+
 
         body {
             font-family:
@@ -75,16 +81,20 @@
             padding-left: env(safe-area-inset-left);
         }
 
+
         button {
             font-family: inherit;
         }
+
 
         .dashboard {
             width: 100%;
             min-height: 100vh;
             min-height: 100dvh;
+
             background: #ffffff;
         }
+
 
         /* =====================================
            HEADER
@@ -102,6 +112,7 @@
 
             z-index: 100;
         }
+
 
         .header-inner {
             width: 100%;
@@ -122,6 +133,7 @@
             gap: 15px;
         }
 
+
         .brand {
             display: flex;
 
@@ -131,6 +143,7 @@
 
             min-width: 0;
         }
+
 
         .brand-logo {
             width: 44px;
@@ -143,9 +156,6 @@
             flex-shrink: 0;
         }
 
-        .brand-text {
-            min-width: 0;
-        }
 
         .brand-title {
             margin: 0;
@@ -159,6 +169,7 @@
             color: #111827;
         }
 
+
         .brand-subtitle {
             margin: 3px 0 0;
 
@@ -167,6 +178,7 @@
             color: #6b7280;
         }
 
+
         .header-actions {
             display: flex;
 
@@ -174,6 +186,7 @@
 
             gap: 9px;
         }
+
 
         .header-button {
             min-height: 40px;
@@ -195,9 +208,11 @@
             cursor: pointer;
         }
 
+
         .header-button:hover {
             background: #f9fafb;
         }
+
 
         .logout-button {
             border-color: #fecaca;
@@ -220,9 +235,11 @@
             padding: 25px 20px 40px;
         }
 
+
         .welcome-section {
             margin-bottom: 23px;
         }
+
 
         .welcome-title {
             margin: 0;
@@ -236,6 +253,7 @@
             color: #111827;
         }
 
+
         .welcome-text {
             margin: 7px 0 0;
 
@@ -248,17 +266,17 @@
 
 
         /* =====================================
-           PROFILE
+           PROFILE CARD
         ====================================== */
 
         .profile-card {
             width: 100%;
 
-            padding: 20px;
+            padding: 22px;
 
             border: 1px solid #e5e7eb;
 
-            border-radius: 15px;
+            border-radius: 16px;
 
             background: #ffffff;
 
@@ -268,70 +286,139 @@
 
             justify-content: space-between;
 
-            gap: 20px;
+            gap: 25px;
 
             margin-bottom: 24px;
         }
+
+
+        /* =====================================
+           PROFILE MEDIA
+        ====================================== */
 
         .profile-info {
             display: flex;
 
             align-items: center;
 
-            gap: 15px;
+            gap: 20px;
 
             min-width: 0;
+
+            flex: 1;
         }
 
+
+        .profile-media {
+            width: 120px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            flex-shrink: 0;
+        }
+
+
+        /* SMALL PARTY LOGO */
+
+        .party-logo-circle {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 50%;
+
+            border: 1px solid #e5e7eb;
+
+            background: #ffffff;
+
+            overflow: hidden;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 9px;
+
+            box-shadow:
+                0 2px 7px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        .party-logo-circle img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        /* BIG PARSHAD PHOTO */
+
         .profile-photo {
-            width: 70px;
-            height: 70px;
+            width: 100px;
+            height: 100px;
 
             border-radius: 50%;
 
             object-fit: cover;
 
-            border: 1px solid #e5e7eb;
+            border: 2px solid #e5e7eb;
 
             background: #f8fafc;
 
-            flex-shrink: 0;
+            display: block;
         }
+
+
+        /* =====================================
+           PROFILE DETAILS
+        ====================================== */
 
         .profile-details {
             min-width: 0;
         }
 
+
         .profile-name {
             margin: 0;
 
-            font-size: 20px;
+            font-size: 22px;
 
-            font-weight: 700;
+            font-weight: 750;
 
             color: #111827;
 
             word-break: break-word;
         }
 
+
         .profile-meta {
-            margin: 5px 0 0;
+            margin: 7px 0 0;
 
             font-size: 14px;
 
             color: #6b7280;
 
-            line-height: 1.5;
+            line-height: 1.6;
+
+            word-break: break-word;
         }
+
 
         .profile-status {
             display: inline-flex;
 
             align-items: center;
 
-            margin-top: 8px;
+            margin-top: 9px;
 
-            padding: 5px 9px;
+            padding: 5px 10px;
 
             border-radius: 999px;
 
@@ -343,6 +430,7 @@
 
             font-weight: 650;
         }
+
 
         .edit-profile-button {
             min-height: 43px;
@@ -365,6 +453,7 @@
 
             flex-shrink: 0;
         }
+
 
         .edit-profile-button:hover {
             background: #f9fafb;
@@ -403,6 +492,7 @@
             margin-bottom: 27px;
         }
 
+
         .stat-card {
             min-width: 0;
 
@@ -421,6 +511,7 @@
                 box-shadow 0.15s ease;
         }
 
+
         .stat-card:hover {
             transform: translateY(-2px);
 
@@ -429,6 +520,7 @@
                 rgba(0, 0, 0, 0.06);
         }
 
+
         .stat-label {
             margin: 0;
 
@@ -436,6 +528,7 @@
 
             color: #6b7280;
         }
+
 
         .stat-number {
             margin: 8px 0 0;
@@ -465,6 +558,7 @@
             margin-bottom: 27px;
         }
 
+
         .action-card {
             width: 100%;
 
@@ -489,9 +583,11 @@
             cursor: pointer;
         }
 
+
         .action-card:hover {
             background: #fafafa;
         }
+
 
         .action-icon {
             width: 45px;
@@ -512,9 +608,11 @@
             flex-shrink: 0;
         }
 
+
         .action-content {
             min-width: 0;
         }
+
 
         .action-title {
             margin: 0;
@@ -525,6 +623,7 @@
 
             color: #111827;
         }
+
 
         .action-description {
             margin: 4px 0 0;
@@ -553,6 +652,7 @@
             overflow: hidden;
         }
 
+
         .complaints-header {
             padding: 18px 20px;
 
@@ -567,6 +667,7 @@
             gap: 15px;
         }
 
+
         .complaints-title {
             margin: 0;
 
@@ -574,6 +675,7 @@
 
             font-weight: 700;
         }
+
 
         .view-all-button {
             border: 0;
@@ -589,9 +691,11 @@
             cursor: pointer;
         }
 
+
         .complaints-list {
             width: 100%;
         }
+
 
         .empty-state {
             padding: 35px 20px;
@@ -625,9 +729,11 @@
             z-index: 999;
         }
 
+
         .loading-box {
             text-align: center;
         }
+
 
         .loading-spinner {
             width: 35px;
@@ -645,11 +751,13 @@
                 spin 0.8s linear infinite;
         }
 
+
         .loading-text {
             font-size: 14px;
 
             color: #6b7280;
         }
+
 
         @keyframes spin {
 
@@ -672,13 +780,16 @@
                 padding: 10px 14px;
             }
 
+
             .brand-title {
                 font-size: 18px;
             }
 
+
             .brand-subtitle {
                 font-size: 11px;
             }
+
 
             .header-button {
                 padding: 0 10px;
@@ -686,14 +797,17 @@
                 font-size: 13px;
             }
 
+
             .dashboard-main {
                 padding:
                     20px 14px 30px;
             }
 
+
             .welcome-title {
                 font-size: 24px;
             }
+
 
             .profile-card {
                 align-items: flex-start;
@@ -701,13 +815,34 @@
                 flex-direction: column;
             }
 
+
+            .profile-info {
+                width: 100%;
+
+                align-items: center;
+            }
+
+
+            .profile-media {
+                width: 105px;
+            }
+
+
+            .profile-photo {
+                width: 88px;
+                height: 88px;
+            }
+
+
             .edit-profile-button {
                 width: 100%;
             }
 
+
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+
 
             .actions-grid {
                 grid-template-columns: 1fr;
@@ -723,34 +858,65 @@
                 height: 39px;
             }
 
+
             .brand-title {
                 font-size: 16px;
             }
+
 
             .brand-subtitle {
                 display: none;
             }
 
+
             .logout-button {
                 font-size: 12px;
             }
+
 
             .profile-card {
                 padding: 16px;
             }
 
-            .profile-photo {
-                width: 60px;
-                height: 60px;
+
+            .profile-info {
+                gap: 13px;
             }
+
+
+            .profile-media {
+                width: 90px;
+            }
+
+
+            .party-logo-circle {
+                width: 38px;
+                height: 38px;
+
+                margin-bottom: 7px;
+            }
+
+
+            .profile-photo {
+                width: 78px;
+                height: 78px;
+            }
+
 
             .profile-name {
                 font-size: 18px;
             }
 
+
+            .profile-meta {
+                font-size: 12px;
+            }
+
+
             .stat-card {
                 padding: 17px;
             }
+
 
             .stat-number {
                 font-size: 27px;
@@ -785,7 +951,7 @@
                     class="brand-logo"
                 >
 
-                <div class="brand-text">
+                <div>
 
                     <h1 class="brand-title">
                         Parshd
@@ -851,18 +1017,47 @@
         </section>
 
 
-        <!-- PROFILE -->
+        <!-- =====================================
+             PROFILE CARD
+        ====================================== -->
 
         <section class="profile-card">
 
+
             <div class="profile-info">
 
-                <img
-                    id="profilePhoto"
-                    src="../assets/images/default-profile.png"
-                    alt="Profile"
-                    class="profile-photo"
-                >
+
+                <!-- LOGO + PHOTO -->
+
+                <div class="profile-media">
+
+
+                    <!-- PARTY LOGO -->
+
+                    <div class="party-logo-circle">
+
+                        <img
+                            id="partyLogo"
+                            src="../assets/images/default-logo.png"
+                            alt="Party Logo"
+                        >
+
+                    </div>
+
+
+                    <!-- PARSHAD PHOTO -->
+
+                    <img
+                        id="profilePhoto"
+                        src="../assets/images/default-profile.png"
+                        alt="Profile"
+                        class="profile-photo"
+                    >
+
+                </div>
+
+
+                <!-- DETAILS -->
 
                 <div class="profile-details">
 
@@ -873,12 +1068,14 @@
                         Profile Loading...
                     </h3>
 
+
                     <p
                         id="profileMeta"
                         class="profile-meta"
                     >
                         Ward information loading...
                     </p>
+
 
                     <span
                         id="profileStatus"
@@ -892,6 +1089,8 @@
             </div>
 
 
+            <!-- EDIT -->
+
             <button
                 type="button"
                 id="editProfileButton"
@@ -899,6 +1098,7 @@
             >
                 Edit Profile
             </button>
+
 
         </section>
 
@@ -915,6 +1115,7 @@
 
 
             <div class="stats-grid">
+
 
                 <button
                     type="button"
@@ -1104,11 +1305,13 @@
 
         <section class="complaints-section">
 
+
             <div class="complaints-header">
 
                 <h2 class="complaints-title">
                     Recent Complaints
                 </h2>
+
 
                 <button
                     type="button"
@@ -1131,6 +1334,7 @@
                 </div>
 
             </div>
+
 
         </section>
 
@@ -1163,13 +1367,87 @@
 
 
 <!-- =====================================
-     ONLY JS FILE
+     DASHBOARD JS
 ====================================== -->
 
 <script
     type="module"
     src="./dashboard.js"
 ></script>
+
+
+<!-- =====================================
+     PARTY LOGO
+====================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        try {
+
+            const saved =
+                localStorage.getItem(
+                    "parshd_demo_profile"
+                );
+
+
+            if (!saved) {
+                return;
+            }
+
+
+            const profile =
+                JSON.parse(saved);
+
+
+            const logo =
+                document.getElementById(
+                    "partyLogo"
+                );
+
+
+            if (
+                logo &&
+                profile.partyLogo
+            ) {
+
+                logo.src =
+                    profile.partyLogo;
+
+            }
+
+
+            if (logo) {
+
+                logo.onerror =
+                    function () {
+
+                        this.onerror =
+                            null;
+
+                        this.src =
+                            "../assets/images/default-logo.png";
+
+                    };
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Party logo loading error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+</script>
 
 
 </body>
