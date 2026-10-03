@@ -1,3 +1,8 @@
+// =========================================================
+// PARSHD - DEMO ADMIN DASHBOARD
+// File: admin/dashboard.js
+// =========================================================
+
 import {
     getDemoSession,
     demoLogout,
@@ -5,164 +10,234 @@ import {
 } from "./login.js";
 
 
-// =====================================
-// LOGIN CHECK
-// =====================================
+// =========================================================
+// REQUIRE LOGIN
+// =========================================================
 
-if (!requireDemoLogin()) {
+const session = requireDemoLogin();
+
+if (!session) {
     throw new Error("Demo login required");
 }
 
 
-// =====================================
+// =========================================================
 // ELEMENTS
-// =====================================
+// =========================================================
 
 const profileName =
-    document.getElementById("profileName");
+    document.querySelector("#profileName");
 
 const profileMeta =
-    document.getElementById("profileMeta");
-
-const profilePhoto =
-    document.getElementById("profilePhoto");
+    document.querySelector("#profileMeta");
 
 const profileStatus =
-    document.getElementById("profileStatus");
+    document.querySelector("#profileStatus");
 
-const welcomeTitle =
-    document.getElementById("welcomeTitle");
+const profilePhoto =
+    document.querySelector("#profilePhoto");
+
+const welcomeName =
+    document.querySelector("#welcomeName");
 
 const newCount =
-    document.getElementById("newCount");
+    document.querySelector("#newCount");
 
 const pendingCount =
-    document.getElementById("pendingCount");
+    document.querySelector("#pendingCount");
 
 const solvedCount =
-    document.getElementById("solvedCount");
+    document.querySelector("#solvedCount");
 
 const recentComplaints =
-    document.getElementById("recentComplaints");
-
-const loading =
-    document.getElementById("dashboardLoading");
+    document.querySelector("#recentComplaints");
 
 
-// =====================================
-// DEMO ACCOUNT
-// =====================================
+// =========================================================
+// LOAD ACCOUNT
+// =========================================================
 
-function getAccount() {
+const account =
+    JSON.parse(
+        localStorage.getItem(
+            "parshd_demo_account"
+        ) || "null"
+    );
 
-    try {
 
-        const saved =
-            localStorage.getItem(
-                "parshd_demo_account"
+// =========================================================
+// LOAD PROFILE
+// =========================================================
+
+const profile =
+    JSON.parse(
+        localStorage.getItem(
+            "parshd_demo_profile"
+        ) || "null"
+    );
+
+
+// =========================================================
+// USE PROFILE FIRST
+// =========================================================
+
+const currentProfile = {
+
+    name:
+        profile?.name ||
+        account?.name ||
+        "Parshad",
+
+    designation:
+        profile?.designation ||
+        "Ward Parshad",
+
+    ward:
+        profile?.ward ||
+        account?.ward ||
+        "",
+
+    area:
+        profile?.area ||
+        account?.area ||
+        "",
+
+    phone:
+        profile?.phone ||
+        account?.mobile ||
+        "",
+
+    profilePhoto:
+        profile?.profilePhoto ||
+        "../assets/images/default-profile.png",
+
+    partyLogo:
+        profile?.partyLogo ||
+        "../assets/images/default-logo.png",
+
+    complaintEnabled:
+        profile?.complaintEnabled !== false
+
+};
+
+
+// =========================================================
+// RENDER PROFILE
+// =========================================================
+
+function renderProfile() {
+
+    // -----------------------------------------
+    // Welcome
+    // -----------------------------------------
+
+    if (welcomeName) {
+
+        welcomeName.textContent =
+            currentProfile.name;
+
+    }
+
+
+    // -----------------------------------------
+    // Profile name
+    // -----------------------------------------
+
+    if (profileName) {
+
+        profileName.textContent =
+            currentProfile.name;
+
+    }
+
+
+    // -----------------------------------------
+    // Profile meta
+    // -----------------------------------------
+
+    if (profileMeta) {
+
+        const parts = [];
+
+
+        if (currentProfile.ward) {
+
+            parts.push(
+                `Ward ${currentProfile.ward}`
             );
 
-        return saved
-            ? JSON.parse(saved)
-            : null;
-
-    } catch (error) {
-
-        console.error(
-            "Account read error:",
-            error
-        );
-
-        return null;
-    }
-}
+        }
 
 
-const account = getAccount();
+        if (currentProfile.area) {
 
-const session =
-    getDemoSession();
+            parts.push(
+                currentProfile.area
+            );
 
-
-// =====================================
-// ACCOUNT CHECK
-// =====================================
-
-if (!account || !session) {
-
-    window.location.href =
-        "./index.html";
-
-    throw new Error(
-        "Demo account/session missing"
-    );
-}
+        }
 
 
-// =====================================
-// PROFILE DATA
-// =====================================
+        if (currentProfile.phone) {
 
-function loadProfile() {
+            parts.push(
+                currentProfile.phone
+            );
 
-    const name =
-        account.name || "Parshad";
-
-    const ward =
-        account.ward || "-";
-
-    const area =
-        account.area || "Ward Area";
-
-    const mobile =
-        account.mobile || "";
+        }
 
 
-    profileName.textContent =
-        name;
-
-
-    profileMeta.textContent =
-        `Ward ${ward} • ${area}` +
-        (mobile ? ` • ${mobile}` : "");
-
-
-    welcomeTitle.textContent =
-        `Welcome, ${name}`;
-
-
-    profileStatus.textContent =
-        account.status === "active"
-            ? "Active"
-            : "Inactive";
-
-
-    if (account.profilePhoto) {
-
-        profilePhoto.src =
-            account.profilePhoto;
+        profileMeta.textContent =
+            parts.join(" • ");
 
     }
 
 
-    // Complaint registration status
+    // -----------------------------------------
+    // Status
+    // -----------------------------------------
 
-    if (
-        account.complaintEnabled === false
-    ) {
+    if (profileStatus) {
 
         profileStatus.textContent =
-            "Complaints OFF";
+            "Active";
 
     }
+
+
+    // -----------------------------------------
+    // Profile Photo
+    // -----------------------------------------
+
+    if (profilePhoto) {
+
+        profilePhoto.src =
+            currentProfile.profilePhoto;
+
+
+        profilePhoto.onerror =
+            () => {
+
+                profilePhoto.onerror =
+                    null;
+
+                profilePhoto.src =
+                    "../assets/images/default-profile.png";
+            };
+
+    }
+
 }
 
 
-// =====================================
-// DEMO COMPLAINTS
-// =====================================
+// =========================================================
+// LOAD COMPLAINTS
+// =========================================================
 
-function getComplaints() {
+function loadComplaints() {
+
+    let complaints = [];
+
 
     try {
 
@@ -171,424 +246,629 @@ function getComplaints() {
                 "parshd_demo_complaints"
             );
 
-        if (!saved) {
-            return [];
+
+        if (saved) {
+
+            complaints =
+                JSON.parse(saved);
+
         }
-
-        const complaints =
-            JSON.parse(saved);
-
-        if (!Array.isArray(complaints)) {
-            return [];
-        }
-
-        return complaints.filter(
-            complaint =>
-                complaint.parshadId ===
-                account.parshadId
-        );
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Complaint loading error:",
+            error
+        );
 
-        return [];
+        complaints = [];
+
     }
-}
 
 
-// =====================================
-// COMPLAINT COUNTS
-// =====================================
+    // -----------------------------------------
+    // Ward filter
+    // -----------------------------------------
 
-function loadComplaintStats() {
+    complaints =
+        complaints.filter(
+            complaint => {
 
-    const complaints =
-        getComplaints();
+                if (
+                    !currentProfile.ward
+                ) {
+
+                    return true;
+                }
 
 
-    let newTotal = 0;
-    let pendingTotal = 0;
-    let solvedTotal = 0;
+                return String(
+                    complaint.wardNumber ||
+                    complaint.ward ||
+                    ""
+                ) === String(
+                    currentProfile.ward
+                );
 
-
-    complaints.forEach(
-        complaint => {
-
-            if (
-                complaint.status === "new"
-            ) {
-
-                newTotal++;
-
-            } else if (
-                complaint.status === "pending"
-            ) {
-
-                pendingTotal++;
-
-            } else if (
-                complaint.status === "solved"
-            ) {
-
-                solvedTotal++;
             }
+        );
 
-        }
+
+    // -----------------------------------------
+    // Counts
+    // -----------------------------------------
+
+    const newComplaints =
+        complaints.filter(
+            complaint =>
+                (complaint.status || "new")
+                === "new"
+        );
+
+
+    const pendingComplaints =
+        complaints.filter(
+            complaint =>
+                complaint.status
+                === "pending"
+        );
+
+
+    const solvedComplaints =
+        complaints.filter(
+            complaint =>
+                complaint.status
+                === "solved"
+        );
+
+
+    if (newCount) {
+
+        newCount.textContent =
+            newComplaints.length;
+
+    }
+
+
+    if (pendingCount) {
+
+        pendingCount.textContent =
+            pendingComplaints.length;
+
+    }
+
+
+    if (solvedCount) {
+
+        solvedCount.textContent =
+            solvedComplaints.length;
+
+    }
+
+
+    // -----------------------------------------
+    // Recent
+    // -----------------------------------------
+
+    renderRecentComplaints(
+        complaints
     );
 
-
-    newCount.textContent =
-        newTotal;
-
-    pendingCount.textContent =
-        pendingTotal;
-
-    solvedCount.textContent =
-        solvedTotal;
 }
 
 
-// =====================================
+// =========================================================
 // RECENT COMPLAINTS
-// =====================================
+// =========================================================
 
-function loadRecentComplaints() {
+function renderRecentComplaints(
+    complaints
+) {
 
-    const complaints =
-        getComplaints();
+    if (!recentComplaints) {
+        return;
+    }
 
 
     if (!complaints.length) {
 
         recentComplaints.innerHTML = `
+
             <div class="empty-state">
-                अभी कोई complaint नहीं है।
+
+                <div class="empty-icon">
+                    📋
+                </div>
+
+                <strong>
+                    अभी कोई complaint नहीं है
+                </strong>
+
+                <span>
+                    नई citizen complaints यहाँ दिखाई देंगी।
+                </span>
+
             </div>
+
         `;
 
         return;
     }
 
 
-    const recent =
-        complaints
+    // Newest first
+
+    const sorted =
+        [...complaints]
             .sort(
-                (a, b) =>
-                    (b.createdAt || 0) -
-                    (a.createdAt || 0)
+                (a, b) => {
+
+                    const dateA =
+                        new Date(
+                            a.createdAt || 0
+                        ).getTime();
+
+
+                    const dateB =
+                        new Date(
+                            b.createdAt || 0
+                        ).getTime();
+
+
+                    return dateB - dateA;
+
+                }
             )
             .slice(0, 5);
 
 
     recentComplaints.innerHTML =
-        recent.map(
-            complaint => {
+        sorted
+            .map(
+                complaint =>
+                    createRecentComplaint(
+                        complaint
+                    )
+            )
+            .join("");
 
-                const status =
-                    complaint.status || "new";
-
-                const text =
-                    complaint.complaintText ||
-                    complaint.text ||
-                    "Complaint";
-
-
-                const date =
-                    complaint.createdAt
-                        ? new Date(
-                            complaint.createdAt
-                          ).toLocaleDateString(
-                            "hi-IN"
-                          )
-                        : "";
-
-
-                return `
-                    <div
-                        style="
-                            padding:16px 20px;
-                            border-bottom:1px solid #e5e7eb;
-                        "
-                    >
-
-                        <div
-                            style="
-                                display:flex;
-                                justify-content:space-between;
-                                gap:12px;
-                                align-items:flex-start;
-                            "
-                        >
-
-                            <div
-                                style="
-                                    min-width:0;
-                                "
-                            >
-
-                                <div
-                                    style="
-                                        font-weight:700;
-                                        font-size:14px;
-                                        margin-bottom:5px;
-                                    "
-                                >
-                                    ${escapeHTML(
-                                        complaint.citizenName ||
-                                        "Citizen"
-                                    )}
-                                </div>
-
-                                <div
-                                    style="
-                                        color:#6b7280;
-                                        font-size:13px;
-                                        line-height:1.45;
-                                    "
-                                >
-                                    ${escapeHTML(
-                                        text
-                                    )}
-                                </div>
-
-                            </div>
-
-
-                            <span
-                                style="
-                                    flex-shrink:0;
-                                    font-size:11px;
-                                    font-weight:700;
-                                    padding:5px 8px;
-                                    border-radius:999px;
-                                    background:#f3f4f6;
-                                "
-                            >
-                                ${formatStatus(status)}
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            style="
-                                margin-top:8px;
-                                color:#9ca3af;
-                                font-size:11px;
-                            "
-                        >
-                            ${date}
-                        </div>
-
-                    </div>
-                `;
-
-            }
-        )
-        .join("");
 }
 
 
-// =====================================
-// SAFE HTML
-// =====================================
+// =========================================================
+// RECENT COMPLAINT CARD
+// =========================================================
 
-function escapeHTML(value) {
+function createRecentComplaint(
+    complaint
+) {
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    const name =
+        complaint.citizenName ||
+        complaint.name ||
+        "Citizen";
+
+
+    const text =
+        complaint.complaintText ||
+        complaint.complaint ||
+        "Complaint";
+
+
+    const status =
+        complaint.status ||
+        "new";
+
+
+    const statusText =
+        status === "new"
+            ? "New"
+            : status === "pending"
+                ? "Pending"
+                : "Solved";
+
+
+    const date =
+        formatDate(
+            complaint.createdAt
+        );
+
+
+    return `
+
+        <div class="recent-complaint">
+
+            <div class="recent-left">
+
+                <strong>
+                    ${escapeHtml(name)}
+                </strong>
+
+                <span>
+                    ${escapeHtml(text)}
+                </span>
+
+                <small>
+                    ${escapeHtml(date)}
+                </small>
+
+            </div>
+
+
+            <span
+                class="dashboard-status status-${status}"
+            >
+                ${statusText}
+            </span>
+
+        </div>
+
+    `;
+
 }
 
 
-// =====================================
-// STATUS TEXT
-// =====================================
+// =========================================================
+// NAVIGATION
+// =========================================================
 
-function formatStatus(status) {
-
-    if (status === "new") {
-        return "New";
-    }
-
-    if (status === "pending") {
-        return "Pending";
-    }
-
-    if (status === "solved") {
-        return "Solved";
-    }
-
-    return "New";
-}
+function setupNavigation() {
 
 
-// =====================================
-// BUTTONS
-// =====================================
+    // -----------------------------------------
+    // Complaints
+    // -----------------------------------------
 
-document
-    .getElementById("logoutButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            demoLogout();
-
-        }
-    );
+    const complaintsButton =
+        document.querySelector(
+            "#complaintsButton"
+        );
 
 
-document
-    .getElementById("viewPortalButton")
-    ?.addEventListener(
-        "click",
-        () => {
+    if (complaintsButton) {
 
-            const ward =
-                encodeURIComponent(
-                    account.ward || ""
-                );
-
-            window.location.href =
-                `../index.html?ward=${ward}`;
-
-        }
-    );
-
-
-document
-    .getElementById("editProfileButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "./profile.html";
-
-        }
-    );
-
-
-document
-    .getElementById("profileActionButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "./profile.html";
-
-        }
-    );
-
-
-document
-    .getElementById("complaintsButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "./complaints.html";
-
-        }
-    );
-
-
-document
-    .getElementById("viewAllComplaintsButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "./complaints.html";
-
-        }
-    );
-
-
-document
-    .getElementById("qrButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            const ward =
-                encodeURIComponent(
-                    account.ward || ""
-                );
-
-            window.location.href =
-                `../index.html?ward=${ward}`;
-
-        }
-    );
-
-
-document
-    .getElementById("settingsButton")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "./profile.html#complaint-settings";
-
-        }
-    );
-
-
-// =====================================
-// STAT CARD CLICK
-// =====================================
-
-document
-    .querySelectorAll(".stat-card")
-    .forEach(card => {
-
-        card.addEventListener(
+        complaintsButton.addEventListener(
             "click",
             () => {
 
-                const status =
-                    card.dataset.status || "";
-
                 window.location.href =
-                    `./complaints.html?status=${encodeURIComponent(
-                        status
-                    )}`;
+                    "complaints.html";
 
             }
         );
 
-    });
-
-
-// =====================================
-// INITIALIZE
-// =====================================
-
-function initializeDashboard() {
-
-    loadProfile();
-
-    loadComplaintStats();
-
-    loadRecentComplaints();
-
-
-    if (loading) {
-
-        loading.style.display =
-            "none";
     }
+
+
+    // -----------------------------------------
+    // Profile
+    // -----------------------------------------
+
+    const profileButton =
+        document.querySelector(
+            "#profileButton"
+        );
+
+
+    if (profileButton) {
+
+        profileButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "profile.html";
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // Edit Profile
+    // -----------------------------------------
+
+    const editProfileButton =
+        document.querySelector(
+            "#editProfileButton"
+        );
+
+
+    if (editProfileButton) {
+
+        editProfileButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "profile.html";
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // Ward QR
+    // -----------------------------------------
+
+    const qrButton =
+        document.querySelector(
+            "#qrButton"
+        );
+
+
+    if (qrButton) {
+
+        qrButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "profile.html#wardQR";
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // Complaint Settings
+    // -----------------------------------------
+
+    const settingsButton =
+        document.querySelector(
+            "#settingsButton"
+        );
+
+
+    if (settingsButton) {
+
+        settingsButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "profile.html#complaintSettings";
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // Portal
+    // -----------------------------------------
+
+    const portalButton =
+        document.querySelector(
+            "#portalButton"
+        );
+
+
+    if (portalButton) {
+
+        const ward =
+            currentProfile.ward;
+
+
+        if (ward) {
+
+            portalButton.addEventListener(
+                "click",
+                () => {
+
+                    const base =
+                        window.location.origin +
+                        window.location.pathname
+                            .split("/admin/")[0];
+
+
+                    window.open(
+                        `${base}/ward/${encodeURIComponent(ward)}`,
+                        "_blank"
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    // -----------------------------------------
+    // View All
+    // -----------------------------------------
+
+    const viewAllButton =
+        document.querySelector(
+            "#viewAllComplaints"
+        );
+
+
+    if (viewAllButton) {
+
+        viewAllButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "complaints.html";
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // Logout
+    // -----------------------------------------
+
+    const logoutButton =
+        document.querySelector(
+            "#logoutButton"
+        );
+
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener(
+            "click",
+            () => {
+
+                demoLogout();
+
+            }
+        );
+
+    }
+
 }
 
 
-initializeDashboard();
+// =========================================================
+// DATE FORMAT
+// =========================================================
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    try {
+
+        return new Date(
+            value
+        ).toLocaleString(
+            "hi-IN",
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        );
+
+    } catch {
+
+        return "-";
+
+    }
+
+}
+
+
+// =========================================================
+// HTML SECURITY
+// =========================================================
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+// =========================================================
+// INITIALIZE
+// =========================================================
+
+renderProfile();
+
+loadComplaints();
+
+setupNavigation();
+
+
+// =========================================================
+// REFRESH PROFILE WHEN RETURNING TO DASHBOARD
+// =========================================================
+
+window.addEventListener(
+    "pageshow",
+    () => {
+
+        const freshProfile =
+            JSON.parse(
+                localStorage.getItem(
+                    "parshd_demo_profile"
+                ) || "null"
+            );
+
+
+        if (freshProfile) {
+
+            currentProfile.name =
+                freshProfile.name ||
+                currentProfile.name;
+
+
+            currentProfile.ward =
+                freshProfile.ward ||
+                currentProfile.ward;
+
+
+            currentProfile.area =
+                freshProfile.area ||
+                currentProfile.area;
+
+
+            currentProfile.phone =
+                freshProfile.phone ||
+                currentProfile.phone;
+
+
+            currentProfile.profilePhoto =
+                freshProfile.profilePhoto ||
+                currentProfile.profilePhoto;
+
+
+            currentProfile.partyLogo =
+                freshProfile.partyLogo ||
+                currentProfile.partyLogo;
+
+
+            currentProfile.complaintEnabled =
+                freshProfile.complaintEnabled !== false;
+
+
+            renderProfile();
+
+            loadComplaints();
+
+        }
+
+    }
+);
