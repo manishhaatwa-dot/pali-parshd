@@ -27,25 +27,19 @@
             margin: 0;
             background: #ffffff;
             color: #0f172a;
-            font-family:
-                Inter,
-                Arial,
-                sans-serif;
+            font-family: Inter, Arial, sans-serif;
         }
 
-        button,
-        select {
+        button {
             font-family: inherit;
         }
 
         .header {
             min-height: 70px;
             border-bottom: 1px solid #e5e7eb;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             padding: 0 6%;
         }
 
@@ -59,14 +53,11 @@
             width: 42px;
             height: 42px;
             border-radius: 11px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             background: #0f172a;
             color: #ffffff;
-
             font-size: 20px;
             font-weight: 800;
         }
@@ -84,10 +75,8 @@
         .back-button {
             border: 1px solid #dbe1e8;
             background: #ffffff;
-
             padding: 9px 15px;
             border-radius: 9px;
-
             cursor: pointer;
             font-weight: 600;
         }
@@ -122,10 +111,8 @@
         .filter-button {
             border: 1px solid #dbe1e8;
             background: #ffffff;
-
             padding: 10px 17px;
             border-radius: 9px;
-
             cursor: pointer;
             font-weight: 600;
         }
@@ -144,22 +131,15 @@
         .complaint-card {
             border: 1px solid #e5e7eb;
             border-radius: 16px;
-
             padding: 20px;
-
             background: #ffffff;
-
             cursor: pointer;
-
-            transition:
-                transform .15s ease,
-                box-shadow .15s ease;
+            transition: .15s ease;
         }
 
         .complaint-card:hover {
             transform: translateY(-2px);
-            box-shadow:
-                0 8px 25px rgba(0,0,0,.07);
+            box-shadow: 0 8px 25px rgba(0,0,0,.07);
         }
 
         .complaint-top {
@@ -190,17 +170,14 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px 18px;
-
             color: #64748b;
             font-size: 13px;
         }
 
         .status {
             display: inline-flex;
-
             padding: 6px 10px;
             border-radius: 999px;
-
             font-size: 12px;
             font-weight: 700;
         }
@@ -222,7 +199,6 @@
 
         .complaint-actions {
             margin-top: 18px;
-
             display: flex;
             gap: 9px;
             flex-wrap: wrap;
@@ -231,12 +207,9 @@
         .action-button {
             border: 1px solid #dbe1e8;
             background: #ffffff;
-
             padding: 9px 13px;
             border-radius: 8px;
-
             cursor: pointer;
-
             font-size: 13px;
             font-weight: 600;
         }
@@ -249,12 +222,9 @@
 
         .empty {
             text-align: center;
-
             padding: 65px 20px;
-
             border: 1px dashed #cbd5e1;
             border-radius: 16px;
-
             color: #64748b;
         }
 
@@ -285,17 +255,11 @@
         .modal {
             position: fixed;
             inset: 0;
-
-            background:
-                rgba(15, 23, 42, .45);
-
+            background: rgba(15,23,42,.45);
             display: none;
-
             align-items: center;
             justify-content: center;
-
             padding: 20px;
-
             z-index: 100;
         }
 
@@ -304,14 +268,11 @@
         }
 
         .modal-card {
-            width: min(650px, 100%);
+            width: min(650px,100%);
             max-height: 90vh;
             overflow-y: auto;
-
             background: #ffffff;
-
             border-radius: 18px;
-
             padding: 25px;
         }
 
@@ -319,7 +280,6 @@
             display: flex;
             justify-content: space-between;
             gap: 15px;
-
             margin-bottom: 20px;
         }
 
@@ -330,12 +290,9 @@
         .close-button {
             border: 0;
             background: #f1f5f9;
-
             width: 36px;
             height: 36px;
-
             border-radius: 50%;
-
             cursor: pointer;
             font-size: 20px;
         }
@@ -357,51 +314,50 @@
 
         .media-grid {
             display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
+            grid-template-columns: repeat(2,minmax(0,1fr));
             gap: 10px;
             margin-top: 10px;
         }
 
         .media-grid img {
             width: 100%;
+            display: block;
             border-radius: 10px;
             border: 1px solid #e5e7eb;
         }
 
+        .video-box {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .video-box video {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            background: #000000;
+        }
+
         .media-link {
             display: inline-flex;
-
             padding: 9px 12px;
-
             border-radius: 8px;
-
             background: #eff6ff;
             color: #2563eb;
-
             text-decoration: none;
-
             font-size: 13px;
             font-weight: 700;
-
             margin: 5px 5px 0 0;
         }
 
         .map-link {
             display: inline-flex;
-
             margin-top: 8px;
-
             padding: 9px 12px;
-
             border-radius: 8px;
-
             background: #ecfdf5;
             color: #047857;
-
             text-decoration: none;
-
             font-size: 13px;
             font-weight: 700;
         }
@@ -410,11 +366,10 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-
             margin-top: 20px;
         }
 
-        @media (max-width: 650px) {
+        @media (max-width:650px) {
 
             .header {
                 padding: 0 4%;
@@ -460,15 +415,8 @@
         </div>
 
         <div class="brand-text">
-
-            <strong>
-                Parshd
-            </strong>
-
-            <span>
-                Complaint Management
-            </span>
-
+            <strong>Parshd</strong>
+            <span>Complaint Management</span>
         </div>
 
     </div>
@@ -485,14 +433,11 @@
 </header>
 
 
-
 <main class="container">
 
     <div class="page-heading">
 
-        <h1>
-            Complaints
-        </h1>
+        <h1>Complaints</h1>
 
         <p id="wardText">
             आपके वार्ड की नागरिक शिकायतें
@@ -548,11 +493,6 @@
 </main>
 
 
-
-<!-- =========================================
-     DETAILS MODAL
-========================================== -->
-
 <div
     id="detailsModal"
     class="modal"
@@ -562,9 +502,7 @@
 
         <div class="modal-header">
 
-            <h2>
-                Complaint Details
-            </h2>
+            <h2>Complaint Details</h2>
 
             <button
                 id="closeModal"
@@ -576,7 +514,6 @@
 
         </div>
 
-
         <div id="modalContent"></div>
 
     </div>
@@ -584,39 +521,26 @@
 </div>
 
 
-
 <script type="module">
 
 import {
-    getDemoSession
+    auth,
+    db
+} from "../js/firebase-config.js";
+
+
+import {
+    requireParshadLogin
 } from "./login.js";
-
-
-import { db } from "../js/firebase-config.js";
 
 
 import {
     collection,
     getDocs,
     doc,
-    updateDoc
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-
-
-// =====================================================
-// SESSION
-// =====================================================
-
-const session =
-    getDemoSession();
-
-
-if (!session) {
-
-    window.location.href =
-        "index.html";
-
-}
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
 // =====================================================
@@ -631,8 +555,12 @@ const COMPLAINTS_COLLECTION = [
 
 
 // =====================================================
-// DATA
+// STATE
 // =====================================================
+
+let currentUser = null;
+
+let account = null;
 
 let complaints = [];
 
@@ -660,21 +588,169 @@ const modalContent =
 
 
 // =====================================================
-// LOAD FIRESTORE COMPLAINTS
+// START
+// =====================================================
+
+async function startPage() {
+
+    try {
+
+        // ---------------------------------------------
+        // REAL FIREBASE PARSHAD LOGIN
+        // ---------------------------------------------
+
+        const allowed =
+            await requireParshadLogin(
+                "./index.html"
+            );
+
+
+        if (!allowed) {
+            return;
+        }
+
+
+        currentUser =
+            auth.currentUser;
+
+
+        if (!currentUser) {
+
+            window.location.href =
+                "./index.html";
+
+            return;
+
+        }
+
+
+        // ---------------------------------------------
+        // GET PARSHAD ACCOUNT
+        // ---------------------------------------------
+
+        account =
+            await getParshadAccount(
+                currentUser.uid
+            );
+
+
+        if (!account) {
+
+            showError(
+                "Parshad account information नहीं मिली।"
+            );
+
+            return;
+
+        }
+
+
+        updateWardText();
+
+        await loadComplaints();
+
+    } catch (error) {
+
+        console.error(
+            "Complaints page error:",
+            error
+        );
+
+
+        showError(
+            error.message ||
+            "Complaints load नहीं हो सकीं।"
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// GET PARSHAD ACCOUNT
+// =====================================================
+
+async function getParshadAccount(
+    uid
+) {
+
+    try {
+
+        const accountRef =
+            doc(
+                db,
+                "parshd",
+                "parshads",
+                "data",
+                uid
+            );
+
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "parshd",
+                    "parshads",
+                    "data"
+                )
+            );
+
+
+        let found = null;
+
+
+        snapshot.forEach(
+            item => {
+
+                if (
+                    item.id === uid
+                ) {
+
+                    found = {
+                        id: item.id,
+                        ...item.data()
+                    };
+
+                }
+
+            }
+        );
+
+
+        return found;
+
+    } catch (error) {
+
+        console.error(
+            "Parshad account read error:",
+            error
+        );
+
+        throw error;
+
+    }
+
+}
+
+
+// =====================================================
+// LOAD COMPLAINTS
 // =====================================================
 
 async function loadComplaints() {
 
+    list.innerHTML = `
+
+        <div class="loading">
+            Complaints load हो रही हैं...
+        </div>
+
+    `;
+
+
     try {
-
-        list.innerHTML = `
-
-            <div class="loading">
-                Complaints load हो रही हैं...
-            </div>
-
-        `;
-
 
         const complaintsRef =
             collection(
@@ -695,12 +771,16 @@ async function loadComplaints() {
         snapshot.forEach(
             item => {
 
+                const data =
+                    item.data();
+
+
                 complaints.push({
 
                     id:
                         item.id,
 
-                    ...item.data()
+                    ...data
 
                 });
 
@@ -708,9 +788,13 @@ async function loadComplaints() {
         );
 
 
+        // ---------------------------------------------
+        // ONLY OWN WARD
+        // ---------------------------------------------
+
         const currentWard =
             String(
-                session?.ward ||
+                account?.ward ||
                 ""
             ).trim();
 
@@ -730,7 +814,10 @@ async function loadComplaints() {
                             ).trim();
 
 
-                        return ward === currentWard;
+                        return (
+                            ward ===
+                            currentWard
+                        );
 
                     }
                 );
@@ -739,21 +826,17 @@ async function loadComplaints() {
 
 
         complaints.sort(
-            (a, b) => {
-
-                return (
-                    getTime(b.createdAt) -
-                    getTime(a.createdAt)
-                );
-
-            }
+            (a,b) =>
+                getTimestampMillis(
+                    b.createdAt
+                ) -
+                getTimestampMillis(
+                    a.createdAt
+                )
         );
 
 
-        updateWardText();
-
         renderComplaints();
-
 
     } catch (error) {
 
@@ -763,21 +846,9 @@ async function loadComplaints() {
         );
 
 
-        list.innerHTML = `
-
-            <div class="error-box">
-
-                <strong>
-                    Complaints load नहीं हो सकीं
-                </strong>
-
-                <br><br>
-
-                कृपया page refresh करके दोबारा try करें।
-
-            </div>
-
-        `;
+        showError(
+            "Complaints load नहीं हो सकीं। Console में error देखें।"
+        );
 
     }
 
@@ -801,18 +872,23 @@ function updateWardText() {
     }
 
 
-    if (session?.ward) {
+    const ward =
+        String(
+            account?.ward ||
+            ""
+        ).trim();
 
-        wardText.textContent =
-            `Ward ${session.ward} की नागरिक शिकायतें`;
 
-    }
+    wardText.textContent =
+        ward
+            ? `Ward ${ward} की नागरिक शिकायतें`
+            : "आपकी नागरिक शिकायतें";
 
 }
 
 
 // =====================================================
-// FILTER BUTTONS
+// FILTERS
 // =====================================================
 
 document
@@ -831,13 +907,10 @@ document
                             "[data-filter]"
                         )
                         .forEach(
-                            btn => {
-
-                                btn.classList.remove(
+                            item =>
+                                item.classList.remove(
                                     "active"
-                                );
-
-                            }
+                                )
                         );
 
 
@@ -866,7 +939,7 @@ document
 function renderComplaints() {
 
     let filtered =
-        complaints;
+        [...complaints];
 
 
     if (
@@ -875,12 +948,12 @@ function renderComplaints() {
     ) {
 
         filtered =
-            complaints.filter(
+            filtered.filter(
                 complaint =>
-                    (
+                    String(
                         complaint.status ||
                         "new"
-                    ) ===
+                    ).toLowerCase() ===
                     currentFilter
             );
 
@@ -922,9 +995,7 @@ function renderComplaints() {
             .join("");
 
 
-    // ---------------------------------------------
-    // WHOLE CARD CLICK
-    // ---------------------------------------------
+    // CARD CLICK
 
     list
         .querySelectorAll(
@@ -945,9 +1016,7 @@ function renderComplaints() {
                                 "a"
                             )
                         ) {
-
                             return;
-
                         }
 
 
@@ -966,11 +1035,9 @@ function renderComplaints() {
 
 
                         if (complaint) {
-
                             showDetails(
                                 complaint
                             );
-
                         }
 
                     }
@@ -980,9 +1047,7 @@ function renderComplaints() {
         );
 
 
-    // ---------------------------------------------
-    // DETAILS BUTTON
-    // ---------------------------------------------
+    // DETAILS
 
     list
         .querySelectorAll(
@@ -998,26 +1063,22 @@ function renderComplaints() {
                         event.stopPropagation();
 
 
-                        const id =
-                            button.dataset.view;
-
-
                         const complaint =
                             complaints.find(
                                 item =>
                                     String(
                                         item.id
                                     ) ===
-                                    String(id)
+                                    String(
+                                        button.dataset.view
+                                    )
                             );
 
 
                         if (complaint) {
-
                             showDetails(
                                 complaint
                             );
-
                         }
 
                     }
@@ -1027,9 +1088,7 @@ function renderComplaints() {
         );
 
 
-    // ---------------------------------------------
-    // STATUS BUTTONS
-    // ---------------------------------------------
+    // STATUS
 
     list
         .querySelectorAll(
@@ -1091,33 +1150,6 @@ function createComplaintCard(
         "-";
 
 
-    const name =
-        complaint.citizenName ||
-        "Citizen";
-
-
-    const text =
-        complaint.complaintText ||
-        "Complaint details उपलब्ध नहीं हैं।";
-
-
-    const phone =
-        complaint.citizenPhone ||
-        "-";
-
-
-    const ward =
-        complaint.wardNumber ||
-        session?.ward ||
-        "-";
-
-
-    const date =
-        formatDate(
-            complaint.createdAt
-        );
-
-
     const imageCount =
         Array.isArray(
             complaint.media?.images
@@ -1127,7 +1159,9 @@ function createComplaintCard(
 
 
     const hasVideo =
-        !!complaint.media?.video;
+        !!getMediaUrl(
+            complaint.media?.video
+        );
 
 
     return `
@@ -1137,7 +1171,6 @@ function createComplaintCard(
             data-complaint-card="${escapeHtml(
                 complaint.id
             )}"
-            title="Complaint details देखने के लिए click करें"
         >
 
             <div class="complaint-top">
@@ -1149,7 +1182,10 @@ function createComplaintCard(
                     </div>
 
                     <h3 class="complaint-name">
-                        ${escapeHtml(name)}
+                        ${escapeHtml(
+                            complaint.citizenName ||
+                            "Citizen"
+                        )}
                     </h3>
 
                 </div>
@@ -1167,22 +1203,36 @@ function createComplaintCard(
 
 
             <p class="complaint-text">
-                ${escapeHtml(text)}
+                ${escapeHtml(
+                    complaint.complaintText ||
+                    "Complaint details उपलब्ध नहीं हैं।"
+                )}
             </p>
 
 
             <div class="complaint-details">
 
                 <span>
-                    📱 ${escapeHtml(phone)}
+                    📱 ${escapeHtml(
+                        complaint.citizenPhone ||
+                        "-"
+                    )}
                 </span>
 
                 <span>
-                    📍 Ward ${escapeHtml(ward)}
+                    📍 Ward ${escapeHtml(
+                        complaint.wardNumber ||
+                        account?.ward ||
+                        "-"
+                    )}
                 </span>
 
                 <span>
-                    📅 ${escapeHtml(date)}
+                    📅 ${escapeHtml(
+                        formatDate(
+                            complaint.createdAt
+                        )
+                    )}
                 </span>
 
                 ${
@@ -1297,47 +1347,46 @@ async function updateStatus(
             );
 
 
-        const updateData = {
-
-            status:
-                newStatus
-
-        };
-
-
-        if (
-            newStatus ===
-            "solved"
-        ) {
-
-            updateData.solvedAt =
-                new Date().toISOString();
-
-        } else {
-
-            updateData.solvedAt =
-                null;
-
-        }
-
-
         await updateDoc(
             complaintRef,
-            updateData
+            {
+
+                status:
+                    newStatus,
+
+                solvedAt:
+                    newStatus === "solved"
+                        ? serverTimestamp()
+                        : null
+
+            }
         );
 
-
-        // Update local UI data
 
         complaint.status =
             newStatus;
 
 
         complaint.solvedAt =
-            updateData.solvedAt;
+            newStatus === "solved"
+                ? new Date()
+                : null;
 
 
         renderComplaints();
+
+
+        if (
+            modal.classList.contains(
+                "active"
+            )
+        ) {
+
+            showDetails(
+                complaint
+            );
+
+        }
 
 
         if (
@@ -1360,6 +1409,7 @@ async function updateStatus(
 
 
         alert(
+            error.message ||
             "Complaint status update नहीं हो पाया।"
         );
 
@@ -1369,12 +1419,16 @@ async function updateStatus(
 
 
 // =====================================================
-// DETAILS MODAL
+// DETAILS
 // =====================================================
 
 function showDetails(
     complaint
 ) {
+
+    const media =
+        complaint.media || {};
+
 
     const id =
         complaint.publicComplaintId ||
@@ -1383,13 +1437,9 @@ function showDetails(
         "-";
 
 
-    const location =
-        complaint.location;
-
-
-    const media =
-        complaint.media || {};
-
+    // =================================================
+    // PHOTOS
+    // =================================================
 
     let imagesHTML = "";
 
@@ -1397,42 +1447,38 @@ function showDetails(
     if (
         Array.isArray(
             media.images
-        ) &&
-        media.images.length
+        )
     ) {
 
-        imagesHTML = `
-
-            <div class="detail-row">
-
-                <small>
-                    Photos
-                </small>
-
-                <div class="media-grid">
-
-                    ${
-                        media.images
-                            .map(
-                                image => {
-
-                                    const url =
-                                        getMediaUrl(
-                                            image
-                                        );
+        const validImages =
+            media.images
+                .map(
+                    getMediaUrl
+                )
+                .filter(Boolean);
 
 
-                                    if (!url) {
-                                        return "";
-                                    }
+        if (validImages.length) {
 
+            imagesHTML = `
 
-                                    return `
+                <div class="detail-row">
+
+                    <small>
+                        Photos
+                    </small>
+
+                    <div class="media-grid">
+
+                        ${
+                            validImages
+                                .map(
+                                    url => `
 
                                         <a
                                             href="${escapeHtml(url)}"
                                             target="_blank"
-                                            rel="noopener"
+                                            rel="noopener noreferrer"
                                         >
 
                                             <img
@@ -1442,21 +1488,25 @@ function showDetails(
 
                                         </a>
 
-                                    `;
+                                    `
+                                )
+                                .join("")
+                        }
 
-                                }
-                            )
-                            .join("")
-                    }
+                    </div>
 
                 </div>
 
-            </div>
+            `;
 
-        `;
+        }
 
     }
 
+
+    // =================================================
+    // VIDEO
+    // =================================================
 
     let videoHTML = "";
 
@@ -1477,13 +1527,31 @@ function showDetails(
                     Video
                 </small>
 
+                <div class="video-box">
+
+                    <video
+                        controls
+                        preload="metadata"
+                    >
+
+                        <source
+                            src="${escapeHtml(videoUrl)}"
+                        >
+
+                        आपका browser video support नहीं करता।
+
+                    </video>
+
+                </div>
+
+
                 <a
                     class="media-link"
                     href="${escapeHtml(videoUrl)}"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                 >
-                    🎥 Video देखें
+                    🎥 Video अलग से खोलें
                 </a>
 
             </div>
@@ -1493,25 +1561,45 @@ function showDetails(
     }
 
 
+    // =================================================
+    // LOCATION
+    // =================================================
+
     let locationHTML = "";
+
+
+    const location =
+        complaint.location;
 
 
     if (
         location &&
-        location.latitude !== undefined &&
-        location.longitude !== undefined
+        Number.isFinite(
+            Number(
+                location.latitude
+            )
+        ) &&
+        Number.isFinite(
+            Number(
+                location.longitude
+            )
+        )
     ) {
 
+        const latitude =
+            Number(
+                location.latitude
+            );
+
+
+        const longitude =
+            Number(
+                location.longitude
+            );
+
+
         const mapUrl =
-            `https://www.google.com/maps?q=${
-                encodeURIComponent(
-                    location.latitude
-                )
-            },${
-                encodeURIComponent(
-                    location.longitude
-                )
-            }`;
+            `https://www.google.com/maps?q=${latitude},${longitude}`;
 
 
         locationHTML = `
@@ -1523,12 +1611,8 @@ function showDetails(
                 </small>
 
                 <strong>
-                    ${escapeHtml(
-                        location.latitude
-                    )},
-                    ${escapeHtml(
-                        location.longitude
-                    )}
+                    ${escapeHtml(latitude)},
+                    ${escapeHtml(longitude)}
                 </strong>
 
                 <br>
@@ -1541,11 +1625,13 @@ function showDetails(
                     )} meters
                 </small>
 
+                <br>
+
                 <a
                     class="map-link"
                     href="${escapeHtml(mapUrl)}"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                 >
                     📍 Map पर देखें
                 </a>
@@ -1556,6 +1642,10 @@ function showDetails(
 
     }
 
+
+    // =================================================
+    // MODAL
+    // =================================================
 
     modalContent.innerHTML = `
 
@@ -1769,10 +1859,6 @@ function showDetails(
                     "pending"
                 );
 
-                showDetails(
-                    complaint
-                );
-
             }
         );
 
@@ -1796,10 +1882,6 @@ function showDetails(
                     "solved"
                 );
 
-                showDetails(
-                    complaint
-                );
-
             }
         );
 
@@ -1814,7 +1896,7 @@ function showDetails(
 
 
 // =====================================================
-// MEDIA URL HELPER
+// MEDIA URL
 // =====================================================
 
 function getMediaUrl(
@@ -1847,7 +1929,34 @@ function getMediaUrl(
 
 
 // =====================================================
-// CLOSE MODAL
+// ERROR
+// =====================================================
+
+function showError(
+    message
+) {
+
+    list.innerHTML = `
+
+        <div class="error-box">
+
+            <strong>
+                Complaints load नहीं हो सकीं
+            </strong>
+
+            <br><br>
+
+            ${escapeHtml(message)}
+
+        </div>
+
+    `;
+
+}
+
+
+// =====================================================
+// MODAL CLOSE
 // =====================================================
 
 document
@@ -1906,10 +2015,10 @@ document
 
 
 // =====================================================
-// DATE
+// FIRESTORE TIMESTAMP
 // =====================================================
 
-function getTime(
+function getTimestampMillis(
     value
 ) {
 
@@ -1918,50 +2027,86 @@ function getTime(
     }
 
 
-    const time =
+    // Firebase Timestamp
+
+    if (
+        typeof value.toMillis ===
+        "function"
+    ) {
+
+        return value.toMillis();
+
+    }
+
+
+    // Firebase Timestamp object
+
+    if (
+        typeof value.seconds ===
+        "number"
+    ) {
+
+        return (
+            value.seconds * 1000 +
+            Math.floor(
+                (value.nanoseconds || 0) /
+                1000000
+            )
+        );
+
+    }
+
+
+    // JS Date
+
+    if (
+        value instanceof Date
+    ) {
+
+        return value.getTime();
+
+    }
+
+
+    // String / number
+
+    const result =
         new Date(
             value
         ).getTime();
 
 
-    return Number.isFinite(
-        time
-    )
-        ? time
+    return Number.isFinite(result)
+        ? result
         : 0;
 
 }
 
 
+// =====================================================
+// DATE FORMAT
+// =====================================================
+
 function formatDate(
     value
 ) {
 
-    if (!value) {
+    const milliseconds =
+        getTimestampMillis(
+            value
+        );
+
+
+    if (!milliseconds) {
         return "-";
     }
 
 
     try {
 
-        const date =
-            new Date(
-                value
-            );
-
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-
-            return "-";
-
-        }
-
-
-        return date.toLocaleString(
+        return new Date(
+            milliseconds
+        ).toLocaleString(
             "hi-IN",
             {
                 dateStyle: "medium",
@@ -1979,7 +2124,7 @@ function formatDate(
 
 
 // =====================================================
-// HTML SECURITY
+// ESCAPE HTML
 // =====================================================
 
 function escapeHtml(
@@ -2017,9 +2162,10 @@ function escapeHtml(
 // START
 // =====================================================
 
-loadComplaints();
+startPage();
 
 </script>
+
 
 </body>
 
