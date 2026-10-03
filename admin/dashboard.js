@@ -9,6 +9,13 @@ import {
     requireDemoLogin
 } from "./login.js";
 
+import { db } from "../js/firebase-config.js";
+
+import {
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
 
 // =========================================================
 // LOGIN CHECK
@@ -19,6 +26,17 @@ const session = requireDemoLogin();
 if (!session) {
     throw new Error("Demo login required");
 }
+
+
+// =========================================================
+// FIRESTORE
+// =========================================================
+
+const COMPLAINTS_COLLECTION = [
+    "parshd",
+    "complaints",
+    "data"
+];
 
 
 // =========================================================
@@ -79,7 +97,6 @@ function getAccount() {
 
         return null;
     }
-
 }
 
 
@@ -106,31 +123,19 @@ function getProfile() {
 
         return null;
     }
-
 }
 
 
 // =========================================================
-// CURRENT DATA
-// =========================================================
-
-let account =
-    getAccount();
-
-let profile =
-    getProfile();
-
-
-// =========================================================
-// BUILD CURRENT PROFILE
+// CURRENT PROFILE
 // =========================================================
 
 function getCurrentProfile() {
 
-    account =
+    const account =
         getAccount();
 
-    profile =
+    const profile =
         getProfile();
 
 
@@ -172,7 +177,6 @@ function getCurrentProfile() {
             profile?.complaintEnabled !== false
 
     };
-
 }
 
 
@@ -186,16 +190,6 @@ function renderProfile() {
         getCurrentProfile();
 
 
-    console.log(
-        "Dashboard Profile:",
-        current
-    );
-
-
-    // -----------------------------------------
-    // WELCOME
-    // -----------------------------------------
-
     if (welcomeTitle) {
 
         welcomeTitle.textContent =
@@ -203,10 +197,6 @@ function renderProfile() {
 
     }
 
-
-    // -----------------------------------------
-    // PROFILE NAME
-    // -----------------------------------------
 
     if (profileName) {
 
@@ -216,29 +206,10 @@ function renderProfile() {
     }
 
 
-    // -----------------------------------------
-    // PROFILE PHOTO
-    // -----------------------------------------
-
     if (profilePhoto) {
 
-        const photo =
+        profilePhoto.src =
             current.profilePhoto;
-
-
-        console.log(
-            "Dashboard photo:",
-            photo
-        );
-
-
-        if (photo) {
-
-            profilePhoto.src =
-                photo;
-
-        }
-
 
         profilePhoto.alt =
             current.name;
@@ -247,15 +218,7 @@ function renderProfile() {
         profilePhoto.onerror =
             function () {
 
-                console.warn(
-                    "Profile image failed:",
-                    this.src
-                );
-
-
-                this.onerror =
-                    null;
-
+                this.onerror = null;
 
                 this.src =
                     "../assets/images/default-profile.png";
@@ -264,10 +227,6 @@ function renderProfile() {
 
     }
 
-
-    // -----------------------------------------
-    // PROFILE META
-    // -----------------------------------------
 
     if (profileMeta) {
 
@@ -307,14 +266,12 @@ function renderProfile() {
     }
 
 
-    // -----------------------------------------
-    // STATUS
-    // -----------------------------------------
-
     if (profileStatus) {
 
         profileStatus.textContent =
-            "Active";
+            current.complaintEnabled
+                ? "Active"
+                : "Complaints OFF";
 
     }
 
@@ -322,42 +279,57 @@ function renderProfile() {
 
 
 // =========================================================
-// LOAD COMPLAINTS
+// LOAD REAL FIRESTORE COMPLAINTS
 // =========================================================
 
-function getComplaints() {
+async function getComplaints() {
 
     try {
 
-        const saved =
-            localStorage.getItem(
-                "parshd_demo_complaints"
+        const complaintsRef =
+            collection(
+                db,
+                ...COMPLAINTS_COLLECTION
             );
 
 
-        if (!saved) {
-
-            return [];
-
-        }
-
-
-        const data =
-            JSON.parse(saved);
+        const snapshot =
+            await getDocs(
+                complaintsRef
+            );
 
 
-        return Array.isArray(data)
-            ? data
-            : [];
+        const complaints = [];
+
+
+        snapshot.forEach(
+            documentSnapshot => {
+
+                complaints.push({
+
+                    id:
+                        documentSnapshot.id,
+
+                    ...documentSnapshot.data()
+
+                });
+
+            }
+        );
+
+
+        return complaints;
+
 
     } catch (error) {
 
         console.error(
-            "Complaint data error:",
+            "Firestore complaints error:",
             error
         );
 
-        return [];
+
+        throw error;
 
     }
 
@@ -368,36 +340,42 @@ function getComplaints() {
 // WARD FILTER
 // =========================================================
 
-function getWardComplaints() {
+function getWardComplaints(
+    complaints
+) {
 
     const current =
         getCurrentProfile();
 
 
-    const complaints =
-        getComplaints();
-
-
     if (!current.ward) {
 
-        return complaints;
+        return [];
 
     }
+
+
+    const currentWard =
+        String(
+            current.ward
+        ).trim();
 
 
     return complaints.filter(
         complaint => {
 
             const complaintWard =
-                complaint.wardNumber ||
-                complaint.ward ||
-                "";
+                String(
+                    complaint.wardNumber ||
+                    complaint.wardId ||
+                    complaint.ward ||
+                    ""
+                ).trim();
 
 
-            return String(
-                complaintWard
-            ) === String(
-                current.ward
+            return (
+                complaintWard ===
+                currentWard
             );
 
         }
@@ -410,14 +388,14 @@ function getWardComplaints() {
 // UPDATE STATISTICS
 // =========================================================
 
-function updateStatistics() {
-
-    const complaints =
-        getWardComplaints();
-
+function updateStatistics(
+    complaints
+) {
 
     let newTotal = 0;
+
     let pendingTotal = 0;
+
     let solvedTotal = 0;
 
 
@@ -425,8 +403,10 @@ function updateStatistics() {
         complaint => {
 
             const status =
-                complaint.status ||
-                "new";
+                String(
+                    complaint.status ||
+                    "new"
+                ).toLowerCase();
 
 
             if (status === "new") {
@@ -481,15 +461,13 @@ function updateStatistics() {
 // RECENT COMPLAINTS
 // =========================================================
 
-function renderRecentComplaints() {
+function renderRecentComplaints(
+    complaints
+) {
 
     if (!recentComplaints) {
         return;
     }
-
-
-    const complaints =
-        getWardComplaints();
 
 
     if (!complaints.length) {
@@ -532,15 +510,15 @@ function renderRecentComplaints() {
             (a, b) => {
 
                 const dateA =
-                    new Date(
-                        a.createdAt || 0
-                    ).getTime();
+                    getTime(
+                        a.createdAt
+                    );
 
 
                 const dateB =
-                    new Date(
-                        b.createdAt || 0
-                    ).getTime();
+                    getTime(
+                        b.createdAt
+                    );
 
 
                 return dateB - dateA;
@@ -564,7 +542,7 @@ function renderRecentComplaints() {
 
 
 // =========================================================
-// COMPLAINT HTML
+// COMPLAINT CARD
 // =========================================================
 
 function createComplaintHTML(
@@ -573,19 +551,19 @@ function createComplaintHTML(
 
     const name =
         complaint.citizenName ||
-        complaint.name ||
         "Citizen";
 
 
     const text =
         complaint.complaintText ||
-        complaint.complaint ||
         "Complaint";
 
 
     const status =
-        complaint.status ||
-        "new";
+        String(
+            complaint.status ||
+            "new"
+        ).toLowerCase();
 
 
     const statusText =
@@ -593,13 +571,66 @@ function createComplaintHTML(
             ? "New"
             : status === "pending"
                 ? "Pending"
-                : "Solved";
+                : status === "solved"
+                    ? "Solved"
+                    : status;
 
 
     const date =
         formatDate(
             complaint.createdAt
         );
+
+
+    const complaintId =
+        complaint.publicComplaintId ||
+        complaint.complaintId ||
+        complaint.id ||
+        "";
+
+
+    const media =
+        complaint.media || {};
+
+
+    const imageCount =
+        Array.isArray(
+            media.images
+        )
+            ? media.images.length
+            : 0;
+
+
+    const hasVideo =
+        !!media.video;
+
+
+    let mediaText = "";
+
+
+    if (
+        imageCount > 0 &&
+        hasVideo
+    ) {
+
+        mediaText =
+            `📷 ${imageCount} • 🎥 1`;
+
+    } else if (
+        imageCount > 0
+    ) {
+
+        mediaText =
+            `📷 ${imageCount}`;
+
+    } else if (
+        hasVideo
+    ) {
+
+        mediaText =
+            "🎥 1";
+
+    }
 
 
     return `
@@ -615,6 +646,7 @@ function createComplaintHTML(
 
             <div style="
                 min-width:0;
+                flex:1;
             ">
 
                 <strong style="
@@ -625,6 +657,7 @@ function createComplaintHTML(
                 ">
                     ${escapeHTML(name)}
                 </strong>
+
 
                 <span style="
                     display:block;
@@ -638,13 +671,30 @@ function createComplaintHTML(
                     ${escapeHTML(text)}
                 </span>
 
+
                 <small style="
                     display:block;
                     margin-top:5px;
                     color:#94a3b8;
                     font-size:11px;
                 ">
-                    ${escapeHTML(date)}
+
+                    ${escapeHTML(
+                        complaintId
+                    )}
+
+                    • 
+
+                    ${escapeHTML(
+                        date
+                    )}
+
+                    ${
+                        mediaText
+                            ? ` • ${escapeHTML(mediaText)}`
+                            : ""
+                    }
+
                 </small>
 
             </div>
@@ -656,6 +706,7 @@ function createComplaintHTML(
                 border-radius:999px;
                 font-size:11px;
                 font-weight:700;
+
                 background:${
                     status === "solved"
                         ? "#ecfdf5"
@@ -663,6 +714,7 @@ function createComplaintHTML(
                             ? "#fff7ed"
                             : "#eff6ff"
                 };
+
                 color:${
                     status === "solved"
                         ? "#047857"
@@ -671,7 +723,7 @@ function createComplaintHTML(
                             : "#2563eb"
                 };
             ">
-                ${statusText}
+                ${escapeHTML(statusText)}
             </span>
 
         </div>
@@ -685,6 +737,28 @@ function createComplaintHTML(
 // DATE
 // =========================================================
 
+function getTime(
+    value
+) {
+
+    if (!value) {
+        return 0;
+    }
+
+
+    const time =
+        new Date(
+            value
+        ).getTime();
+
+
+    return Number.isFinite(time)
+        ? time
+        : 0;
+
+}
+
+
 function formatDate(
     value
 ) {
@@ -696,9 +770,24 @@ function formatDate(
 
     try {
 
-        return new Date(
-            value
-        ).toLocaleString(
+        const date =
+            new Date(
+                value
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "-";
+
+        }
+
+
+        return date.toLocaleString(
             "hi-IN",
             {
                 dateStyle: "medium",
@@ -721,11 +810,6 @@ function formatDate(
 
 function setupNavigation() {
 
-
-    // -----------------------------------------
-    // COMPLAINTS
-    // -----------------------------------------
-
     const complaintsButton =
         document.getElementById(
             "complaintsButton"
@@ -746,10 +830,6 @@ function setupNavigation() {
 
     }
 
-
-    // -----------------------------------------
-    // PROFILE
-    // -----------------------------------------
 
     const profileButton =
         document.getElementById(
@@ -772,10 +852,6 @@ function setupNavigation() {
     }
 
 
-    // -----------------------------------------
-    // EDIT PROFILE
-    // -----------------------------------------
-
     const editProfileButton =
         document.getElementById(
             "editProfileButton"
@@ -797,10 +873,6 @@ function setupNavigation() {
     }
 
 
-    // -----------------------------------------
-    // QR
-    // -----------------------------------------
-
     const qrButton =
         document.getElementById(
             "qrButton"
@@ -821,10 +893,6 @@ function setupNavigation() {
 
     }
 
-
-    // -----------------------------------------
-    // SETTINGS
-    // -----------------------------------------
 
     const settingsButton =
         document.getElementById(
@@ -874,6 +942,7 @@ function setupNavigation() {
                     );
 
                     return;
+
                 }
 
 
@@ -884,7 +953,7 @@ function setupNavigation() {
 
 
                 const url =
-                    `${base}/ward/${encodeURIComponent(
+                    `${base}/?ward=${encodeURIComponent(
                         current.ward
                     )}`;
 
@@ -899,10 +968,6 @@ function setupNavigation() {
 
     }
 
-
-    // -----------------------------------------
-    // VIEW ALL
-    // -----------------------------------------
 
     const viewAllButton =
         document.getElementById(
@@ -924,10 +989,6 @@ function setupNavigation() {
 
     }
 
-
-    // -----------------------------------------
-    // LOGOUT
-    // -----------------------------------------
 
     const logoutButton =
         document.getElementById(
@@ -987,23 +1048,6 @@ function setupNavigation() {
 
 
 // =========================================================
-// HIDE LOADING
-// =========================================================
-
-function hideLoading() {
-
-    if (!dashboardLoading) {
-        return;
-    }
-
-
-    dashboardLoading.style.display =
-        "none";
-
-}
-
-
-// =========================================================
 // HTML SECURITY
 // =========================================================
 
@@ -1039,33 +1083,139 @@ function escapeHTML(
 
 
 // =========================================================
+// LOAD DASHBOARD DATA
+// =========================================================
+
+async function loadDashboard() {
+
+    try {
+
+        renderProfile();
+
+
+        if (dashboardLoading) {
+
+            dashboardLoading.style.display =
+                "block";
+
+        }
+
+
+        const allComplaints =
+            await getComplaints();
+
+
+        const wardComplaints =
+            getWardComplaints(
+                allComplaints
+            );
+
+
+        console.log(
+            "All Firestore complaints:",
+            allComplaints
+        );
+
+
+        console.log(
+            "Current Ward complaints:",
+            wardComplaints
+        );
+
+
+        updateStatistics(
+            wardComplaints
+        );
+
+
+        renderRecentComplaints(
+            wardComplaints
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard loading error:",
+            error
+        );
+
+
+        if (recentComplaints) {
+
+            recentComplaints.innerHTML = `
+
+                <div class="empty-state">
+
+                    <div style="
+                        font-size:32px;
+                        margin-bottom:10px;
+                    ">
+                        ⚠️
+                    </div>
+
+                    <strong style="
+                        display:block;
+                        margin-bottom:5px;
+                        color:#b91c1c;
+                    ">
+                        Complaints load नहीं हो सकीं
+                    </strong>
+
+                    <span>
+                        कृपया page refresh करके दोबारा try करें।
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+    } finally {
+
+        hideLoading();
+
+    }
+
+}
+
+
+// =========================================================
+// HIDE LOADING
+// =========================================================
+
+function hideLoading() {
+
+    if (!dashboardLoading) {
+        return;
+    }
+
+
+    dashboardLoading.style.display =
+        "none";
+
+}
+
+
+// =========================================================
 // INITIALIZE
 // =========================================================
 
-renderProfile();
-
-updateStatistics();
-
-renderRecentComplaints();
-
 setupNavigation();
 
-hideLoading();
+loadDashboard();
 
 
 // =========================================================
-// REFRESH WHEN PAGE RETURNS
+// PAGE RETURN / REFRESH
 // =========================================================
 
 window.addEventListener(
     "pageshow",
     () => {
 
-        renderProfile();
-
-        updateStatistics();
-
-        renderRecentComplaints();
+        loadDashboard();
 
     }
 );
