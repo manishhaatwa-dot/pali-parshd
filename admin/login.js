@@ -1,5 +1,5 @@
 // =====================================================
-// PARSHD PARSHAD LOGIN
+// PARSHD - PARSHAD LOGIN
 // FIREBASE AUTH + EMAIL VERIFICATION + MANAGER APPROVAL
 // =====================================================
 
@@ -48,14 +48,7 @@ const loginMessage =
 
 
 // =====================================================
-// STATE
-// =====================================================
-
-let loginInProgress = false;
-
-
-// =====================================================
-// MESSAGE
+// HELPERS
 // =====================================================
 
 function showMessage(
@@ -85,17 +78,21 @@ function hideMessage() {
 
 
 // =====================================================
-// PASSWORD SHOW / HIDE
+// PASSWORD TOGGLE
 // =====================================================
 
-if (togglePassword) {
+if (
+    togglePassword &&
+    passwordInput
+) {
 
     togglePassword.addEventListener(
         "click",
         () => {
 
             const isPassword =
-                passwordInput.type === "password";
+                passwordInput.type ===
+                "password";
 
             passwordInput.type =
                 isPassword
@@ -106,30 +103,206 @@ if (togglePassword) {
                 isPassword
                     ? "🙈"
                     : "👁";
+
         }
+    );
+
+}
+
+
+// =====================================================
+// CHECK PARSHAD RECORD
+// =====================================================
+
+export async function getParshadRecord(
+    uid
+) {
+
+    const ref =
+        doc(
+            db,
+            "parshd",
+            "parshads",
+            "data",
+            uid
+        );
+
+
+    const snap =
+        await getDoc(ref);
+
+
+    if (!snap.exists()) {
+
+        return null;
+    }
+
+
+    return snap.data();
+}
+
+
+// =====================================================
+// CHECK APPROVED PARSHAD
+// =====================================================
+
+export async function isApprovedParshad(
+    user
+) {
+
+    if (!user) {
+        return false;
+    }
+
+
+    if (!user.emailVerified) {
+        return false;
+    }
+
+
+    const data =
+        await getParshadRecord(
+            user.uid
+        );
+
+
+    if (!data) {
+        return false;
+    }
+
+
+    return (
+        data.status === "approved" &&
+        data.approved === true
     );
 }
 
 
 // =====================================================
-// FORGOT PASSWORD UI
+// FORGOT PASSWORD
+// =====================================================
+
+async function forgotPassword() {
+
+    hideMessage();
+
+
+    const email =
+        emailInput
+            ? emailInput.value
+                .trim()
+                .toLowerCase()
+            : "";
+
+
+    if (!email) {
+
+        showMessage(
+            "Password reset करने के लिए पहले अपना email डालें।"
+        );
+
+        if (emailInput) {
+            emailInput.focus();
+        }
+
+        return;
+    }
+
+
+    try {
+
+        await sendPasswordResetEmail(
+            auth,
+            email
+        );
+
+
+        showMessage(
+            "Password reset link email पर भेज दिया गया है। Inbox और Spam/Junk दोनों check करें।",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Password reset error:",
+            error
+        );
+
+
+        if (
+            error.code ===
+            "auth/invalid-email"
+        ) {
+
+            showMessage(
+                "Email सही नहीं है।"
+            );
+
+        }
+
+        else if (
+            error.code ===
+            "auth/user-not-found"
+        ) {
+
+            showMessage(
+                "इस email से कोई account नहीं मिला।"
+            );
+
+        }
+
+        else if (
+            error.code ===
+            "auth/too-many-requests"
+        ) {
+
+            showMessage(
+                "बहुत ज्यादा requests हुई हैं। थोड़ी देर बाद फिर कोशिश करें।"
+            );
+
+        }
+
+        else {
+
+            showMessage(
+                "Password reset email भेजा नहीं जा सका।"
+            );
+
+        }
+
+    }
+
+}
+
+
+// =====================================================
+// CREATE FORGOT PASSWORD
 // =====================================================
 
 function createForgotPasswordLink() {
 
-    if (!passwordInput) return;
+    if (!passwordInput) {
+        return;
+    }
+
 
     if (
         document.getElementById(
             "forgotPasswordButton"
         )
     ) {
+
         return;
     }
 
 
     const wrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     wrapper.style.textAlign =
         "right";
@@ -139,7 +312,10 @@ function createForgotPasswordLink() {
 
 
     const button =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
+
 
     button.type =
         "button";
@@ -149,6 +325,7 @@ function createForgotPasswordLink() {
 
     button.textContent =
         "Forgot Password?";
+
 
     button.style.border =
         "0";
@@ -178,150 +355,21 @@ function createForgotPasswordLink() {
     );
 
 
-    wrapper.appendChild(button);
+    wrapper.appendChild(
+        button
+    );
 
-    passwordInput.parentElement
-        .appendChild(wrapper);
+
+    passwordInput
+        .parentElement
+        .appendChild(
+            wrapper
+        );
+
 }
 
-
-// =====================================================
-// FORGOT PASSWORD
-// =====================================================
-
-async function forgotPassword() {
-
-    hideMessage();
-
-
-    const email =
-        emailInput
-            ? emailInput.value.trim()
-            : "";
-
-
-    if (!email) {
-
-        showMessage(
-            "Password reset करने के लिए पहले अपना email डालें।"
-        );
-
-        if (emailInput) {
-            emailInput.focus();
-        }
-
-        return;
-    }
-
-
-    if (loginButton) {
-
-        loginButton.disabled =
-            true;
-    }
-
-
-    try {
-
-        await sendPasswordResetEmail(
-            auth,
-            email
-        );
-
-
-        showMessage(
-            "Password reset link आपके email पर भेज दिया गया है। Inbox और Spam/Junk folder दोनों check करें।",
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Password reset error:",
-            error
-        );
-
-
-        let message =
-            "Password reset email भेजा नहीं जा सका।";
-
-
-        if (
-            error.code ===
-            "auth/invalid-email"
-        ) {
-
-            message =
-                "Email सही नहीं है।";
-
-        } else if (
-            error.code ===
-            "auth/user-not-found"
-        ) {
-
-            message =
-                "इस email से कोई account नहीं मिला।";
-
-        } else if (
-            error.code ===
-            "auth/too-many-requests"
-        ) {
-
-            message =
-                "बहुत ज्यादा requests हुई हैं। थोड़ी देर बाद फिर कोशिश करें।";
-        }
-
-
-        showMessage(message);
-
-
-    } finally {
-
-        if (loginButton) {
-
-            loginButton.disabled =
-                false;
-        }
-    }
-}
-
-
-// =====================================================
-// CREATE FORGOT PASSWORD LINK
-// =====================================================
 
 createForgotPasswordLink();
-
-
-// =====================================================
-// CHECK PARSHAD ACCOUNT
-// =====================================================
-
-async function checkParshad(uid) {
-
-    const parshadRef =
-        doc(
-            db,
-            "parshd",
-            "parshads",
-            "data",
-            uid
-        );
-
-
-    const parshadSnap =
-        await getDoc(parshadRef);
-
-
-    if (!parshadSnap.exists()) {
-
-        return null;
-    }
-
-
-    return parshadSnap.data();
-}
 
 
 // =====================================================
@@ -352,7 +400,7 @@ async function resendVerification() {
 
 
         showMessage(
-            "Verification email दोबारा भेज दिया गया है। Inbox और Spam/Junk folder दोनों check करें।",
+            "Verification email दोबारा भेज दिया गया है। Inbox और Spam/Junk दोनों check करें।",
             "success"
         );
 
@@ -360,32 +408,21 @@ async function resendVerification() {
     } catch (error) {
 
         console.error(
-            "Verification resend error:",
             error
         );
 
 
-        if (
-            error.code ===
-            "auth/too-many-requests"
-        ) {
+        showMessage(
+            "Verification email भेजा नहीं जा सका।"
+        );
 
-            showMessage(
-                "बहुत ज्यादा verification emails भेजे गए हैं। थोड़ी देर बाद फिर कोशिश करें।"
-            );
-
-        } else {
-
-            showMessage(
-                "Verification email भेजा नहीं जा सका।"
-            );
-        }
     }
+
 }
 
 
 // =====================================================
-// SHOW VERIFICATION MESSAGE
+// VERIFICATION MESSAGE
 // =====================================================
 
 function showVerificationMessage() {
@@ -400,12 +437,15 @@ function showVerificationMessage() {
             "resendVerificationButton"
         )
     ) {
+
         return;
     }
 
 
     const button =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
 
 
     button.type =
@@ -459,8 +499,12 @@ function showVerificationMessage() {
 
         loginMessage
             .parentElement
-            .appendChild(button);
+            .appendChild(
+                button
+            );
+
     }
+
 }
 
 
@@ -472,66 +516,50 @@ if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        async (event) => {
+        async event => {
 
             event.preventDefault();
-
-            loginInProgress =
-                true;
 
             hideMessage();
 
 
             const email =
                 emailInput
-                    ? emailInput.value
-                        .trim()
-                        .toLowerCase()
-                    : "";
+                    .value
+                    .trim()
+                    .toLowerCase();
 
 
             const password =
                 passwordInput
-                    ? passwordInput.value
-                    : "";
+                    .value;
 
 
-            // -----------------------------------------
-            // VALIDATION
-            // -----------------------------------------
-
-            if (!email || !password) {
+            if (
+                !email ||
+                !password
+            ) {
 
                 showMessage(
                     "Email और password दोनों भरें।"
                 );
 
-                loginInProgress =
-                    false;
-
                 return;
             }
 
 
-            // -----------------------------------------
-            // BUTTON
-            // -----------------------------------------
+            loginButton.disabled =
+                true;
 
-            if (loginButton) {
-
-                loginButton.disabled =
-                    true;
-
-                loginButton.textContent =
-                    "Checking...";
-            }
+            loginButton.textContent =
+                "Checking...";
 
 
             try {
 
-                // =====================================
+                // -------------------------------------
                 // FIREBASE LOGIN
-                // =====================================
+                // -------------------------------------
 
                 const credential =
                     await
@@ -546,145 +574,114 @@ if (loginForm) {
                     credential.user;
 
 
-                // =====================================
+                // -------------------------------------
                 // EMAIL VERIFICATION
-                // =====================================
+                // -------------------------------------
 
-                if (!user.emailVerified) {
-
-                    // Verification email automatically
-                    // dobara bhej denge.
-                    try {
-
-                        await
-                        sendEmailVerification(
-                            user
-                        );
-
-                    } catch (_) {
-                        // Ignore resend error here.
-                    }
-
-
-                    await signOut(auth);
-
+                if (
+                    !user.emailVerified
+                ) {
 
                     showVerificationMessage();
 
-
-                    loginInProgress =
-                        false;
+                    await signOut(
+                        auth
+                    );
 
                     return;
                 }
 
 
-                // =====================================
-                // PARSHAD FIRESTORE RECORD
-                // =====================================
+                // -------------------------------------
+                // PARSHAD RECORD
+                // -------------------------------------
 
                 const parshad =
-                    await checkParshad(
+                    await getParshadRecord(
                         user.uid
                     );
 
 
-                // =====================================
-                // RECORD NOT FOUND
-                // =====================================
-
                 if (!parshad) {
 
-                    await signOut(auth);
-
+                    await signOut(
+                        auth
+                    );
 
                     showMessage(
                         "इस account का Parshd registration record नहीं मिला।"
                     );
 
-
-                    loginInProgress =
-                        false;
-
                     return;
                 }
 
 
-                // =====================================
+                // -------------------------------------
                 // REJECTED
-                // =====================================
+                // -------------------------------------
 
                 if (
                     parshad.status ===
                     "rejected"
                 ) {
 
-                    await signOut(auth);
-
-
-                    showMessage(
-                        "आपका Parshd registration Manager द्वारा rejected किया गया है।"
+                    await signOut(
+                        auth
                     );
 
-
-                    loginInProgress =
-                        false;
+                    showMessage(
+                        "आपका registration Manager द्वारा rejected किया गया है।"
+                    );
 
                     return;
                 }
 
 
-                // =====================================
+                // -------------------------------------
                 // PENDING
-                // =====================================
+                // -------------------------------------
 
                 if (
                     parshad.status !==
                     "approved"
                 ) {
 
-                    await signOut(auth);
-
-
-                    showMessage(
-                        "आपका registration अभी Manager approval के लिए pending है। Approval होने के बाद आप login कर सकेंगे।"
+                    await signOut(
+                        auth
                     );
 
-
-                    loginInProgress =
-                        false;
+                    showMessage(
+                        "आपका registration अभी Manager approval के लिए pending है।"
+                    );
 
                     return;
                 }
 
 
-                // =====================================
+                // -------------------------------------
                 // APPROVED FLAG
-                // =====================================
+                // -------------------------------------
 
                 if (
                     parshad.approved !==
                     true
                 ) {
 
-                    await signOut(auth);
-
+                    await signOut(
+                        auth
+                    );
 
                     showMessage(
                         "आपका account अभी approved नहीं हुआ है।"
                     );
 
-
-                    loginInProgress =
-                        false;
-
                     return;
                 }
 
 
-                // =====================================
+                // -------------------------------------
                 // SUCCESS
-                // =====================================
+                // -------------------------------------
 
                 showMessage(
                     "Login successful...",
@@ -692,22 +689,17 @@ if (loginForm) {
                 );
 
 
-                if (loginButton) {
-
-                    loginButton.textContent =
-                        "Opening Dashboard...";
-                }
+                loginButton.textContent =
+                    "Opening Dashboard...";
 
 
-                setTimeout(() => {
+                window.location.href =
+                    "./dashboard.html";
 
-                    window.location.href =
-                        "./dashboard.html";
-
-                }, 500);
+            }
 
 
-            } catch (error) {
+            catch (error) {
 
                 console.error(
                     "Parshad login error:",
@@ -727,7 +719,9 @@ if (loginForm) {
                     message =
                         "Email या password गलत है।";
 
-                } else if (
+                }
+
+                else if (
                     error.code ===
                     "auth/user-not-found"
                 ) {
@@ -735,7 +729,9 @@ if (loginForm) {
                     message =
                         "यह account मौजूद नहीं है।";
 
-                } else if (
+                }
+
+                else if (
                     error.code ===
                     "auth/wrong-password"
                 ) {
@@ -743,7 +739,9 @@ if (loginForm) {
                     message =
                         "Password गलत है।";
 
-                } else if (
+                }
+
+                else if (
                     error.code ===
                     "auth/invalid-email"
                 ) {
@@ -751,7 +749,9 @@ if (loginForm) {
                     message =
                         "Email सही नहीं है।";
 
-                } else if (
+                }
+
+                else if (
                     error.code ===
                     "auth/too-many-requests"
                 ) {
@@ -759,13 +759,16 @@ if (loginForm) {
                     message =
                         "बहुत ज्यादा login attempts हुए हैं। थोड़ी देर बाद कोशिश करें।";
 
-                } else if (
+                }
+
+                else if (
                     error.code ===
-                    "auth/user-disabled"
+                    "permission-denied"
                 ) {
 
                     message =
-                        "यह account disabled है।";
+                        "Account verification की permission नहीं मिली।";
+
                 }
 
 
@@ -774,258 +777,224 @@ if (loginForm) {
                 );
 
 
-            } finally {
-
-                loginInProgress =
+                loginButton.disabled =
                     false;
 
+                loginButton.textContent =
+                    "Login";
 
-                if (loginButton) {
-
-                    loginButton.disabled =
-                        false;
-
-                    loginButton.textContent =
-                        "Login";
-                }
             }
+
         }
     );
+
 }
 
 
 // =====================================================
-// ALREADY LOGGED-IN PARSHAD
-// =====================================================
-
-onAuthStateChanged(
-    auth,
-    async (user) => {
-
-        // Login form submit चल रहा है तो
-        // यह listener बीच में interfere नहीं करेगा.
-        if (loginInProgress) {
-            return;
-        }
-
-
-        if (!user) {
-            return;
-        }
-
-
-        try {
-
-            // -----------------------------------------
-            // EMAIL VERIFIED CHECK
-            // -----------------------------------------
-
-            if (!user.emailVerified) {
-
-                await signOut(auth);
-
-                return;
-            }
-
-
-            // -----------------------------------------
-            // PARSHAD CHECK
-            // -----------------------------------------
-
-            const parshad =
-                await checkParshad(
-                    user.uid
-                );
-
-
-            if (!parshad) {
-
-                await signOut(auth);
-
-                return;
-            }
-
-
-            // -----------------------------------------
-            // APPROVAL CHECK
-            // -----------------------------------------
-
-            if (
-                parshad.status ===
-                "approved"
-                &&
-                parshad.approved === true
-            ) {
-
-                window.location.href =
-                    "./dashboard.html";
-
-                return;
-            }
-
-
-            // Pending / rejected account
-            // dashboard access नहीं मिलेगा.
-
-            await signOut(auth);
-
-
-        } catch (error) {
-
-            console.error(
-                "Parshad session check error:",
-                error
-            );
-
-
-            try {
-
-                await signOut(auth);
-
-            } catch (_) {}
-        }
-    }
-);
-
-
-// =====================================================
-// LOGOUT HELPER
+// LOGOUT
 // =====================================================
 
 export async function parshadLogout() {
 
     try {
 
-        await signOut(auth);
+        await signOut(
+            auth
+        );
 
         window.location.href =
             "./index.html";
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Logout error:",
             error
         );
+
     }
+
 }
 
 
 // =====================================================
 // REQUIRE PARSHAD LOGIN
 // =====================================================
+//
+// Dashboard इसी function को use करेगा.
+// =====================================================
 
 export function requireParshadLogin(
     redirect = "./index.html"
 ) {
 
-    return new Promise((resolve) => {
+    return new Promise(
+        resolve => {
 
-        onAuthStateChanged(
-            auth,
-            async (user) => {
-
-                if (!user) {
-
-                    window.location.href =
-                        redirect;
-
-                    resolve(false);
-
-                    return;
-                }
+            let finished =
+                false;
 
 
-                try {
+            const unsubscribe =
+                onAuthStateChanged(
+                    auth,
+                    async user => {
 
-                    // ---------------------------------
-                    // EMAIL VERIFIED
-                    // ---------------------------------
+                        if (finished) {
+                            return;
+                        }
 
-                    if (
-                        !user.emailVerified
-                    ) {
 
-                        await signOut(auth);
+                        try {
 
-                        window.location.href =
-                            redirect;
+                            if (!user) {
 
-                        resolve(false);
+                                finished =
+                                    true;
 
-                        return;
+                                unsubscribe();
+
+                                window.location.href =
+                                    redirect;
+
+                                resolve(
+                                    false
+                                );
+
+                                return;
+                            }
+
+
+                            // -------------------------
+                            // EMAIL VERIFIED
+                            // -------------------------
+
+                            if (
+                                !user.emailVerified
+                            ) {
+
+                                finished =
+                                    true;
+
+                                unsubscribe();
+
+                                await signOut(
+                                    auth
+                                );
+
+                                window.location.href =
+                                    redirect;
+
+                                resolve(
+                                    false
+                                );
+
+                                return;
+                            }
+
+
+                            // -------------------------
+                            // PARSHAD RECORD
+                            // -------------------------
+
+                            const parshad =
+                                await getParshadRecord(
+                                    user.uid
+                                );
+
+
+                            if (
+                                !parshad
+                                ||
+                                parshad.status !==
+                                    "approved"
+                                ||
+                                parshad.approved !==
+                                    true
+                            ) {
+
+                                finished =
+                                    true;
+
+                                unsubscribe();
+
+                                await signOut(
+                                    auth
+                                );
+
+                                window.location.href =
+                                    redirect;
+
+                                resolve(
+                                    false
+                                );
+
+                                return;
+                            }
+
+
+                            // -------------------------
+                            // ALLOWED
+                            // -------------------------
+
+                            finished =
+                                true;
+
+                            unsubscribe();
+
+                            resolve(
+                                true
+                            );
+
+                        }
+
+                        catch (error) {
+
+                            console.error(
+                                "Parshad auth check error:",
+                                error
+                            );
+
+
+                            if (
+                                finished
+                            ) {
+                                return;
+                            }
+
+
+                            finished =
+                                true;
+
+                            unsubscribe();
+
+
+                            try {
+
+                                await signOut(
+                                    auth
+                                );
+
+                            } catch (_) {}
+
+
+                            window.location.href =
+                                redirect;
+
+
+                            resolve(
+                                false
+                            );
+
+                        }
+
                     }
+                );
 
+        }
+    );
 
-                    // ---------------------------------
-                    // PARSHAD RECORD
-                    // ---------------------------------
-
-                    const parshad =
-                        await checkParshad(
-                            user.uid
-                        );
-
-
-                    if (!parshad) {
-
-                        await signOut(auth);
-
-                        window.location.href =
-                            redirect;
-
-                        resolve(false);
-
-                        return;
-                    }
-
-
-                    // ---------------------------------
-                    // APPROVED
-                    // ---------------------------------
-
-                    if (
-                        parshad.status !==
-                        "approved"
-                        ||
-                        parshad.approved !==
-                        true
-                    ) {
-
-                        await signOut(auth);
-
-                        window.location.href =
-                            redirect;
-
-                        resolve(false);
-
-                        return;
-                    }
-
-
-                    // ---------------------------------
-                    // ALLOWED
-                    // ---------------------------------
-
-                    resolve(true);
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Parshad login requirement error:",
-                        error
-                    );
-
-
-                    await signOut(auth);
-
-                    window.location.href =
-                        redirect;
-
-                    resolve(false);
-                }
-            }
-        );
-    });
 }
