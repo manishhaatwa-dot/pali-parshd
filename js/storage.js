@@ -9,7 +9,7 @@ import {
     ref,
     uploadBytes,
     getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-storage.js";
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
 
 
 // =========================================================
@@ -174,15 +174,11 @@ export function getVideoDuration(file) {
 
 
             const video =
-                document.createElement(
-                    "video"
-                );
+                document.createElement("video");
 
 
             const objectURL =
-                URL.createObjectURL(
-                    file
-                );
+                URL.createObjectURL(file);
 
 
             video.preload =
@@ -238,9 +234,7 @@ export function getVideoDuration(file) {
 // VALIDATE VIDEO COMPLETE
 // =========================================================
 
-export async function validateVideoComplete(
-    file
-) {
+export async function validateVideoComplete(file) {
 
     const basicValidation =
         validateVideo(file);
@@ -256,15 +250,11 @@ export async function validateVideoComplete(
     try {
 
         const duration =
-            await getVideoDuration(
-                file
-            );
+            await getVideoDuration(file);
 
 
         if (
-            !Number.isFinite(
-                duration
-            )
+            !Number.isFinite(duration)
         ) {
 
             return {
@@ -277,8 +267,7 @@ export async function validateVideoComplete(
 
 
         if (
-            duration >
-            MAX_VIDEO_DURATION
+            duration > MAX_VIDEO_DURATION
         ) {
 
             return {
@@ -331,8 +320,7 @@ export async function validateMedia(
 
 
     if (
-        imageFiles.length >
-        MAX_IMAGES
+        imageFiles.length > MAX_IMAGES
     ) {
 
         return {
@@ -349,9 +337,7 @@ export async function validateMedia(
     ) {
 
         const result =
-            validateImage(
-                image
-            );
+            validateImage(image);
 
 
         if (!result.valid) {
@@ -389,12 +375,34 @@ export async function validateMedia(
 
 
 // =========================================================
+// IMPORTANT COMPATIBILITY FUNCTION
+// complaints.js इसी नाम को import करता है
+// =========================================================
+
+export async function validateComplaintMedia(data = {}) {
+
+    const images =
+        Array.from(
+            data.photos || []
+        );
+
+    const video =
+        data.video || null;
+
+
+    return await validateMedia(
+        images,
+        video
+    );
+
+}
+
+
+// =========================================================
 // GET FILE EXTENSION
 // =========================================================
 
-function getExtension(
-    filename
-) {
+function getExtension(filename) {
 
     if (!filename) {
         return "file";
@@ -429,9 +437,7 @@ function getExtension(
 // SANITIZE PATH
 // =========================================================
 
-function sanitizePath(
-    value
-) {
+function sanitizePath(value) {
 
     return String(value)
         .trim()
@@ -455,9 +461,7 @@ export async function uploadImage(
 ) {
 
     const validation =
-        validateImage(
-            file
-        );
+        validateImage(file);
 
 
     if (!validation.valid) {
@@ -488,9 +492,7 @@ export async function uploadImage(
 
 
     const extension =
-        getExtension(
-            file.name
-        );
+        getExtension(file.name);
 
 
     const filePath =
@@ -512,19 +514,15 @@ export async function uploadImage(
     const metadata = {
 
         contentType:
-            file.type,
+            file.type || "image/jpeg",
 
         customMetadata: {
 
             parshadId:
-                String(
-                    parshadId
-                ),
+                String(parshadId),
 
             complaintId:
-                String(
-                    complaintId
-                ),
+                String(complaintId),
 
             mediaType:
                 "image"
@@ -616,9 +614,7 @@ export async function uploadVideo(
 
 
     const extension =
-        getExtension(
-            file.name
-        );
+        getExtension(file.name);
 
 
     const filePath =
@@ -640,27 +636,21 @@ export async function uploadVideo(
     const metadata = {
 
         contentType:
-            file.type,
+            file.type || "video/mp4",
 
         customMetadata: {
 
             parshadId:
-                String(
-                    parshadId
-                ),
+                String(parshadId),
 
             complaintId:
-                String(
-                    complaintId
-                ),
+                String(complaintId),
 
             mediaType:
                 "video",
 
             maxDuration:
-                String(
-                    MAX_VIDEO_DURATION
-                )
+                String(MAX_VIDEO_DURATION)
 
         }
 
@@ -710,41 +700,30 @@ export async function uploadVideo(
 
 // =========================================================
 // UPLOAD ALL COMPLAINT MEDIA
-// IMPORTANT: OBJECT FORMAT
 // =========================================================
 
-export async function uploadComplaintMedia(
-    data
-) {
-
-    /*
-        Current complaints.js sends:
-
-        uploadComplaintMedia({
-            parshadId,
-            complaintId,
-            photos,
-            video
-        })
-    */
-
+export async function uploadComplaintMedia(data = {}) {
 
     const images =
         Array.from(
-            data?.photos || []
+            data.photos || []
         );
 
 
     const video =
-        data?.video || null;
+        data.video || null;
 
 
     const parshadId =
-        data?.parshadId || "";
+        String(
+            data.parshadId || ""
+        ).trim();
 
 
     const complaintId =
-        data?.complaintId || "";
+        String(
+            data.complaintId || ""
+        ).trim();
 
 
     // -----------------------------------------
@@ -896,6 +875,8 @@ window.ParshdStorage = {
     validateVideoComplete,
 
     validateMedia,
+
+    validateComplaintMedia,
 
     uploadImage,
 
