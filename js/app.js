@@ -1271,7 +1271,8 @@ function showNoWardState() {
 
 
     // -----------------------------------------
-    // ROOT WEBSITE PAR ERROR NAHI DIKHANA
+    // MAIN LANDING PAGE
+    // APP + ERROR BOTH HIDDEN
     // -----------------------------------------
 
     if (
@@ -1281,7 +1282,7 @@ function showNoWardState() {
 
         if (app) {
 
-            app.classList.remove(
+            app.classList.add(
                 "hidden"
             );
 
@@ -1298,7 +1299,6 @@ function showNoWardState() {
 
 
         return;
-
     }
 
 
