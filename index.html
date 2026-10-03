@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
 
     <meta charset="UTF-8">
@@ -10,15 +11,94 @@
 
     <meta name="theme-color" content="#ffffff">
 
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="default">
+
+    <meta name="apple-mobile-web-app-title"
+          content="Parshd.in">
+
+
+    <!-- =====================================================
+         SEO
+    ====================================================== -->
+
     <meta name="description"
-          content="Parshd.in - Ward Citizen Service Platform">
+          content="Parshd.in - Online Parshad और Ward Citizen Service Platform. Pali Rajasthan में नागरिक अपने वार्ड की शिकायत online दर्ज और track कर सकते हैं।">
 
-    <title>Parshd.in | Ward Citizen Service</title>
+    <meta name="keywords"
+          content="Online Parshad, Online Parshad Pali, Parshad Pali Rajasthan, Pali Rajasthan Parshad, Ward Parshad Pali, Pali Ward Complaint, Online Complaint Pali, Pali Nagar Parishad, Ward Complaint Rajasthan, Rajasthan Ward Complaint, Citizen Complaint Portal, Online Ward Complaint, Parshad Complaint Portal, Pali Citizen Service, Pali Rajasthan, Ward Citizen Service, Digital Ward Service, Online Shikayat Pali, Ward Shikayat">
 
-    <link rel="manifest" href="manifest.json">
+    <meta name="author"
+          content="Parshd.in">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <meta name="robots"
+          content="index, follow">
+
+    <link rel="canonical"
+          href="https://parshd.in/">
+
+
+    <!-- =====================================================
+         SOCIAL
+    ====================================================== -->
+
+    <meta property="og:type"
+          content="website">
+
+    <meta property="og:title"
+          content="Parshd.in | Online Parshad & Ward Citizen Service">
+
+    <meta property="og:description"
+          content="Pali Rajasthan सहित वार्ड नागरिकों के लिए Online Parshad और Complaint Service Platform।">
+
+    <meta property="og:url"
+          content="https://parshd.in/">
+
+    <meta property="og:site_name"
+          content="Parshd.in">
+
+
+    <meta name="twitter:card"
+          content="summary">
+
+    <meta name="twitter:title"
+          content="Parshd.in | Online Parshad">
+
+    <meta name="twitter:description"
+          content="Online Ward Complaint और Citizen Service Platform।">
+
+
+    <!-- =====================================================
+         TITLE
+    ====================================================== -->
+
+    <title>
+        Parshd.in | Online Parshad & Ward Citizen Service | Pali Rajasthan
+    </title>
+
+
+    <!-- =====================================================
+         PWA
+    ====================================================== -->
+
+    <link rel="manifest"
+          href="manifest.json">
+
+
+    <!-- =====================================================
+         CSS
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <link rel="stylesheet"
+          href="css/responsive.css">
+
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -63,10 +143,119 @@
 
 
         /* =====================================================
-           LOADER
+           INSTALL BUTTON
         ===================================================== */
 
+        #installAppButton {
+
+            position: fixed;
+
+            right: 16px;
+            bottom: 18px;
+
+            z-index: 9990;
+
+            display: none;
+
+            min-height: 48px;
+
+            padding: 0 17px;
+
+            border: 0;
+            border-radius: 13px;
+
+            background: #2563eb;
+            color: #ffffff;
+
+            box-shadow:
+                0 8px 25px rgba(37,99,235,.28);
+
+            font-size: 14px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        #installAppButton.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================================================
+           IOS INSTALL
+        ===================================================== */
+
+        .ios-install-box {
+
+            position: fixed;
+
+            left: 14px;
+            right: 14px;
+            bottom: 15px;
+
+            z-index: 9995;
+
+            display: none;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,.15);
+
+        }
+
+        .ios-install-box.show {
+            display: block;
+        }
+
+        .ios-install-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .ios-install-box p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .ios-install-close {
+
+            position: absolute;
+
+            top: 9px;
+            right: 10px;
+
+            width: 32px;
+            height: 32px;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: #f3f4f6;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           LOADER
+        ====================================================== */
+
         #appLoader {
+
             position: fixed;
             inset: 0;
             z-index: 9999;
@@ -83,6 +272,7 @@
         }
 
         .loader-logo {
+
             width: 58px;
             height: 58px;
 
@@ -102,15 +292,18 @@
         }
 
         .loader-box p {
+
             margin-top: 14px;
+
             color: #6b7280;
+
             font-size: 14px;
         }
 
 
         /* =====================================================
-           LANDING PAGE
-        ===================================================== */
+           LANDING
+        ====================================================== */
 
         .landing-page {
             min-height: 100vh;
@@ -118,63 +311,88 @@
         }
 
         .landing-header {
+
             width: 100%;
+
             border-bottom: 1px solid #e5e7eb;
+
             background: #ffffff;
         }
 
         .header-inner {
+
             width: min(1100px, 92%);
+
             margin: auto;
+
             min-height: 72px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
         }
 
         .brand {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
         }
 
         .brand-logo {
+
             width: 44px;
             height: 44px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             border-radius: 12px;
 
             background: #111827;
+
             color: #ffffff;
 
             font-size: 22px;
+
             font-weight: 800;
         }
 
         .brand-text {
+
             display: flex;
+
             flex-direction: column;
+
             line-height: 1.2;
         }
 
         .brand-name {
+
             font-size: 21px;
+
             font-weight: 800;
         }
 
         .brand-subtitle {
+
             margin-top: 3px;
+
             color: #6b7280;
+
             font-size: 12px;
         }
 
         .landing-hero {
+
             width: min(1100px, 92%);
+
             margin: auto;
 
             padding: 70px 0 55px;
@@ -183,7 +401,9 @@
         }
 
         .hero-badge {
+
             display: inline-flex;
+
             align-items: center;
 
             padding: 7px 14px;
@@ -191,18 +411,22 @@
             border-radius: 999px;
 
             background: #f3f4f6;
+
             color: #374151;
 
             font-size: 13px;
+
             font-weight: 600;
         }
 
         .landing-hero h1 {
+
             max-width: 780px;
 
             margin: 22px auto 15px;
 
             font-size: clamp(32px, 6vw, 58px);
+
             line-height: 1.15;
 
             font-weight: 800;
@@ -213,6 +437,7 @@
         }
 
         .hero-description {
+
             max-width: 650px;
 
             margin: auto;
@@ -220,21 +445,27 @@
             color: #6b7280;
 
             font-size: 17px;
+
             line-height: 1.8;
         }
 
         .hero-actions {
+
             margin-top: 32px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             gap: 14px;
+
             flex-wrap: wrap;
         }
 
         .hero-button {
+
             min-height: 50px;
 
             padding: 0 24px;
@@ -242,81 +473,207 @@
             border-radius: 12px;
 
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
 
             text-decoration: none;
 
             font-size: 15px;
+
             font-weight: 700;
         }
 
         .hero-button.primary {
+
             background: #111827;
+
             color: #ffffff;
         }
 
         .hero-button.secondary {
+
             background: #ffffff;
+
             color: #111827;
 
             border: 1px solid #d1d5db;
         }
 
+
+        /* =====================================================
+           APPROVAL CONTACT
+        ====================================================== */
+
+        .approval-contact {
+
+            width: min(850px, 92%);
+
+            margin: 5px auto 65px;
+
+            padding: 26px 22px;
+
+            border: 1px solid #dbeafe;
+
+            border-radius: 18px;
+
+            background: #eff6ff;
+
+            text-align: center;
+        }
+
+        .approval-contact h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            color: #111827;
+        }
+
+        .approval-contact p {
+
+            margin: 0 auto 18px;
+
+            max-width: 650px;
+
+            color: #4b5563;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .approval-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .approval-button {
+
+            min-height: 46px;
+
+            padding: 0 18px;
+
+            border-radius: 11px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+        .approval-call {
+
+            background: #111827;
+
+            color: #ffffff;
+        }
+
+        .approval-whatsapp {
+
+            background: #16a34a;
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           SECTIONS
+        ====================================================== */
+
         .landing-section {
+
             width: min(1050px, 92%);
+
             margin: auto;
+
             padding: 20px 0 70px;
         }
 
         .section-title {
+
             text-align: center;
+
             margin-bottom: 30px;
         }
 
         .section-title small {
+
             color: #6b7280;
+
             font-size: 13px;
+
             font-weight: 700;
         }
 
         .section-title h2 {
+
             margin: 7px 0 0;
+
             font-size: 28px;
+
             font-weight: 800;
         }
 
         .steps-grid,
         .features-grid {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 18px;
         }
 
         .step-card {
+
             padding: 25px;
 
             background: #ffffff;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 18px;
 
             text-align: center;
         }
 
         .step-number {
+
             width: 46px;
             height: 46px;
 
             margin: 0 auto 16px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             border-radius: 50%;
 
             background: #eff6ff;
+
             color: #2563eb;
 
             font-weight: 800;
@@ -324,40 +681,59 @@
 
         .step-card h3,
         .feature-card h3 {
+
             margin: 0 0 8px;
+
             font-size: 17px;
+
             font-weight: 800;
         }
 
         .step-card p,
         .feature-card p {
+
             margin: 0;
+
             color: #6b7280;
+
             font-size: 14px;
+
             line-height: 1.7;
         }
 
         .feature-card {
+
             padding: 22px;
 
             border-radius: 16px;
 
             background: #f9fafb;
+
             border: 1px solid #e5e7eb;
         }
 
         .feature-icon {
+
             font-size: 26px;
+
             margin-bottom: 12px;
         }
 
+
+        /* =====================================================
+           CITIZEN INFO
+        ====================================================== */
+
         .citizen-info {
+
             width: min(850px, 92%);
-            margin: 0 auto 70px;
+
+            margin: 0 auto 60px;
 
             padding: 28px;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 20px;
 
             background: #fafafa;
@@ -366,81 +742,177 @@
         }
 
         .citizen-info h2 {
+
             margin: 0 0 10px;
+
             font-size: 23px;
         }
 
         .citizen-info p {
+
             margin: 0;
+
             color: #6b7280;
+
             font-size: 14px;
+
             line-height: 1.8;
         }
 
-        .landing-footer {
+
+        /* =====================================================
+           FOUNDER
+        ====================================================== */
+
+        .founder-section {
+
+            width: min(850px, 92%);
+
+            margin: 0 auto 55px;
+
+            padding: 25px 20px;
+
+            text-align: center;
+
             border-top: 1px solid #e5e7eb;
+
+        }
+
+        .founder-label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .founder-name {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #111827;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+        .founder-phone {
+
+            color: #2563eb;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .landing-footer {
+
+            border-top: 1px solid #e5e7eb;
+
             padding: 28px 20px;
+
             text-align: center;
         }
 
         .landing-footer strong {
+
             display: block;
+
             font-size: 17px;
         }
 
         .landing-footer span {
+
             color: #6b7280;
+
             font-size: 12px;
         }
 
+        .landing-footer small {
+
+            display: block;
+
+            margin-top: 7px;
+
+            color: #9ca3af;
+
+            font-size: 11px;
+        }
+
 
         /* =====================================================
-           CITIZEN WARD PORTAL
-        ===================================================== */
+           CITIZEN APP
+        ====================================================== */
 
         .citizen-app {
+
             min-height: 100vh;
+
             background: #ffffff;
         }
 
-
-        /* =====================================================
-           PORTAL HEADER
-        ===================================================== */
-
         .citizen-header {
+
             position: sticky;
+
             top: 0;
+
             z-index: 100;
 
-            background: rgba(255,255,255,0.97);
+            background:
+                rgba(255,255,255,0.97);
 
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom:
+                1px solid #e5e7eb;
         }
 
         .citizen-header-inner {
+
             width: min(900px, 94%);
+
             min-height: 70px;
 
             margin: auto;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             gap: 14px;
         }
 
         .citizen-brand {
+
             min-width: 0;
 
             display: flex;
+
             align-items: center;
+
             gap: 11px;
         }
 
         .party-logo {
+
             width: 46px;
+
             height: 46px;
 
             flex-shrink: 0;
@@ -459,15 +931,20 @@
         }
 
         .citizen-brand-title {
+
             font-size: 17px;
+
             font-weight: 800;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
         .citizen-brand-subtitle {
+
             margin-top: 2px;
 
             color: #6b7280;
@@ -475,17 +952,22 @@
             font-size: 11px;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
         .menu-button {
+
             width: 42px;
+
             height: 42px;
 
             flex-shrink: 0;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 10px;
 
             background: #ffffff;
@@ -498,10 +980,12 @@
 
         /* =====================================================
            MAIN
-        ===================================================== */
+        ====================================================== */
 
         .citizen-main {
+
             width: min(900px, 94%);
+
             margin: auto;
 
             padding: 20px 0 50px;
@@ -509,16 +993,20 @@
 
 
         /* =====================================================
-           HERO
-        ===================================================== */
+           PROFILE
+        ====================================================== */
 
         .profile-card {
+
             padding: 25px 20px 28px;
 
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom:
+                1px solid #e5e7eb;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             gap: 25px;
@@ -527,7 +1015,9 @@
         }
 
         .profile-photo {
+
             width: 155px;
+
             height: 155px;
 
             flex-shrink: 0;
@@ -546,18 +1036,23 @@
         }
 
         .profile-card .designation {
+
             color: #2563eb;
 
             font-size: 13px;
+
             font-weight: 800;
 
             margin-bottom: 5px;
         }
 
         .parshad-name {
+
             margin: 0 0 7px;
 
-            font-size: clamp(26px, 5vw, 36px);
+            font-size:
+                clamp(26px, 5vw, 36px);
+
             line-height: 1.2;
 
             font-weight: 800;
@@ -566,6 +1061,7 @@
         }
 
         .ward-info {
+
             color: #6b7280;
 
             font-size: 14px;
@@ -578,6 +1074,7 @@
         }
 
         .profile-address {
+
             margin-top: 6px;
 
             color: #6b7280;
@@ -590,9 +1087,10 @@
 
         /* =====================================================
            COMPLAINT
-        ===================================================== */
+        ====================================================== */
 
         .complaint-card {
+
             margin-top: 20px;
 
             padding: 26px;
@@ -607,59 +1105,72 @@
         }
 
         .complaint-card h2 {
+
             margin: 0 0 8px;
 
             font-size: 22px;
+
             font-weight: 800;
         }
 
         .complaint-card p {
+
             margin: 0 0 18px;
 
             color: #6b7280;
 
             font-size: 14px;
+
             line-height: 1.7;
         }
 
         .complaint-button {
+
             width: 100%;
 
             min-height: 50px;
 
             border: 0;
+
             border-radius: 12px;
 
             background: #111827;
+
             color: #ffffff;
 
             font-size: 15px;
+
             font-weight: 800;
 
             cursor: pointer;
         }
 
         .closed-message {
+
             padding: 15px;
 
             border-radius: 12px;
 
             background: #fff7ed;
+
             color: #9a3412;
 
             font-size: 14px;
+
             font-weight: 600;
         }
 
 
         /* =====================================================
            QUICK ACTIONS
-        ===================================================== */
+        ====================================================== */
 
         .quick-actions {
+
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns:
+                1fr 1fr;
 
             gap: 12px;
 
@@ -667,15 +1178,19 @@
         }
 
         .quick-button {
+
             min-height: 48px;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 12px;
 
             background: #ffffff;
+
             color: #111827;
 
             font-size: 14px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -683,52 +1198,61 @@
 
 
         /* =====================================================
-           ABOUT
-        ===================================================== */
+           PORTAL SECTION
+        ====================================================== */
 
         .portal-section {
+
             margin-top: 20px;
 
             padding: 22px;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 18px;
 
             background: #ffffff;
         }
 
         .portal-section h2 {
+
             margin: 0 0 10px;
 
             font-size: 19px;
+
             font-weight: 800;
         }
 
         .portal-section p {
+
             margin: 0;
 
             color: #6b7280;
 
             font-size: 14px;
+
             line-height: 1.8;
         }
 
 
         /* =====================================================
            CONTACT
-        ===================================================== */
+        ====================================================== */
 
         .contact-buttons {
             display: block;
         }
 
         .contact-button {
+
             width: 100%;
 
             min-height: 48px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             border-radius: 11px;
@@ -736,22 +1260,27 @@
             text-decoration: none;
 
             font-size: 14px;
+
             font-weight: 800;
         }
 
         .whatsapp-button {
+
             background: #f0fdf4;
+
             color: #15803d;
 
-            border: 1px solid #bbf7d0;
+            border:
+                1px solid #bbf7d0;
         }
 
 
         /* =====================================================
-           RESPONSE NOTICE
-        ===================================================== */
+           RESPONSE
+        ====================================================== */
 
         .response-notice {
+
             margin-top: 20px;
 
             padding: 18px;
@@ -766,6 +1295,7 @@
         }
 
         .response-notice strong {
+
             display: block;
 
             margin-bottom: 7px;
@@ -774,6 +1304,7 @@
         }
 
         .response-notice p {
+
             margin: 0;
 
             color: #6b7280;
@@ -786,22 +1317,28 @@
 
         /* =====================================================
            MENU
-        ===================================================== */
+        ====================================================== */
 
         .menu-overlay {
+
             position: fixed;
+
             inset: 0;
 
             z-index: 500;
 
-            background: rgba(15, 23, 42, 0.35);
+            background:
+                rgba(15, 23, 42, 0.35);
         }
 
         .side-menu {
+
             position: fixed;
 
             top: 0;
+
             right: 0;
+
             bottom: 0;
 
             z-index: 600;
@@ -812,11 +1349,14 @@
 
             background: #ffffff;
 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.12);
+            box-shadow:
+                -10px 0 30px rgba(0,0,0,0.12);
 
-            transform: translateX(100%);
+            transform:
+                translateX(100%);
 
-            transition: transform 0.25s ease;
+            transition:
+                transform 0.25s ease;
         }
 
         .side-menu.active {
@@ -824,8 +1364,11 @@
         }
 
         .menu-head {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             margin-bottom: 20px;
@@ -836,10 +1379,13 @@
         }
 
         .close-menu {
+
             width: 38px;
+
             height: 38px;
 
             border: 0;
+
             border-radius: 9px;
 
             background: #f3f4f6;
@@ -850,6 +1396,7 @@
         }
 
         .menu-item {
+
             width: 100%;
 
             padding: 13px;
@@ -857,6 +1404,7 @@
             margin-bottom: 8px;
 
             border: 0;
+
             border-radius: 10px;
 
             background: #f8fafc;
@@ -864,6 +1412,7 @@
             text-align: left;
 
             font-size: 14px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -872,9 +1421,10 @@
 
         /* =====================================================
            ERROR
-        ===================================================== */
+        ====================================================== */
 
         .error-box {
+
             width: min(600px, 92%);
 
             margin: 70px auto;
@@ -884,33 +1434,40 @@
             border-radius: 18px;
 
             background: #fef2f2;
+
             border: 1px solid #fecaca;
 
             text-align: center;
         }
 
         .error-box p {
+
             color: #991b1b;
+
             line-height: 1.7;
         }
 
         .reload-button {
+
             padding: 11px 18px;
 
             border: 0;
+
             border-radius: 10px;
 
             background: #111827;
+
             color: #ffffff;
 
             cursor: pointer;
+
             font-weight: 700;
         }
 
 
         /* =====================================================
            MOBILE
-        ===================================================== */
+        ====================================================== */
 
         @media (max-width: 700px) {
 
@@ -931,12 +1488,27 @@
             }
 
             .hero-button {
+
                 width: 100%;
+
+                max-width: 330px;
+            }
+
+            .approval-actions {
+
+                flex-direction: column;
+            }
+
+            .approval-button {
+
+                width: 100%;
+
                 max-width: 330px;
             }
 
             .steps-grid,
             .features-grid {
+
                 grid-template-columns: 1fr;
             }
 
@@ -945,6 +1517,7 @@
             }
 
             .profile-card {
+
                 padding: 25px 8px;
 
                 flex-direction: column;
@@ -955,17 +1528,23 @@
             }
 
             .profile-photo {
+
                 width: 135px;
+
                 height: 135px;
             }
 
             .profile-address {
+
                 max-width: 330px;
+
                 margin-left: auto;
+
                 margin-right: auto;
             }
 
             .quick-actions {
+
                 grid-template-columns: 1fr;
             }
 
@@ -974,8 +1553,18 @@
             }
 
             .citizen-main {
-                width: min(94%, 600px);
+
+                width:
+                    min(94%, 600px);
             }
+
+            #installAppButton {
+
+                right: 12px;
+
+                bottom: 14px;
+            }
+
         }
 
     </style>
@@ -987,7 +1576,7 @@
 
 
 <!-- =====================================================
-     LOADING
+     LOADER
 ===================================================== -->
 
 <div id="appLoader">
@@ -1009,11 +1598,58 @@
 
 
 <!-- =====================================================
+     INSTALL BUTTON
+===================================================== -->
+
+<button
+    id="installAppButton"
+    type="button"
+>
+    📲 App Install करें
+</button>
+
+
+
+<!-- =====================================================
+     IOS INSTALL
+===================================================== -->
+
+<div
+    id="iosInstallBox"
+    class="ios-install-box"
+>
+
+    <button
+        id="iosInstallClose"
+        class="ios-install-close"
+        type="button"
+    >
+        ✕
+    </button>
+
+    <strong>
+        📲 Parshd App Install करें
+    </strong>
+
+    <p>
+        Safari में नीचे/ऊपर दिए गए
+        <strong>Share ↗</strong> button को दबाएँ,
+        फिर <strong>Add to Home Screen</strong>
+        चुनें।
+    </p>
+
+</div>
+
+
+
+<!-- =====================================================
      LANDING PAGE
 ===================================================== -->
 
-<div id="landingPage"
-     class="landing-page hidden">
+<div
+    id="landingPage"
+    class="landing-page hidden"
+>
 
 
     <header class="landing-header">
@@ -1047,6 +1683,11 @@
 
     <main>
 
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
         <section class="landing-hero">
 
             <span class="hero-badge">
@@ -1054,16 +1695,21 @@
             </span>
 
             <h1>
+
                 अपने वार्ड की
                 <span>डिजिटल सेवा</span>
                 शुरू करें
+
             </h1>
 
             <p class="hero-description">
+
                 Parshd.in के माध्यम से अपने वार्ड के नागरिकों
                 को शिकायत दर्ज करने और उसकी स्थिति देखने की
                 आसान डिजिटल सुविधा दें।
+
             </p>
+
 
             <div class="hero-actions">
 
@@ -1073,6 +1719,7 @@
                 >
                     👤 Parshad Registration
                 </a>
+
 
                 <a
                     href="admin/index.html"
@@ -1085,6 +1732,53 @@
 
         </section>
 
+
+
+        <!-- =================================================
+             APPROVAL CONTACT
+        ================================================== -->
+
+        <section class="approval-contact">
+
+            <h2>
+                Registration के बाद Approval के लिए संपर्क करें
+            </h2>
+
+            <p>
+                Parshad Registration पूरा करने के बाद
+                Account Approval के लिए नीचे दिए गए नंबर पर
+                Call या WhatsApp करें।
+            </p>
+
+
+            <div class="approval-actions">
+
+                <a
+                    href="tel:+918114434063"
+                    class="approval-button approval-call"
+                >
+                    📞 Call करें — 8114434063
+                </a>
+
+
+                <a
+                    href="https://wa.me/918114434063"
+                    target="_blank"
+                    rel="noopener"
+                    class="approval-button approval-whatsapp"
+                >
+                    💬 WhatsApp करें — 8114434063
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             HOW IT WORKS
+        ================================================== -->
 
         <section class="landing-section">
 
@@ -1102,6 +1796,7 @@
 
 
             <div class="steps-grid">
+
 
                 <div class="step-card">
 
@@ -1122,6 +1817,7 @@
                 </div>
 
 
+
                 <div class="step-card">
 
                     <div class="step-number">
@@ -1138,6 +1834,7 @@
                     </p>
 
                 </div>
+
 
 
                 <div class="step-card">
@@ -1157,10 +1854,16 @@
 
                 </div>
 
+
             </div>
 
         </section>
 
+
+
+        <!-- =================================================
+             FEATURES
+        ================================================== -->
 
         <section class="landing-section">
 
@@ -1179,69 +1882,129 @@
 
             <div class="features-grid">
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <h3>Citizen Complaints</h3>
+
+                    <div class="feature-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Citizen Complaints
+                    </h3>
+
                     <p>
                         नागरिक अपने वार्ड की समस्या
                         सीधे online दर्ज कर सकते हैं।
                     </p>
+
                 </div>
 
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Complaint Dashboard</h3>
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Complaint Dashboard
+                    </h3>
+
                     <p>
                         New, Pending और Solved complaints
                         manage करें।
                     </p>
+
                 </div>
 
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Ward QR</h3>
+
+                    <div class="feature-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Ward QR
+                    </h3>
+
                     <p>
                         Unique QR से नागरिक personalized
                         ward portal तक पहुंचेंगे।
                     </p>
+
                 </div>
 
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📍</div>
-                    <h3>Complaint Location</h3>
+
+                    <div class="feature-icon">
+                        📍
+                    </div>
+
+                    <h3>
+                        Complaint Location
+                    </h3>
+
                     <p>
                         उपलब्ध होने पर complaint location
                         information भी सुरक्षित रहेगी।
                     </p>
+
                 </div>
 
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📷</div>
-                    <h3>Photo & Video</h3>
+
+                    <div class="feature-icon">
+                        📷
+                    </div>
+
+                    <h3>
+                        Photo & Video
+                    </h3>
+
                     <p>
                         नागरिक समस्या की photo और
                         short video भेज सकते हैं।
                     </p>
+
                 </div>
 
 
+
                 <div class="feature-card">
-                    <div class="feature-icon">📲</div>
-                    <h3>Mobile Friendly</h3>
+
+                    <div class="feature-icon">
+                        📲
+                    </div>
+
+                    <h3>
+                        Mobile Friendly
+                    </h3>
+
                     <p>
                         Mobile, tablet और desktop पर
                         responsive portal।
                     </p>
+
                 </div>
+
 
             </div>
 
         </section>
 
+
+
+        <!-- =================================================
+             CITIZEN INFO
+        ================================================== -->
 
         <section class="citizen-info">
 
@@ -1257,8 +2020,39 @@
 
         </section>
 
+
+
+        <!-- =================================================
+             FOUNDER
+        ================================================== -->
+
+        <section class="founder-section">
+
+            <span class="founder-label">
+                Founder
+            </span>
+
+            <strong class="founder-name">
+                Manish Prajapat
+            </strong>
+
+            <a
+                href="tel:+918114434063"
+                class="founder-phone"
+            >
+                8114434063
+            </a>
+
+        </section>
+
+
     </main>
 
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
     <footer class="landing-footer">
 
@@ -1276,6 +2070,7 @@
 
     </footer>
 
+
 </div>
 
 
@@ -1284,13 +2079,11 @@
      CITIZEN WARD APP
 ===================================================== -->
 
-<div id="app"
-     class="citizen-app hidden">
+<div
+    id="app"
+    class="citizen-app hidden"
+>
 
-
-    <!-- =================================================
-         HEADER
-    ================================================= -->
 
     <header class="citizen-header">
 
@@ -1304,6 +2097,7 @@
                     src="assets/images/default-logo.png"
                     alt="Organization Logo"
                 >
+
 
                 <div class="citizen-brand-text">
 
@@ -1341,16 +2135,12 @@
 
 
 
-    <!-- =================================================
-         MAIN
-    ================================================= -->
-
     <main class="citizen-main">
 
 
         <!-- =================================================
-             PARSHAD HERO
-        ================================================= -->
+             PROFILE
+        ================================================== -->
 
         <section class="profile-card">
 
@@ -1383,6 +2173,7 @@
                 <div class="ward-info">
 
                     Ward No.
+
                     <strong id="wardNumber">
                         —
                     </strong>
@@ -1405,7 +2196,7 @@
 
         <!-- =================================================
              ABOUT
-        ================================================= -->
+        ================================================== -->
 
         <section
             id="aboutSection"
@@ -1424,7 +2215,7 @@
 
         <!-- =================================================
              COMPLAINT
-        ================================================= -->
+        ================================================== -->
 
         <section class="complaint-card">
 
@@ -1461,7 +2252,7 @@
 
         <!-- =================================================
              QUICK ACTIONS
-        ================================================= -->
+        ================================================== -->
 
         <div class="quick-actions">
 
@@ -1488,7 +2279,7 @@
 
         <!-- =================================================
              WHATSAPP
-        ================================================= -->
+        ================================================== -->
 
         <section
             id="contactSection"
@@ -1502,7 +2293,6 @@
 
             <div class="contact-buttons">
 
-                <!-- केवल WhatsApp -->
                 <a
                     id="whatsappButton"
                     class="contact-button whatsapp-button hidden"
@@ -1521,7 +2311,7 @@
 
         <!-- =================================================
              WARD INFORMATION
-        ================================================= -->
+        ================================================== -->
 
         <section class="portal-section">
 
@@ -1532,6 +2322,7 @@
             <p>
 
                 Ward Number:
+
                 <strong id="infoWardNumber">
                     —
                 </strong>
@@ -1539,6 +2330,7 @@
                 <br>
 
                 Area:
+
                 <strong id="infoWardArea">
                     —
                 </strong>
@@ -1551,7 +2343,7 @@
 
         <!-- =================================================
              RESPONSE NOTICE
-        ================================================= -->
+        ================================================== -->
 
         <section class="response-notice">
 
@@ -1574,7 +2366,7 @@
 
     <!-- =================================================
          SIDE MENU
-    ================================================= -->
+    ================================================== -->
 
     <div
         id="menuOverlay"
@@ -1686,6 +2478,7 @@
             window.location.search
         );
 
+
     const ward =
         params.get("ward");
 
@@ -1730,6 +2523,253 @@
 
 
 <!-- =====================================================
+     PWA INSTALL SYSTEM
+===================================================== -->
+
+<script>
+
+    let deferredInstallPrompt =
+        null;
+
+
+    const installButton =
+        document.getElementById(
+            "installAppButton"
+        );
+
+
+    const iosInstallBox =
+        document.getElementById(
+            "iosInstallBox"
+        );
+
+
+    const iosInstallClose =
+        document.getElementById(
+            "iosInstallClose"
+        );
+
+
+    /* =====================================================
+       SERVICE WORKER
+    ====================================================== */
+
+    if (
+        "serviceWorker" in navigator
+    ) {
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                navigator.serviceWorker
+                    .register("./sw.js")
+
+                    .then(
+                        registration => {
+
+                            console.log(
+                                "Parshd Service Worker registered:",
+                                registration.scope
+                            );
+
+                        }
+                    )
+
+                    .catch(
+                        error => {
+
+                            console.error(
+                                "Service Worker registration failed:",
+                                error
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ANDROID / CHROME / EDGE
+    ====================================================== */
+
+    window.addEventListener(
+        "beforeinstallprompt",
+        event => {
+
+            event.preventDefault();
+
+            deferredInstallPrompt =
+                event;
+
+            installButton.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       INSTALL
+    ====================================================== */
+
+    installButton.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                deferredInstallPrompt
+            ) {
+
+                deferredInstallPrompt
+                    .prompt();
+
+
+                const result =
+                    await deferredInstallPrompt
+                        .userChoice;
+
+
+                console.log(
+                    "PWA install result:",
+                    result.outcome
+                );
+
+
+                deferredInstallPrompt =
+                    null;
+
+
+                installButton.classList.remove(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                isIOS()
+            ) {
+
+                iosInstallBox.classList.add(
+                    "show"
+                );
+
+                return;
+
+            }
+
+
+            alert(
+                "Browser के Menu (⋮) में जाकर \"Install Parshd.in\" या \"Add to Home Screen\" चुनें।"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       IOS CLOSE
+    ====================================================== */
+
+    iosInstallClose.addEventListener(
+        "click",
+        () => {
+
+            iosInstallBox.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       IOS DETECTION
+    ====================================================== */
+
+    function isIOS() {
+
+        return /iPad|iPhone|iPod/.test(
+            navigator.userAgent
+        )
+        ||
+        (
+            navigator.platform ===
+            "MacIntel"
+            &&
+            navigator.maxTouchPoints > 1
+        );
+
+    }
+
+
+    /* =====================================================
+       STANDALONE
+    ====================================================== */
+
+    function isStandalone() {
+
+        return (
+            window.matchMedia(
+                "(display-mode: standalone)"
+            ).matches
+            ||
+            window.navigator.standalone === true
+        );
+
+    }
+
+
+    if (
+        isStandalone()
+    ) {
+
+        installButton.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       AFTER INSTALL
+    ====================================================== */
+
+    window.addEventListener(
+        "appinstalled",
+        () => {
+
+            deferredInstallPrompt =
+                null;
+
+            installButton.classList.remove(
+                "show"
+            );
+
+            iosInstallBox.classList.remove(
+                "show"
+            );
+
+            console.log(
+                "Parshd PWA installed successfully."
+            );
+
+        }
+    );
+
+</script>
+
+
+
+<!-- =====================================================
      CITIZEN APP CONTROLLER
 ===================================================== -->
 
@@ -1740,4 +2780,5 @@
 
 
 </body>
+
 </html>
