@@ -16,8 +16,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 import {
-    uploadComplaintMedia,
-    validateComplaintMedia
+    uploadComplaintMedia
 } from "./storage.js";
 
 import {
@@ -193,11 +192,119 @@ async function createComplaint(data = {}) {
 
 
     // =====================================================
+    // PHOTO VALIDATION
+    // =====================================================
+
+    if (photos.length > 2) {
+
+        throw new Error(
+            "अधिकतम 2 photos upload कर सकते हैं।"
+        );
+
+    }
+
+
+    for (
+        const photo of photos
+    ) {
+
+        if (!photo) {
+            continue;
+        }
+
+
+        const maxImageSize =
+            5 * 1024 * 1024;
+
+
+        if (
+            photo.size >
+            maxImageSize
+        ) {
+
+            throw new Error(
+                "हर photo अधिकतम 5 MB का हो सकता है।"
+            );
+
+        }
+
+
+        const allowedImageTypes = [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/webp"
+        ];
+
+
+        if (
+            photo.type &&
+            !allowedImageTypes.includes(
+                photo.type
+            )
+        ) {
+
+            throw new Error(
+                "केवल JPG, PNG या WEBP photo upload करें।"
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // VIDEO VALIDATION
+    // =====================================================
+
+    if (video) {
+
+        const maxVideoSize =
+            25 * 1024 * 1024;
+
+
+        if (
+            video.size >
+            maxVideoSize
+        ) {
+
+            throw new Error(
+                "Video अधिकतम 25 MB का हो सकता है।"
+            );
+
+        }
+
+
+        const allowedVideoTypes = [
+            "video/mp4",
+            "video/webm",
+            "video/quicktime"
+        ];
+
+
+        if (
+            video.type &&
+            !allowedVideoTypes.includes(
+                video.type
+            )
+        ) {
+
+            throw new Error(
+                "केवल MP4, WEBM या MOV video upload करें।"
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
     // LOAD WARD
     // =====================================================
 
     const wardId =
         wardNumber;
+
 
     const wardRef =
         doc(
@@ -224,6 +331,30 @@ async function createComplaint(data = {}) {
 
     const ward =
         wardSnapshot.data();
+
+
+    // =====================================================
+    // VERIFY WARD NUMBER
+    // =====================================================
+
+    const storedWardNumber =
+        String(
+            ward.wardNumber ||
+            ward.wardId ||
+            wardId
+        ).trim();
+
+
+    if (
+        storedWardNumber !==
+        wardId
+    ) {
+
+        throw new Error(
+            "Ward information सही नहीं है।"
+        );
+
+    }
 
 
     // =====================================================
@@ -276,36 +407,14 @@ async function createComplaint(data = {}) {
 
 
     // =====================================================
-    // MEDIA VALIDATION
-    // =====================================================
-
-    try {
-
-        if (
-            typeof validateComplaintMedia ===
-            "function"
-        ) {
-
-            await validateComplaintMedia({
-                photos,
-                video
-            });
-
-        }
-
-    } catch (error) {
-
-        throw new Error(
-            error.message ||
-            "Photo / video validation failed."
-        );
-
-    }
-
-
-    // =====================================================
     // LOCATION
     // =====================================================
+
+    /*
+     * complaint.html पहले ही location लेने की कोशिश करता है.
+     * अगर वहाँ location नहीं मिली तो यहाँ एक बार और
+     * कोशिश की जाएगी.
+     */
 
     if (!location) {
 
@@ -329,7 +438,53 @@ async function createComplaint(data = {}) {
 
 
     // =====================================================
-    // CREATE COMPLAINT ID
+    // NORMALIZE LOCATION
+    // =====================================================
+
+    if (
+        location &&
+        typeof location === "object"
+    ) {
+
+        const latitude =
+            Number(
+                location.latitude
+            );
+
+        const longitude =
+            Number(
+                location.longitude
+            );
+
+
+        if (
+            Number.isFinite(latitude) &&
+            Number.isFinite(longitude)
+        ) {
+
+            location = {
+
+                latitude,
+
+                longitude
+
+            };
+
+        } else {
+
+            location = null;
+
+        }
+
+    } else {
+
+        location = null;
+
+    }
+
+
+    // =====================================================
+    // CREATE COMPLAINT DOCUMENT
     // =====================================================
 
     const complaintsCollection =
@@ -383,8 +538,7 @@ async function createComplaint(data = {}) {
 
         complaintText,
 
-        location:
-            location || null,
+        location,
 
         media: {
 
@@ -464,8 +618,7 @@ async function createComplaint(data = {}) {
 
             /*
              * Complaint document intentionally remains.
-             * This prevents losing the citizen's complaint
-             * if media upload fails.
+             * Citizen की complaint खोएगी नहीं.
              */
 
             throw new Error(
@@ -609,18 +762,6 @@ async function getComplaint(
 
     }
 
-
-    // =====================================================
-    // PUBLIC ID SEARCH
-    // =====================================================
-
-    /*
-     * Public ID search intentionally omitted here
-     * because the current Firestore setup does not need
-     * an open collection query from the citizen page.
-     *
-     * Direct complaint document lookup remains supported.
-     */
 
     return null;
 
