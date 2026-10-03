@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -30,6 +32,7 @@
 
     <title>Parshd Admin Login</title>
 
+
     <link
         rel="apple-touch-icon"
         href="../assets/icons/icon-192.png"
@@ -45,7 +48,9 @@
         href="../css/responsive.css"
     >
 
+
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -69,11 +74,6 @@
                 sans-serif;
 
             color: #111827;
-
-            padding-top: env(safe-area-inset-top);
-            padding-right: env(safe-area-inset-right);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
         }
 
         .admin-login-page {
@@ -86,6 +86,7 @@
             justify-content: center;
 
             padding: 24px 16px;
+
             background: #ffffff;
         }
 
@@ -96,16 +97,19 @@
             background: #ffffff;
 
             border: 1px solid #e5e7eb;
+
             border-radius: 18px;
 
             padding: 30px 26px;
 
             box-shadow:
-                0 8px 30px rgba(0, 0, 0, 0.07);
+                0 8px 30px
+                rgba(0, 0, 0, 0.07);
         }
 
         .login-header {
             text-align: center;
+
             margin-bottom: 28px;
         }
 
@@ -126,7 +130,9 @@
             margin: 0;
 
             font-size: 27px;
+
             line-height: 1.25;
+
             font-weight: 700;
 
             color: #111827;
@@ -136,6 +142,7 @@
             margin: 8px 0 0;
 
             font-size: 14px;
+
             line-height: 1.5;
 
             color: #6b7280;
@@ -147,6 +154,7 @@
 
         .form-group {
             width: 100%;
+
             margin-bottom: 18px;
         }
 
@@ -156,6 +164,7 @@
             margin-bottom: 7px;
 
             font-size: 14px;
+
             font-weight: 600;
 
             color: #374151;
@@ -163,11 +172,13 @@
 
         .form-input {
             width: 100%;
+
             height: 50px;
 
             padding: 0 14px;
 
             border: 1px solid #d1d5db;
+
             border-radius: 11px;
 
             outline: none;
@@ -187,7 +198,8 @@
             border-color: #111827;
 
             box-shadow:
-                0 0 0 3px rgba(17, 24, 39, 0.08);
+                0 0 0 3px
+                rgba(17, 24, 39, 0.08);
         }
 
         .form-input::placeholder {
@@ -206,6 +218,7 @@
             position: absolute;
 
             right: 8px;
+
             top: 50%;
 
             transform: translateY(-50%);
@@ -214,6 +227,7 @@
             height: 40px;
 
             border: 0;
+
             border-radius: 8px;
 
             background: transparent;
@@ -231,17 +245,21 @@
 
         .login-button {
             width: 100%;
+
             min-height: 50px;
 
             margin-top: 6px;
 
             border: 0;
+
             border-radius: 11px;
 
             background: #111827;
+
             color: #ffffff;
 
             font-size: 16px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -261,6 +279,7 @@
 
         .login-button:disabled {
             opacity: 0.55;
+
             cursor: not-allowed;
         }
 
@@ -270,11 +289,13 @@
             width: 100%;
 
             margin-top: 16px;
+
             padding: 11px 12px;
 
             border-radius: 9px;
 
             font-size: 14px;
+
             line-height: 1.45;
 
             text-align: center;
@@ -286,13 +307,17 @@
 
         .login-message.error {
             background: #fef2f2;
+
             color: #b91c1c;
+
             border: 1px solid #fecaca;
         }
 
         .login-message.success {
             background: #f0fdf4;
+
             color: #15803d;
+
             border: 1px solid #bbf7d0;
         }
 
@@ -302,8 +327,10 @@
             text-align: center;
 
             font-size: 12px;
+
             color: #9ca3af;
         }
+
 
         @media (max-width: 480px) {
 
@@ -329,23 +356,32 @@
             }
         }
 
+
         @media (max-height: 600px) {
 
             .admin-login-page {
                 align-items: flex-start;
+
                 padding-top: 25px;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
     <main class="admin-login-page">
+
 
         <section class="login-box">
 
+
             <header class="login-header">
+
 
                 <img
                     src="../assets/icons/icon-192.png"
@@ -353,15 +389,19 @@
                     class="login-logo"
                 >
 
+
                 <h1 class="login-title">
                     Parshd Admin
                 </h1>
+
 
                 <p class="login-subtitle">
                     Parshad / Administrator Login
                 </p>
 
+
             </header>
+
 
 
             <form
@@ -370,7 +410,9 @@
                 autocomplete="on"
             >
 
+
                 <div class="form-group">
+
 
                     <label
                         for="email"
@@ -378,6 +420,7 @@
                     >
                         Email
                     </label>
+
 
                     <input
                         type="email"
@@ -389,10 +432,13 @@
                         required
                     >
 
+
                 </div>
 
 
+
                 <div class="form-group">
+
 
                     <label
                         for="password"
@@ -401,7 +447,9 @@
                         Password
                     </label>
 
+
                     <div class="password-wrap">
+
 
                         <input
                             type="password"
@@ -413,6 +461,7 @@
                             required
                         >
 
+
                         <button
                             type="button"
                             id="togglePassword"
@@ -422,9 +471,12 @@
                             👁
                         </button>
 
+
                     </div>
 
+
                 </div>
+
 
 
                 <button
@@ -436,200 +488,42 @@
                 </button>
 
 
+
                 <div
                     id="loginMessage"
                     class="login-message"
                     role="alert"
                 ></div>
 
+
             </form>
+
 
 
             <footer class="login-footer">
                 Parshd Platform
             </footer>
 
+
         </section>
+
 
     </main>
 
 
-    <script type="module">
 
-        import {
-            loginUser,
-            watchAuthState
-        } from "../js/auth.js";
+    <!--
+        IMPORTANT:
+        Login ka pura Firebase logic
+        admin/login.js handle karega.
+    -->
 
+    <script
+        type="module"
+        src="./login.js"
+    ></script>
 
-        const loginForm =
-            document.getElementById("loginForm");
-
-        const emailInput =
-            document.getElementById("email");
-
-        const passwordInput =
-            document.getElementById("password");
-
-        const loginButton =
-            document.getElementById("loginButton");
-
-        const togglePassword =
-            document.getElementById("togglePassword");
-
-        const loginMessage =
-            document.getElementById("loginMessage");
-
-
-        function showMessage(message, type = "error") {
-
-            loginMessage.textContent = message;
-
-            loginMessage.className =
-                `login-message show ${type}`;
-
-        }
-
-
-        function hideMessage() {
-
-            loginMessage.textContent = "";
-
-            loginMessage.className =
-                "login-message";
-
-        }
-
-
-        togglePassword.addEventListener(
-            "click",
-            () => {
-
-                const isPassword =
-                    passwordInput.type === "password";
-
-                passwordInput.type =
-                    isPassword
-                        ? "text"
-                        : "password";
-
-                togglePassword.textContent =
-                    isPassword
-                        ? "🙈"
-                        : "👁";
-
-                togglePassword.setAttribute(
-                    "aria-label",
-                    isPassword
-                        ? "Hide password"
-                        : "Show password"
-                );
-            }
-        );
-
-
-        watchAuthState((user) => {
-
-            if (user) {
-
-                window.location.href =
-                    "./dashboard.html";
-            }
-
-        });
-
-
-        loginForm.addEventListener(
-            "submit",
-            async (event) => {
-
-                event.preventDefault();
-
-                hideMessage();
-
-                const email =
-                    emailInput.value.trim();
-
-                const password =
-                    passwordInput.value;
-
-
-                if (!email || !password) {
-
-                    showMessage(
-                        "Email और password दोनों भरें।"
-                    );
-
-                    return;
-                }
-
-
-                loginButton.disabled = true;
-
-                loginButton.textContent =
-                    "Logging in...";
-
-
-                try {
-
-                    await loginUser(
-                        email,
-                        password
-                    );
-
-                    showMessage(
-                        "Login successful...",
-                        "success"
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "Login error:",
-                        error
-                    );
-
-                    let message =
-                        "Login नहीं हो पाया।";
-
-                    if (
-                        error.code ===
-                        "auth/invalid-credential"
-                    ) {
-
-                        message =
-                            "Email या password गलत है।";
-
-                    } else if (
-                        error.code ===
-                        "auth/too-many-requests"
-                    ) {
-
-                        message =
-                            "बहुत ज्यादा attempts हुए हैं। थोड़ी देर बाद कोशिश करें।";
-
-                    } else if (
-                        error.code ===
-                        "auth/network-request-failed"
-                    ) {
-
-                        message =
-                            "Internet connection check करें।";
-                    }
-
-                    showMessage(message);
-
-                    loginButton.disabled =
-                        false;
-
-                    loginButton.textContent =
-                        "Login";
-                }
-
-            }
-        );
-
-    </script>
 
 </body>
+
 </html>
