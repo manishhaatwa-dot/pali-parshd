@@ -19,15 +19,15 @@ import {
 const STORAGE_ROOT = "parshd";
 
 const MAX_IMAGES = 2;
-
 const MAX_VIDEOS = 1;
 
-const MAX_VIDEO_DURATION = 15; // seconds
+const MAX_VIDEO_DURATION = 15;
 
-// Individual file limits
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;   // 5 MB
+const MAX_IMAGE_SIZE =
+    5 * 1024 * 1024;
 
-const MAX_VIDEO_SIZE = 25 * 1024 * 1024;  // 25 MB
+const MAX_VIDEO_SIZE =
+    25 * 1024 * 1024;
 
 
 // =========================================================
@@ -55,10 +55,12 @@ const ALLOWED_VIDEO_TYPES = [
 export function validateImage(file) {
 
     if (!file) {
+
         return {
             valid: false,
             message: "Image file नहीं मिली।"
         };
+
     }
 
 
@@ -99,16 +101,18 @@ export function validateImage(file) {
 
 
 // =========================================================
-// VALIDATE VIDEO FILE
+// VALIDATE VIDEO
 // =========================================================
 
 export function validateVideo(file) {
 
     if (!file) {
+
         return {
             valid: false,
             message: "Video file नहीं मिली।"
         };
+
     }
 
 
@@ -154,67 +158,84 @@ export function validateVideo(file) {
 
 export function getVideoDuration(file) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(
+        (resolve, reject) => {
 
-        if (!file) {
+            if (!file) {
 
-            reject(
-                new Error(
-                    "Video file नहीं मिली।"
-                )
-            );
+                reject(
+                    new Error(
+                        "Video file नहीं मिली।"
+                    )
+                );
 
-            return;
+                return;
+            }
+
+
+            const video =
+                document.createElement(
+                    "video"
+                );
+
+
+            const objectURL =
+                URL.createObjectURL(
+                    file
+                );
+
+
+            video.preload =
+                "metadata";
+
+
+            video.onloadedmetadata =
+                () => {
+
+                    const duration =
+                        video.duration;
+
+
+                    URL.revokeObjectURL(
+                        objectURL
+                    );
+
+
+                    resolve(
+                        duration
+                    );
+
+                };
+
+
+            video.onerror =
+                () => {
+
+                    URL.revokeObjectURL(
+                        objectURL
+                    );
+
+
+                    reject(
+                        new Error(
+                            "Video duration read नहीं हो सकी।"
+                        )
+                    );
+
+                };
+
+
+            video.src =
+                objectURL;
+
         }
-
-
-        const video =
-            document.createElement("video");
-
-        const objectURL =
-            URL.createObjectURL(file);
-
-
-        video.preload = "metadata";
-
-        video.onloadedmetadata = () => {
-
-            const duration =
-                video.duration;
-
-            URL.revokeObjectURL(
-                objectURL
-            );
-
-            resolve(duration);
-
-        };
-
-
-        video.onerror = () => {
-
-            URL.revokeObjectURL(
-                objectURL
-            );
-
-            reject(
-                new Error(
-                    "Video duration read नहीं हो सकी।"
-                )
-            );
-
-        };
-
-
-        video.src = objectURL;
-
-    });
+    );
 
 }
 
 
 // =========================================================
-// VALIDATE VIDEO INCLUDING DURATION
+// VALIDATE VIDEO COMPLETE
 // =========================================================
 
 export async function validateVideoComplete(
@@ -226,14 +247,33 @@ export async function validateVideoComplete(
 
 
     if (!basicValidation.valid) {
+
         return basicValidation;
+
     }
 
 
     try {
 
         const duration =
-            await getVideoDuration(file);
+            await getVideoDuration(
+                file
+            );
+
+
+        if (
+            !Number.isFinite(
+                duration
+            )
+        ) {
+
+            return {
+                valid: false,
+                message:
+                    "Video duration पढ़ी नहीं जा सकी।"
+            };
+
+        }
 
 
         if (
@@ -276,7 +316,7 @@ export async function validateVideoComplete(
 
 
 // =========================================================
-// VALIDATE MEDIA COLLECTION
+// VALIDATE MEDIA
 // =========================================================
 
 export async function validateMedia(
@@ -285,12 +325,10 @@ export async function validateMedia(
 ) {
 
     const imageFiles =
-        Array.from(images || []);
+        Array.from(
+            images || []
+        );
 
-
-    // -----------------------------------------
-    // Image count
-    // -----------------------------------------
 
     if (
         imageFiles.length >
@@ -306,28 +344,24 @@ export async function validateMedia(
     }
 
 
-    // -----------------------------------------
-    // Validate images
-    // -----------------------------------------
-
     for (
         const image of imageFiles
     ) {
 
         const result =
-            validateImage(image);
+            validateImage(
+                image
+            );
 
 
         if (!result.valid) {
+
             return result;
+
         }
 
     }
 
-
-    // -----------------------------------------
-    // Validate video
-    // -----------------------------------------
 
     if (video) {
 
@@ -338,7 +372,9 @@ export async function validateMedia(
 
 
         if (!result.valid) {
+
             return result;
+
         }
 
     }
@@ -348,6 +384,61 @@ export async function validateMedia(
         valid: true,
         message: ""
     };
+
+}
+
+
+// =========================================================
+// GET FILE EXTENSION
+// =========================================================
+
+function getExtension(
+    filename
+) {
+
+    if (!filename) {
+        return "file";
+    }
+
+
+    const parts =
+        filename.split(".");
+
+
+    if (
+        parts.length < 2
+    ) {
+
+        return "file";
+
+    }
+
+
+    return parts
+        .pop()
+        .toLowerCase()
+        .replace(
+            /[^a-z0-9]/g,
+            ""
+        );
+
+}
+
+
+// =========================================================
+// SANITIZE PATH
+// =========================================================
+
+function sanitizePath(
+    value
+) {
+
+    return String(value)
+        .trim()
+        .replace(
+            /[^a-zA-Z0-9_-]/g,
+            "_"
+        );
 
 }
 
@@ -364,7 +455,9 @@ export async function uploadImage(
 ) {
 
     const validation =
-        validateImage(file);
+        validateImage(
+            file
+        );
 
 
     if (!validation.valid) {
@@ -377,21 +470,27 @@ export async function uploadImage(
 
 
     if (!parshadId) {
+
         throw new Error(
             "Parshad ID missing."
         );
+
     }
 
 
     if (!complaintId) {
+
         throw new Error(
             "Complaint ID missing."
         );
+
     }
 
 
     const extension =
-        getExtension(file.name);
+        getExtension(
+            file.name
+        );
 
 
     const filePath =
@@ -418,10 +517,14 @@ export async function uploadImage(
         customMetadata: {
 
             parshadId:
-                String(parshadId),
+                String(
+                    parshadId
+                ),
 
             complaintId:
-                String(complaintId),
+                String(
+                    complaintId
+                ),
 
             mediaType:
                 "image"
@@ -449,15 +552,20 @@ export async function uploadImage(
 
         type: "image",
 
-        name: file.name,
+        name:
+            file.name,
 
-        path: filePath,
+        path:
+            filePath,
 
-        url: downloadURL,
+        url:
+            downloadURL,
 
-        size: file.size,
+        size:
+            file.size,
 
-        contentType: file.type
+        contentType:
+            file.type
 
     };
 
@@ -490,21 +598,27 @@ export async function uploadVideo(
 
 
     if (!parshadId) {
+
         throw new Error(
             "Parshad ID missing."
         );
+
     }
 
 
     if (!complaintId) {
+
         throw new Error(
             "Complaint ID missing."
         );
+
     }
 
 
     const extension =
-        getExtension(file.name);
+        getExtension(
+            file.name
+        );
 
 
     const filePath =
@@ -531,16 +645,22 @@ export async function uploadVideo(
         customMetadata: {
 
             parshadId:
-                String(parshadId),
+                String(
+                    parshadId
+                ),
 
             complaintId:
-                String(complaintId),
+                String(
+                    complaintId
+                ),
 
             mediaType:
                 "video",
 
             maxDuration:
-                String(MAX_VIDEO_DURATION)
+                String(
+                    MAX_VIDEO_DURATION
+                )
 
         }
 
@@ -565,15 +685,20 @@ export async function uploadVideo(
 
         type: "video",
 
-        name: file.name,
+        name:
+            file.name,
 
-        path: filePath,
+        path:
+            filePath,
 
-        url: downloadURL,
+        url:
+            downloadURL,
 
-        size: file.size,
+        size:
+            file.size,
 
-        contentType: file.type,
+        contentType:
+            file.type,
 
         duration:
             validation.duration || null
@@ -585,22 +710,72 @@ export async function uploadVideo(
 
 // =========================================================
 // UPLOAD ALL COMPLAINT MEDIA
+// IMPORTANT: OBJECT FORMAT
 // =========================================================
 
 export async function uploadComplaintMedia(
-    images,
-    video,
-    parshadId,
-    complaintId
+    data
 ) {
 
-    const imageFiles =
-        Array.from(images || []);
+    /*
+        Current complaints.js sends:
 
+        uploadComplaintMedia({
+            parshadId,
+            complaintId,
+            photos,
+            video
+        })
+    */
+
+
+    const images =
+        Array.from(
+            data?.photos || []
+        );
+
+
+    const video =
+        data?.video || null;
+
+
+    const parshadId =
+        data?.parshadId || "";
+
+
+    const complaintId =
+        data?.complaintId || "";
+
+
+    // -----------------------------------------
+    // BASIC CHECK
+    // -----------------------------------------
+
+    if (!parshadId) {
+
+        throw new Error(
+            "Parshad ID missing."
+        );
+
+    }
+
+
+    if (!complaintId) {
+
+        throw new Error(
+            "Complaint ID missing."
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // VALIDATE ALL MEDIA FIRST
+    // -----------------------------------------
 
     const validation =
         await validateMedia(
-            imageFiles,
+            images,
             video
         );
 
@@ -618,18 +793,18 @@ export async function uploadComplaintMedia(
 
 
     // -----------------------------------------
-    // Upload images
+    // UPLOAD IMAGES
     // -----------------------------------------
 
     for (
         let index = 0;
-        index < imageFiles.length;
+        index < images.length;
         index++
     ) {
 
         const result =
             await uploadImage(
-                imageFiles[index],
+                images[index],
                 parshadId,
                 complaintId,
                 index + 1
@@ -644,10 +819,11 @@ export async function uploadComplaintMedia(
 
 
     // -----------------------------------------
-    // Upload video
+    // UPLOAD VIDEO
     // -----------------------------------------
 
-    let uploadedVideo = null;
+    let uploadedVideo =
+        null;
 
 
     if (video) {
@@ -662,6 +838,10 @@ export async function uploadComplaintMedia(
     }
 
 
+    // -----------------------------------------
+    // RETURN MEDIA
+    // -----------------------------------------
+
     return {
 
         images:
@@ -671,51 +851,6 @@ export async function uploadComplaintMedia(
             uploadedVideo
 
     };
-
-}
-
-
-// =========================================================
-// GET FILE EXTENSION
-// =========================================================
-
-function getExtension(
-    filename
-) {
-
-    if (!filename) {
-        return "file";
-    }
-
-
-    const parts =
-        filename.split(".");
-
-
-    if (parts.length < 2) {
-        return "file";
-    }
-
-
-    return parts
-        .pop()
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "");
-
-}
-
-
-// =========================================================
-// SANITIZE STORAGE PATH
-// =========================================================
-
-function sanitizePath(
-    value
-) {
-
-    return String(value)
-        .trim()
-        .replace(/[^a-zA-Z0-9_-]/g, "_");
 
 }
 
