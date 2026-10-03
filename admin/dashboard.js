@@ -1,36 +1,128 @@
 // =========================================================
 // PARSHD - ADMIN DASHBOARD
-// File: admin/dashboard.js
+// Firebase Parshad Dashboard
 // =========================================================
 
+
 import {
-    getDemoSession,
-    demoLogout,
-    requireDemoLogin
+    requireParshadLogin,
+    parshadLogout
 } from "./login.js";
 
-import { db } from "../js/firebase-config.js";
 
 import {
+    auth,
+    db
+} from "../js/firebase-config.js";
+
+
+import {
+    onAuthStateChanged
+} from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+
+import {
+    doc,
+    getDoc,
     collection,
     getDocs
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+} from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
 // =========================================================
-// LOGIN CHECK
+// ELEMENTS
 // =========================================================
 
-const session = requireDemoLogin();
+const welcomeTitle =
+    document.getElementById(
+        "welcomeTitle"
+    );
 
-if (!session) {
-    throw new Error("Demo login required");
-}
+
+const profilePhoto =
+    document.getElementById(
+        "profilePhoto"
+    );
+
+
+const profileName =
+    document.getElementById(
+        "profileName"
+    );
+
+
+const profileMeta =
+    document.getElementById(
+        "profileMeta"
+    );
+
+
+const profileStatus =
+    document.getElementById(
+        "profileStatus"
+    );
+
+
+const newCount =
+    document.getElementById(
+        "newCount"
+    );
+
+
+const pendingCount =
+    document.getElementById(
+        "pendingCount"
+    );
+
+
+const solvedCount =
+    document.getElementById(
+        "solvedCount"
+    );
+
+
+const recentComplaints =
+    document.getElementById(
+        "recentComplaints"
+    );
+
+
+const dashboardLoading =
+    document.getElementById(
+        "dashboardLoading"
+    );
 
 
 // =========================================================
-// FIRESTORE
+// CURRENT PARSHAD
 // =========================================================
+
+let currentUser = null;
+
+let currentParshad = null;
+
+let currentProfile = null;
+
+
+// =========================================================
+// COLLECTIONS
+// =========================================================
+
+const PARSHADS_COLLECTION = [
+    "parshd",
+    "parshads",
+    "data"
+];
+
+
+const WARDS_COLLECTION = [
+    "parshd",
+    "wards",
+    "data"
+];
+
 
 const COMPLAINTS_COLLECTION = [
     "parshd",
@@ -40,143 +132,182 @@ const COMPLAINTS_COLLECTION = [
 
 
 // =========================================================
-// ELEMENTS
+// SHOW LOADING
 // =========================================================
 
-const welcomeTitle =
-    document.getElementById("welcomeTitle");
+function showLoading() {
 
-const profilePhoto =
-    document.getElementById("profilePhoto");
-
-const profileName =
-    document.getElementById("profileName");
-
-const profileMeta =
-    document.getElementById("profileMeta");
-
-const profileStatus =
-    document.getElementById("profileStatus");
-
-const newCount =
-    document.getElementById("newCount");
-
-const pendingCount =
-    document.getElementById("pendingCount");
-
-const solvedCount =
-    document.getElementById("solvedCount");
-
-const recentComplaints =
-    document.getElementById("recentComplaints");
-
-const dashboardLoading =
-    document.getElementById("dashboardLoading");
-
-
-// =========================================================
-// LOAD ACCOUNT
-// =========================================================
-
-function getAccount() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(
-                "parshd_demo_account"
-            ) || "null"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Account data error:",
-            error
-        );
-
-        return null;
+    if (!dashboardLoading) {
+        return;
     }
+
+    dashboardLoading.style.display =
+        "flex";
 }
 
 
 // =========================================================
-// LOAD PROFILE
+// HIDE LOADING
 // =========================================================
 
-function getProfile() {
+function hideLoading() {
 
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(
-                "parshd_demo_profile"
-            ) || "null"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Profile data error:",
-            error
-        );
-
-        return null;
+    if (!dashboardLoading) {
+        return;
     }
+
+    dashboardLoading.style.display =
+        "none";
 }
 
 
 // =========================================================
-// CURRENT PROFILE
+// LOAD PARSHAD ACCOUNT
 // =========================================================
 
-function getCurrentProfile() {
+async function loadParshadAccount(
+    uid
+) {
 
-    const account =
-        getAccount();
+    const parshadRef =
+        doc(
+            db,
+            ...PARSHADS_COLLECTION,
+            uid
+        );
 
-    const profile =
-        getProfile();
+
+    const snapshot =
+        await getDoc(
+            parshadRef
+        );
 
 
-    return {
+    if (!snapshot.exists()) {
 
-        name:
-            profile?.name ||
-            account?.name ||
-            "Parshad",
+        throw new Error(
+            "Parshad account record not found."
+        );
+    }
 
-        designation:
-            profile?.designation ||
-            "Ward Parshad",
 
-        ward:
-            profile?.ward ||
-            account?.ward ||
-            "",
+    return snapshot.data();
+}
 
-        area:
-            profile?.area ||
-            account?.area ||
-            "",
 
-        phone:
-            profile?.phone ||
-            account?.mobile ||
-            "",
+// =========================================================
+// LOAD WARD PROFILE
+// =========================================================
 
-        profilePhoto:
-            profile?.profilePhoto ||
-            "../assets/images/default-profile.png",
+async function loadWardProfile(
+    ward
+) {
 
-        partyLogo:
-            profile?.partyLogo ||
-            "../assets/images/default-logo.png",
+    if (!ward) {
+        return null;
+    }
 
-        complaintEnabled:
-            profile?.complaintEnabled !== false
 
-    };
+    const wardId =
+        String(
+            ward
+        ).trim();
+
+
+    const wardRef =
+        doc(
+            db,
+            ...WARDS_COLLECTION,
+            wardId
+        );
+
+
+    const snapshot =
+        await getDoc(
+            wardRef
+        );
+
+
+    if (!snapshot.exists()) {
+
+        return null;
+    }
+
+
+    return snapshot.data();
+}
+
+
+// =========================================================
+// LOAD COMPLAINTS
+// =========================================================
+
+async function getComplaints() {
+
+    const complaintsRef =
+        collection(
+            db,
+            ...COMPLAINTS_COLLECTION
+        );
+
+
+    const snapshot =
+        await getDocs(
+            complaintsRef
+        );
+
+
+    const complaints = [];
+
+
+    snapshot.forEach(
+        documentSnapshot => {
+
+            complaints.push({
+
+                id:
+                    documentSnapshot.id,
+
+                ...documentSnapshot.data()
+
+            });
+
+        }
+    );
+
+
+    return complaints;
+}
+
+
+// =========================================================
+// FILTER CURRENT PARSHAD COMPLAINTS
+// =========================================================
+
+function getMyComplaints(
+    complaints
+) {
+
+    if (!currentUser) {
+        return [];
+    }
+
+
+    const uid =
+        currentUser.uid;
+
+
+    return complaints.filter(
+        complaint => {
+
+            return String(
+                complaint.parshadId || ""
+            ) === String(
+                uid
+            );
+
+        }
+    );
 }
 
 
@@ -186,39 +317,95 @@ function getCurrentProfile() {
 
 function renderProfile() {
 
-    const current =
-        getCurrentProfile();
+    const parshad =
+        currentParshad || {};
 
+
+    const profile =
+        currentProfile || {};
+
+
+    const name =
+        profile.name ||
+        parshad.name ||
+        "Parshad";
+
+
+    const designation =
+        profile.designation ||
+        "Ward Parshad";
+
+
+    const ward =
+        profile.wardNumber ||
+        profile.wardId ||
+        parshad.ward ||
+        "";
+
+
+    const area =
+        profile.areaName ||
+        parshad.area ||
+        "";
+
+
+    const phone =
+        profile.phone ||
+        parshad.mobile ||
+        "";
+
+
+    const photo =
+        profile.profilePhoto ||
+        "../assets/images/default-profile.png";
+
+
+    const complaintEnabled =
+        profile.complaintEnabled !== false;
+
+
+    // -----------------------------------------
+    // WELCOME
+    // -----------------------------------------
 
     if (welcomeTitle) {
 
         welcomeTitle.textContent =
-            `Welcome, ${current.name}`;
+            `Welcome, ${name}`;
 
     }
 
+
+    // -----------------------------------------
+    // NAME
+    // -----------------------------------------
 
     if (profileName) {
 
         profileName.textContent =
-            current.name;
+            name;
 
     }
 
 
+    // -----------------------------------------
+    // PHOTO
+    // -----------------------------------------
+
     if (profilePhoto) {
 
         profilePhoto.src =
-            current.profilePhoto;
+            photo;
 
         profilePhoto.alt =
-            current.name;
+            name;
 
 
         profilePhoto.onerror =
             function () {
 
-                this.onerror = null;
+                this.onerror =
+                    null;
 
                 this.src =
                     "../assets/images/default-profile.png";
@@ -228,33 +415,46 @@ function renderProfile() {
     }
 
 
+    // -----------------------------------------
+    // META
+    // -----------------------------------------
+
     if (profileMeta) {
 
         const meta = [];
 
 
-        if (current.ward) {
+        if (designation) {
 
             meta.push(
-                `Ward ${current.ward}`
+                designation
             );
 
         }
 
 
-        if (current.area) {
+        if (ward) {
 
             meta.push(
-                current.area
+                `Ward ${ward}`
             );
 
         }
 
 
-        if (current.phone) {
+        if (area) {
 
             meta.push(
-                current.phone
+                area
+            );
+
+        }
+
+
+        if (phone) {
+
+            meta.push(
+                phone
             );
 
         }
@@ -266,120 +466,18 @@ function renderProfile() {
     }
 
 
+    // -----------------------------------------
+    // STATUS
+    // -----------------------------------------
+
     if (profileStatus) {
 
         profileStatus.textContent =
-            current.complaintEnabled
+            complaintEnabled
                 ? "Active"
                 : "Complaints OFF";
 
     }
-
-}
-
-
-// =========================================================
-// LOAD REAL FIRESTORE COMPLAINTS
-// =========================================================
-
-async function getComplaints() {
-
-    try {
-
-        const complaintsRef =
-            collection(
-                db,
-                ...COMPLAINTS_COLLECTION
-            );
-
-
-        const snapshot =
-            await getDocs(
-                complaintsRef
-            );
-
-
-        const complaints = [];
-
-
-        snapshot.forEach(
-            documentSnapshot => {
-
-                complaints.push({
-
-                    id:
-                        documentSnapshot.id,
-
-                    ...documentSnapshot.data()
-
-                });
-
-            }
-        );
-
-
-        return complaints;
-
-
-    } catch (error) {
-
-        console.error(
-            "Firestore complaints error:",
-            error
-        );
-
-
-        throw error;
-
-    }
-
-}
-
-
-// =========================================================
-// WARD FILTER
-// =========================================================
-
-function getWardComplaints(
-    complaints
-) {
-
-    const current =
-        getCurrentProfile();
-
-
-    if (!current.ward) {
-
-        return [];
-
-    }
-
-
-    const currentWard =
-        String(
-            current.ward
-        ).trim();
-
-
-    return complaints.filter(
-        complaint => {
-
-            const complaintWard =
-                String(
-                    complaint.wardNumber ||
-                    complaint.wardId ||
-                    complaint.ward ||
-                    ""
-                ).trim();
-
-
-            return (
-                complaintWard ===
-                currentWard
-            );
-
-        }
-    );
 
 }
 
@@ -409,17 +507,25 @@ function updateStatistics(
                 ).toLowerCase();
 
 
-            if (status === "new") {
+            if (
+                status === "new"
+            ) {
 
                 newTotal++;
 
-            } else if (
+            }
+
+
+            else if (
                 status === "pending"
             ) {
 
                 pendingTotal++;
 
-            } else if (
+            }
+
+
+            else if (
                 status === "solved"
             ) {
 
@@ -503,32 +609,28 @@ function renderRecentComplaints(
     }
 
 
-    // Newest first
-
     const sorted =
         [...complaints].sort(
             (a, b) => {
 
-                const dateA =
-                    getTime(
-                        a.createdAt
-                    );
-
-
-                const dateB =
+                return (
                     getTime(
                         b.createdAt
-                    );
-
-
-                return dateB - dateA;
+                    ) -
+                    getTime(
+                        a.createdAt
+                    )
+                );
 
             }
         );
 
 
     const recent =
-        sorted.slice(0, 5);
+        sorted.slice(
+            0,
+            5
+        );
 
 
     recentComplaints.innerHTML =
@@ -590,7 +692,8 @@ function createComplaintHTML(
 
 
     const media =
-        complaint.media || {};
+        complaint.media ||
+        {};
 
 
     const imageCount =
@@ -616,14 +719,20 @@ function createComplaintHTML(
         mediaText =
             `📷 ${imageCount} • 🎥 1`;
 
-    } else if (
+    }
+
+
+    else if (
         imageCount > 0
     ) {
 
         mediaText =
             `📷 ${imageCount}`;
 
-    } else if (
+    }
+
+
+    else if (
         hasVideo
     ) {
 
@@ -683,7 +792,7 @@ function createComplaintHTML(
                         complaintId
                     )}
 
-                    • 
+                    •
 
                     ${escapeHTML(
                         date
@@ -691,7 +800,9 @@ function createComplaintHTML(
 
                     ${
                         mediaText
-                            ? ` • ${escapeHTML(mediaText)}`
+                            ? ` • ${escapeHTML(
+                                mediaText
+                              )}`
                             : ""
                     }
 
@@ -734,7 +845,7 @@ function createComplaintHTML(
 
 
 // =========================================================
-// DATE
+// DATE HELPERS
 // =========================================================
 
 function getTime(
@@ -746,13 +857,28 @@ function getTime(
     }
 
 
+    // Firebase Timestamp
+    if (
+        typeof value.toDate ===
+        "function"
+    ) {
+
+        return value
+            .toDate()
+            .getTime();
+
+    }
+
+
     const time =
         new Date(
             value
         ).getTime();
 
 
-    return Number.isFinite(time)
+    return Number.isFinite(
+        time
+    )
         ? time
         : 0;
 
@@ -770,10 +896,27 @@ function formatDate(
 
     try {
 
-        const date =
-            new Date(
-                value
-            );
+        let date;
+
+
+        if (
+            typeof value.toDate ===
+            "function"
+        ) {
+
+            date =
+                value.toDate();
+
+        }
+
+        else {
+
+            date =
+                new Date(
+                    value
+                );
+
+        }
 
 
         if (
@@ -795,7 +938,9 @@ function formatDate(
             }
         );
 
-    } catch {
+    }
+
+    catch {
 
         return "-";
 
@@ -809,6 +954,7 @@ function formatDate(
 // =========================================================
 
 function setupNavigation() {
+
 
     const complaintsButton =
         document.getElementById(
@@ -916,7 +1062,7 @@ function setupNavigation() {
 
 
     // -----------------------------------------
-    // VIEW PORTAL
+    // VIEW PUBLIC PORTAL
     // -----------------------------------------
 
     const portalButton =
@@ -931,11 +1077,14 @@ function setupNavigation() {
             "click",
             () => {
 
-                const current =
-                    getCurrentProfile();
+                const ward =
+                    currentProfile?.wardNumber ||
+                    currentProfile?.wardId ||
+                    currentParshad?.ward ||
+                    "";
 
 
-                if (!current.ward) {
+                if (!ward) {
 
                     alert(
                         "पहले Profile में Ward Number save करें।"
@@ -946,15 +1095,9 @@ function setupNavigation() {
                 }
 
 
-                const base =
-                    window.location.origin +
-                    window.location.pathname
-                        .split("/admin/")[0];
-
-
                 const url =
-                    `${base}/?ward=${encodeURIComponent(
-                        current.ward
+                    `${window.location.origin}/?ward=${encodeURIComponent(
+                        ward
                     )}`;
 
 
@@ -968,6 +1111,10 @@ function setupNavigation() {
 
     }
 
+
+    // -----------------------------------------
+    // VIEW ALL COMPLAINTS
+    // -----------------------------------------
 
     const viewAllButton =
         document.getElementById(
@@ -990,6 +1137,10 @@ function setupNavigation() {
     }
 
 
+    // -----------------------------------------
+    // LOGOUT
+    // -----------------------------------------
+
     const logoutButton =
         document.getElementById(
             "logoutButton"
@@ -1000,9 +1151,9 @@ function setupNavigation() {
 
         logoutButton.addEventListener(
             "click",
-            () => {
+            async () => {
 
-                demoLogout();
+                await parshadLogout();
 
             }
         );
@@ -1083,57 +1234,128 @@ function escapeHTML(
 
 
 // =========================================================
-// LOAD DASHBOARD DATA
+// LOAD DASHBOARD
 // =========================================================
 
 async function loadDashboard() {
 
     try {
 
-        renderProfile();
+        showLoading();
 
 
-        if (dashboardLoading) {
+        // -----------------------------------------
+        // CURRENT USER
+        // -----------------------------------------
 
-            dashboardLoading.style.display =
-                "block";
+        if (!currentUser) {
+
+            throw new Error(
+                "Firebase user not available."
+            );
 
         }
 
+
+        // -----------------------------------------
+        // PARSHAD ACCOUNT
+        // -----------------------------------------
+
+        currentParshad =
+            await loadParshadAccount(
+                currentUser.uid
+            );
+
+
+        // -----------------------------------------
+        // APPROVAL SAFETY CHECK
+        // -----------------------------------------
+
+        if (
+            currentParshad.status !==
+            "approved"
+            ||
+            currentParshad.approved !==
+            true
+        ) {
+
+            await parshadLogout();
+
+            return;
+
+        }
+
+
+        // -----------------------------------------
+        // WARD PROFILE
+        // -----------------------------------------
+
+        currentProfile =
+            await loadWardProfile(
+                currentParshad.ward
+            );
+
+
+        // -----------------------------------------
+        // RENDER PROFILE
+        // -----------------------------------------
+
+        renderProfile();
+
+
+        // -----------------------------------------
+        // COMPLAINTS
+        // -----------------------------------------
 
         const allComplaints =
             await getComplaints();
 
 
-        const wardComplaints =
-            getWardComplaints(
+        const myComplaints =
+            getMyComplaints(
                 allComplaints
             );
 
 
         console.log(
-            "All Firestore complaints:",
-            allComplaints
+            "Current Parshad:",
+            currentParshad
         );
 
 
         console.log(
-            "Current Ward complaints:",
-            wardComplaints
+            "Current Ward Profile:",
+            currentProfile
         );
 
+
+        console.log(
+            "My Complaints:",
+            myComplaints
+        );
+
+
+        // -----------------------------------------
+        // STATS
+        // -----------------------------------------
 
         updateStatistics(
-            wardComplaints
+            myComplaints
         );
 
+
+        // -----------------------------------------
+        // RECENT
+        // -----------------------------------------
 
         renderRecentComplaints(
-            wardComplaints
+            myComplaints
         );
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Dashboard loading error:",
@@ -1159,11 +1381,11 @@ async function loadDashboard() {
                         margin-bottom:5px;
                         color:#b91c1c;
                     ">
-                        Complaints load नहीं हो सकीं
+                        Dashboard load नहीं हो सका
                     </strong>
 
                     <span>
-                        कृपया page refresh करके दोबारा try करें।
+                        Page refresh करके दोबारा try करें।
                     </span>
 
                 </div>
@@ -1172,7 +1394,9 @@ async function loadDashboard() {
 
         }
 
-    } finally {
+    }
+
+    finally {
 
         hideLoading();
 
@@ -1182,18 +1406,50 @@ async function loadDashboard() {
 
 
 // =========================================================
-// HIDE LOADING
+// AUTH INITIALIZATION
+// =========================================================
+//
+// Dashboard खुलने से पहले Firebase session
+// और approval check होगा.
 // =========================================================
 
-function hideLoading() {
+async function initializeDashboard() {
 
-    if (!dashboardLoading) {
+    showLoading();
+
+
+    const allowed =
+        await requireParshadLogin(
+            "./index.html"
+        );
+
+
+    if (!allowed) {
+
         return;
+
     }
 
 
-    dashboardLoading.style.display =
-        "none";
+    onAuthStateChanged(
+        auth,
+        async user => {
+
+            if (!user) {
+
+                return;
+
+            }
+
+
+            currentUser =
+                user;
+
+
+            await loadDashboard();
+
+        }
+    );
 
 }
 
@@ -1204,18 +1460,4 @@ function hideLoading() {
 
 setupNavigation();
 
-loadDashboard();
-
-
-// =========================================================
-// PAGE RETURN / REFRESH
-// =========================================================
-
-window.addEventListener(
-    "pageshow",
-    () => {
-
-        loadDashboard();
-
-    }
-);
+initializeDashboard();
