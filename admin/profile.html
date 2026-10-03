@@ -39,8 +39,6 @@
             padding: 20px;
         }
 
-        /* TOPBAR */
-
         .topbar {
             display: flex;
             align-items: center;
@@ -69,8 +67,6 @@
             margin: 0;
         }
 
-        /* CARD */
-
         .card {
             background: #ffffff;
             border: 1px solid #e5e7eb;
@@ -85,8 +81,6 @@
             font-size: 18px;
             font-weight: 800;
         }
-
-        /* MESSAGE */
 
         .message {
             display: none;
@@ -106,8 +100,6 @@
             background: #fee2e2;
             color: #991b1b;
         }
-
-        /* PREVIEW */
 
         .preview-row {
             display: flex;
@@ -147,8 +139,6 @@
             border: 3px solid #f3f4f6;
             background: #f3f4f6;
         }
-
-        /* FORM */
 
         .grid {
             display: grid;
@@ -193,8 +183,6 @@
             font-size: 12px;
             color: #6b7280;
         }
-
-        /* SWITCH */
 
         .switch-row {
             display: flex;
@@ -257,8 +245,6 @@
         .switch input:checked + .slider:before {
             transform: translateX(23px);
         }
-
-        /* SAVE */
 
         .save-btn {
             width: 100%;
@@ -387,8 +373,6 @@
             margin: auto;
         }
 
-        /* FEATURES */
-
         .qr-feature-column {
             display: flex;
             flex-direction: column;
@@ -441,8 +425,6 @@
             font-weight: 800;
             color: #172033;
         }
-
-        /* QR */
 
         .qr-center {
             display: flex;
@@ -531,8 +513,6 @@
             margin-top: 2px;
         }
 
-        /* PHOTO */
-
         .qr-right-profile {
             display: flex;
             align-items: center;
@@ -549,8 +529,6 @@
             box-shadow: 0 5px 18px rgba(0,0,0,.18);
             background: #f3f4f6;
         }
-
-        /* ORGANIZATION */
 
         .qr-organization {
             position: relative;
@@ -605,8 +583,6 @@
             background: #e5e7eb;
         }
 
-        /* LOADING */
-
         .page-loading {
             position: fixed;
             inset: 0;
@@ -638,8 +614,6 @@
                 transform: rotate(360deg);
             }
         }
-
-        /* MOBILE */
 
         @media (max-width: 700px) {
 
@@ -815,9 +789,7 @@
     </div>
 
 
-    <!-- =================================================
-         PROFILE IMAGES
-    ================================================== -->
+    <!-- PROFILE IMAGES -->
 
     <div class="card">
 
@@ -837,7 +809,6 @@
                 <img
                     id="profilePreview"
                     class="profile-preview"
-                    src="../assets/images/default-profile.png"
                     alt="Profile"
                 >
 
@@ -853,7 +824,6 @@
                 <img
                     id="logoPreview"
                     class="logo-preview"
-                    src="../assets/images/default-logo.png"
                     alt="Logo"
                 >
 
@@ -906,9 +876,7 @@
     </div>
 
 
-    <!-- =================================================
-         BASIC DETAILS
-    ================================================== -->
+    <!-- BASIC DETAILS -->
 
     <div class="card">
 
@@ -918,7 +886,6 @@
 
 
         <div class="grid">
-
 
             <div class="field">
 
@@ -1029,7 +996,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -1049,9 +1015,7 @@
     </div>
 
 
-    <!-- =================================================
-         COMPLAINT SETTINGS
-    ================================================== -->
+    <!-- COMPLAINT SETTINGS -->
 
     <div class="card">
 
@@ -1092,9 +1056,7 @@
     </div>
 
 
-    <!-- =================================================
-         SAVE
-    ================================================== -->
+    <!-- SAVE -->
 
     <div class="card">
 
@@ -1109,9 +1071,7 @@
     </div>
 
 
-    <!-- =================================================
-         QR POSTER
-    ================================================== -->
+    <!-- QR POSTER -->
 
     <div class="card qr-box">
 
@@ -1122,7 +1082,6 @@
             <img
                 id="qrTopLogo"
                 class="qr-top-logo"
-                src="../assets/images/default-logo.png"
                 alt="Organization Logo"
             >
 
@@ -1174,8 +1133,6 @@
 
         <div class="qr-poster-content">
 
-
-            <!-- FEATURES -->
 
             <div class="qr-feature-column">
 
@@ -1253,8 +1210,6 @@
             </div>
 
 
-            <!-- QR -->
-
             <div class="qr-center">
 
                 <div class="qr-frame">
@@ -1295,14 +1250,11 @@
             </div>
 
 
-            <!-- PARSHAD PHOTO -->
-
             <div class="qr-right-profile">
 
                 <img
                     id="qrSidePhoto"
                     class="qr-side-photo"
-                    src="../assets/images/default-profile.png"
                     alt="Parshad Photo"
                 >
 
@@ -1311,8 +1263,6 @@
 
         </div>
 
-
-        <!-- ORGANIZATION -->
 
         <div class="qr-organization">
 
@@ -1327,15 +1277,11 @@
         </div>
 
 
-        <!-- URL -->
-
         <div
             id="qrUrl"
             class="qr-url">
         </div>
 
-
-        <!-- ACTIONS -->
 
         <div class="qr-actions">
 
@@ -1365,9 +1311,7 @@
 </div>
 
 
-<!-- =====================================================
-     QR LIBRARY
-====================================================== -->
+<!-- QR LIBRARY -->
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
@@ -1383,11 +1327,9 @@ import {
     db
 } from "../js/firebase-config.js";
 
-
 import {
-    requireParshadLogin
-} from "./login.js";
-
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import {
     doc,
@@ -1395,8 +1337,7 @@ import {
     setDoc,
     deleteDoc,
     serverTimestamp
-} from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
 // =====================================================
@@ -1475,6 +1416,15 @@ const qrCode =
 const qrUrl =
     document.getElementById("qrUrl");
 
+const backButton =
+    document.getElementById("backButton");
+
+const copyQrUrlButton =
+    document.getElementById("copyQrUrlButton");
+
+const openPortalButton =
+    document.getElementById("openPortalButton");
+
 
 // =====================================================
 // STATE
@@ -1490,7 +1440,78 @@ let oldWardNumber = "";
 
 
 // =====================================================
-// FIRESTORE PATHS
+// FALLBACK IMAGES
+// No missing asset / 404 error
+// =====================================================
+
+const DEFAULT_PROFILE =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="600"
+             height="600"
+             viewBox="0 0 600 600">
+
+            <rect width="600"
+                  height="600"
+                  fill="#f3f4f6"/>
+
+            <circle cx="300"
+                    cy="230"
+                    r="105"
+                    fill="#d1d5db"/>
+
+            <path d="M130 560
+                     C150 410 450 410 470 560Z"
+                  fill="#d1d5db"/>
+
+            <text x="300"
+                  y="580"
+                  text-anchor="middle"
+                  font-family="Arial"
+                  font-size="28"
+                  fill="#6b7280">
+                PARSHAD
+            </text>
+
+        </svg>
+    `);
+
+
+const DEFAULT_LOGO =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="400"
+             height="400"
+             viewBox="0 0 400 400">
+
+            <rect width="400"
+                  height="400"
+                  rx="70"
+                  fill="#f3f4f6"/>
+
+            <circle cx="200"
+                    cy="170"
+                    r="90"
+                    fill="#d1d5db"/>
+
+            <text x="200"
+                  y="300"
+                  text-anchor="middle"
+                  font-family="Arial"
+                  font-size="30"
+                  font-weight="700"
+                  fill="#6b7280">
+                LOGO
+            </text>
+
+        </svg>
+    `);
+
+
+// =====================================================
+// PATHS
 // =====================================================
 
 const PARSHADS_PATH = [
@@ -1507,27 +1528,21 @@ const WARDS_PATH = [
 
 
 // =====================================================
-// MESSAGE HELPERS
+// MESSAGE
 // =====================================================
 
 function hideMessages() {
 
-    if (successMessage) {
-        successMessage.style.display = "none";
-    }
+    successMessage.style.display =
+        "none";
 
-    if (errorMessage) {
-        errorMessage.style.display = "none";
-    }
+    errorMessage.style.display =
+        "none";
 
 }
 
 
 function showSuccess(message) {
-
-    if (!successMessage) {
-        return;
-    }
 
     successMessage.textContent =
         message;
@@ -1535,19 +1550,13 @@ function showSuccess(message) {
     successMessage.style.display =
         "block";
 
-    if (errorMessage) {
-        errorMessage.style.display =
-            "none";
-    }
+    errorMessage.style.display =
+        "none";
 
 }
 
 
 function showError(message) {
-
-    if (!errorMessage) {
-        return;
-    }
 
     errorMessage.textContent =
         message;
@@ -1555,10 +1564,8 @@ function showError(message) {
     errorMessage.style.display =
         "block";
 
-    if (successMessage) {
-        successMessage.style.display =
-            "none";
-    }
+    successMessage.style.display =
+        "none";
 
 }
 
@@ -1569,16 +1576,51 @@ function showError(message) {
 
 function hidePageLoading() {
 
-    if (pageLoading) {
-        pageLoading.style.display =
-            "none";
-    }
+    pageLoading.style.display =
+        "none";
 
 }
 
 
 // =====================================================
-// IMAGE COMPRESS
+// WAIT FOR FIREBASE AUTH
+// =====================================================
+
+function waitForFirebaseUser() {
+
+    return new Promise(
+        (resolve) => {
+
+            let finished = false;
+
+            const unsubscribe =
+                onAuthStateChanged(
+                    auth,
+                    (user) => {
+
+                        if (finished) {
+                            return;
+                        }
+
+                        finished = true;
+
+                        unsubscribe();
+
+                        resolve(
+                            user || null
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// COMPRESS IMAGE
 // =====================================================
 
 function compressImage(
@@ -1590,23 +1632,27 @@ function compressImage(
         (resolve, reject) => {
 
             if (!file) {
+
                 resolve("");
+
                 return;
+
             }
+
 
             const reader =
                 new FileReader();
 
 
             reader.onload =
-                event => {
+                function(event) {
 
                     const img =
                         new Image();
 
 
                     img.onload =
-                        () => {
+                        function() {
 
                             let width =
                                 img.width;
@@ -1685,7 +1731,7 @@ function compressImage(
 
 
                     img.onerror =
-                        () => {
+                        function() {
 
                             reject(
                                 new Error(
@@ -1703,7 +1749,7 @@ function compressImage(
 
 
             reader.onerror =
-                () => {
+                function() {
 
                     reject(
                         new Error(
@@ -1714,7 +1760,9 @@ function compressImage(
                 };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
@@ -1726,32 +1774,34 @@ function compressImage(
 // RENDER QR PROFILE
 // =====================================================
 
-function renderQRProfile(data) {
+function renderQRProfile(
+    data = {}
+) {
 
     const ward =
-        data?.wardNumber ||
-        data?.wardId ||
-        wardInput.value ||
+        data.wardNumber ||
+        data.wardId ||
+        wardInput.value.trim() ||
         "";
 
     const area =
-        data?.areaName ||
-        data?.area ||
-        areaInput.value ||
+        data.areaName ||
+        data.area ||
+        areaInput.value.trim() ||
         "";
 
     const organization =
-        data?.organizationName ||
-        organizationNameInput.value ||
+        data.organizationName ||
+        organizationNameInput.value.trim() ||
         "Organization";
 
     const photo =
-        data?.profilePhoto ||
-        "../assets/images/default-profile.png";
+        data.profilePhoto ||
+        DEFAULT_PROFILE;
 
     const logo =
-        data?.partyLogo ||
-        "../assets/images/default-logo.png";
+        data.partyLogo ||
+        DEFAULT_LOGO;
 
 
     qrAreaName.textContent =
@@ -1772,7 +1822,6 @@ function renderQRProfile(data) {
     qrTopLogo.src =
         logo;
 
-
     qrSidePhoto.src =
         photo;
 
@@ -1783,7 +1832,7 @@ function renderQRProfile(data) {
             this.onerror = null;
 
             this.src =
-                "../assets/images/default-logo.png";
+                DEFAULT_LOGO;
 
         };
 
@@ -1794,7 +1843,7 @@ function renderQRProfile(data) {
             this.onerror = null;
 
             this.src =
-                "../assets/images/default-profile.png";
+                DEFAULT_PROFILE;
 
         };
 
@@ -1805,59 +1854,71 @@ function renderQRProfile(data) {
 // FILL FORM
 // =====================================================
 
-function fillForm(data) {
+function fillForm(
+    data = {}
+) {
 
     nameInput.value =
-        data?.name ||
+        data.name ||
         account?.name ||
         "";
 
     designationInput.value =
-        data?.designation ||
+        data.designation ||
         "Ward Parshad";
 
     wardInput.value =
-        data?.wardNumber ||
-        data?.wardId ||
+        data.wardNumber ||
+        data.wardId ||
         account?.ward ||
         "";
 
     areaInput.value =
-        data?.areaName ||
-        data?.area ||
+        data.areaName ||
+        data.area ||
         account?.area ||
         "";
 
     organizationNameInput.value =
-        data?.organizationName ||
+        data.organizationName ||
         "";
 
     phoneInput.value =
-        data?.phone ||
+        data.phone ||
         account?.mobile ||
         "";
 
     whatsappInput.value =
-        data?.whatsapp ||
+        data.whatsapp ||
         account?.mobile ||
         "";
 
     aboutInput.value =
-        data?.about ||
+        data.about ||
         "";
 
     complaintEnabledInput.checked =
-        data?.complaintEnabled !== false;
+        data.complaintEnabled !== false;
 
 
     profilePreview.src =
-        data?.profilePhoto ||
-        "../assets/images/default-profile.png";
+        data.profilePhoto ||
+        DEFAULT_PROFILE;
 
 
     logoPreview.src =
-        data?.partyLogo ||
-        "../assets/images/default-logo.png";
+        data.partyLogo ||
+        DEFAULT_LOGO;
+
+
+    qrTopLogo.src =
+        data.partyLogo ||
+        DEFAULT_LOGO;
+
+
+    qrSidePhoto.src =
+        data.profilePhoto ||
+        DEFAULT_PROFILE;
 
 
     renderQRProfile(
@@ -1868,15 +1929,17 @@ function fillForm(data) {
 
 
 // =====================================================
-// LOAD REAL FIREBASE ACCOUNT
+// LOAD PARSHAD ACCOUNT
 // =====================================================
 
 async function loadAccount() {
 
     if (!currentUser) {
+
         throw new Error(
-            "Firebase user not available."
+            "Firebase login session not found."
         );
+
     }
 
 
@@ -1965,12 +2028,6 @@ async function loadWardProfile() {
             about:
                 "",
 
-            profilePhoto:
-                "../assets/images/default-profile.png",
-
-            partyLogo:
-                "../assets/images/default-logo.png",
-
             complaintEnabled:
                 true
 
@@ -2025,19 +2082,15 @@ async function loadWardProfile() {
             about:
                 "",
 
-            profilePhoto:
-                "../assets/images/default-profile.png",
-
-            partyLogo:
-                "../assets/images/default-logo.png",
-
             complaintEnabled:
                 true
 
         });
 
+
         oldWardNumber =
             ward;
+
 
         generateQR();
 
@@ -2049,10 +2102,6 @@ async function loadWardProfile() {
     const data =
         snapshot.data();
 
-
-    // -----------------------------------------
-    // TENANT SAFETY
-    // -----------------------------------------
 
     if (
         data.parshadId &&
@@ -2098,14 +2147,22 @@ async function saveProfile() {
     hideMessages();
 
 
-    currentUser =
-        auth.currentUser;
+    // IMPORTANT:
+    // Use the already authenticated user.
+    // Do NOT call login.js here.
+
+    if (!currentUser) {
+
+        currentUser =
+            auth.currentUser;
+
+    }
 
 
     if (!currentUser) {
 
         showError(
-            "Login session nahi mila. Please login again."
+            "Firebase login session nahi mila. Page refresh karke login karein."
         );
 
         return;
@@ -2141,9 +2198,7 @@ async function saveProfile() {
         complaintEnabledInput.checked;
 
 
-    // -----------------------------------------
     // VALIDATION
-    // -----------------------------------------
 
     if (!name) {
 
@@ -2216,22 +2271,32 @@ async function saveProfile() {
     try {
 
         // -----------------------------------------
+        // CHECK ACCOUNT AGAIN
+        // -----------------------------------------
+
+        const latestAccount =
+            await loadAccount();
+
+        account =
+            latestAccount;
+
+
+        // -----------------------------------------
         // IMAGE DATA
         // -----------------------------------------
 
         let profilePhoto =
-            profilePreview.src ||
-            "../assets/images/default-profile.png";
-
+            currentProfile?.profilePhoto ||
+            DEFAULT_PROFILE;
 
         let partyLogo =
-            logoPreview.src ||
-            "../assets/images/default-logo.png";
+            currentProfile?.partyLogo ||
+            DEFAULT_LOGO;
 
 
         if (
             profilePhotoInput.files &&
-            profilePhotoInput.files.length > 0
+            profilePhotoInput.files[0]
         ) {
 
             profilePhoto =
@@ -2245,7 +2310,7 @@ async function saveProfile() {
 
         if (
             partyLogoInput.files &&
-            partyLogoInput.files.length > 0
+            partyLogoInput.files[0]
         ) {
 
             partyLogo =
@@ -2258,7 +2323,7 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // PROFILE OBJECT
+        // NEW PROFILE
         // -----------------------------------------
 
         const profile = {
@@ -2287,13 +2352,13 @@ async function saveProfile() {
 
             phone:
                 phone ||
-                account?.mobile ||
+                account.mobile ||
                 "",
 
             whatsapp:
                 whatsapp ||
                 phone ||
-                account?.mobile ||
+                account.mobile ||
                 "",
 
             about:
@@ -2318,7 +2383,7 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // NEW WARD
+        // NEW WARD REF
         // -----------------------------------------
 
         const newWardRef =
@@ -2363,7 +2428,7 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // SAVE
+        // SAVE PROFILE
         // -----------------------------------------
 
         await setDoc(
@@ -2376,7 +2441,7 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // OLD WARD CLEANUP
+        // DELETE OLD WARD ONLY IF CHANGED
         // -----------------------------------------
 
         if (
@@ -2424,23 +2489,23 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // UPDATE STATE
+        // UPDATE LOCAL STATE
         // -----------------------------------------
 
         oldWardNumber =
             String(ward);
 
         currentProfile =
-            profile;
+            {
+                ...profile
+            };
 
 
         account.ward =
             String(ward);
 
-
         account.name =
             name;
-
 
         account.mobile =
             phone ||
@@ -2449,7 +2514,7 @@ async function saveProfile() {
 
 
         // -----------------------------------------
-        // UPDATE QR
+        // UPDATE UI
         // -----------------------------------------
 
         renderQRProfile(
@@ -2473,16 +2538,24 @@ async function saveProfile() {
         );
 
 
+        let message =
+            error.message ||
+            "Profile save nahi ho payi.";
+
+
+        if (
+            error.code ===
+            "permission-denied"
+        ) {
+
+            message =
+                "Firebase permission denied. Firestore rules check karni hongi.";
+
+        }
+
+
         showError(
-            (
-                error.code
-                    ? error.code + " — "
-                    : ""
-            ) +
-            (
-                error.message ||
-                "Profile save nahi ho payi."
-            )
+            message
         );
 
     }
@@ -2501,7 +2574,7 @@ async function saveProfile() {
 
 
 // =====================================================
-// GENERATE QR
+// QR
 // =====================================================
 
 function generateQR() {
@@ -2540,6 +2613,7 @@ function generateQR() {
         new QRCode(
             qrCode,
             {
+
                 text:
                     portalUrl,
 
@@ -2551,6 +2625,7 @@ function generateQR() {
 
                 correctLevel:
                     QRCode.CorrectLevel.H
+
             }
         );
 
@@ -2569,7 +2644,7 @@ function generateQR() {
 
 profilePhotoInput.addEventListener(
     "change",
-    async () => {
+    async function() {
 
         const file =
             profilePhotoInput.files?.[0];
@@ -2615,7 +2690,7 @@ profilePhotoInput.addEventListener(
 
 partyLogoInput.addEventListener(
     "change",
-    async () => {
+    async function() {
 
         const file =
             partyLogoInput.files?.[0];
@@ -2661,7 +2736,7 @@ partyLogoInput.addEventListener(
 
 wardInput.addEventListener(
     "input",
-    () => {
+    function() {
 
         const ward =
             wardInput.value.trim();
@@ -2681,7 +2756,7 @@ wardInput.addEventListener(
 
 areaInput.addEventListener(
     "input",
-    () => {
+    function() {
 
         qrAreaName.textContent =
             areaInput.value.trim() ||
@@ -2693,7 +2768,7 @@ areaInput.addEventListener(
 
 organizationNameInput.addEventListener(
     "input",
-    () => {
+    function() {
 
         qrOrganizationText.textContent =
             organizationNameInput.value.trim() ||
@@ -2704,7 +2779,7 @@ organizationNameInput.addEventListener(
 
 
 // =====================================================
-// SAVE BUTTON
+// SAVE
 // =====================================================
 
 saveButton.addEventListener(
@@ -2717,113 +2792,107 @@ saveButton.addEventListener(
 // COPY LINK
 // =====================================================
 
-document
-    .getElementById("copyQrUrlButton")
-    .addEventListener(
-        "click",
-        async () => {
+copyQrUrlButton.addEventListener(
+    "click",
+    async function() {
 
-            const ward =
-                wardInput.value.trim();
+        const ward =
+            wardInput.value.trim();
 
 
-            if (!ward) {
+        if (!ward) {
 
-                showError(
-                    "Pehle ward number enter karein."
-                );
+            showError(
+                "Pehle ward number enter karein."
+            );
 
-                return;
-
-            }
-
-
-            const url =
-                `${window.location.origin}/?ward=${encodeURIComponent(
-                    ward
-                )}`;
-
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    url
-                );
-
-
-                showSuccess(
-                    "Ward portal link copy ho gaya."
-                );
-
-            }
-
-            catch (error) {
-
-                showError(
-                    "Link copy nahi ho paya."
-                );
-
-            }
+            return;
 
         }
-    );
+
+
+        const url =
+            `${window.location.origin}/?ward=${encodeURIComponent(
+                ward
+            )}`;
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                url
+            );
+
+
+            showSuccess(
+                "Ward portal link copy ho gaya."
+            );
+
+        }
+
+        catch (error) {
+
+            showError(
+                "Link copy nahi ho paya."
+            );
+
+        }
+
+    }
+);
 
 
 // =====================================================
 // OPEN PORTAL
 // =====================================================
 
-document
-    .getElementById("openPortalButton")
-    .addEventListener(
-        "click",
-        () => {
+openPortalButton.addEventListener(
+    "click",
+    function() {
 
-            const ward =
-                wardInput.value.trim();
+        const ward =
+            wardInput.value.trim();
 
 
-            if (!ward) {
+        if (!ward) {
 
-                showError(
-                    "Pehle ward number enter karein."
-                );
-
-                return;
-
-            }
-
-
-            const url =
-                `${window.location.origin}/?ward=${encodeURIComponent(
-                    ward
-                )}`;
-
-
-            window.open(
-                url,
-                "_blank"
+            showError(
+                "Pehle ward number enter karein."
             );
 
+            return;
+
         }
-    );
+
+
+        const url =
+            `${window.location.origin}/?ward=${encodeURIComponent(
+                ward
+            )}`;
+
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+);
 
 
 // =====================================================
-// BACK BUTTON
+// BACK
 // =====================================================
 
-document
-    .getElementById("backButton")
-    .addEventListener(
-        "click",
-        () => {
+backButton.addEventListener(
+    "click",
+    function() {
 
-            window.location.href =
-                "./dashboard.html";
+        window.location.href =
+            "./dashboard.html";
 
-        }
-    );
+    }
+);
 
 
 // =====================================================
@@ -2838,22 +2907,7 @@ async function initializeProfile() {
 
 
         // -----------------------------------------
-        // REAL FIREBASE LOGIN
-        // -----------------------------------------
-
-        const allowed =
-            await requireParshadLogin(
-                "./index.html"
-            );
-
-
-        if (!allowed) {
-            return;
-        }
-
-
-        // -----------------------------------------
-        // CURRENT FIREBASE USER
+        // WAIT FOR FIREBASE AUTH
         // -----------------------------------------
 
         currentUser =
@@ -2862,9 +2916,34 @@ async function initializeProfile() {
 
         if (!currentUser) {
 
-            window.location.replace(
-                "./index.html"
+            currentUser =
+                await waitForFirebaseUser();
+
+        }
+
+
+        // -----------------------------------------
+        // NO LOGIN
+        // -----------------------------------------
+
+        if (!currentUser) {
+
+            showError(
+                "Login session nahi mila. Please login again."
             );
+
+
+            setTimeout(
+                function() {
+
+                    window.location.replace(
+                        "./index.html"
+                    );
+
+                },
+                1200
+            );
+
 
             return;
 
@@ -2872,7 +2951,7 @@ async function initializeProfile() {
 
 
         // -----------------------------------------
-        // ACCOUNT
+        // LOAD ACCOUNT
         // -----------------------------------------
 
         account =
@@ -2880,7 +2959,7 @@ async function initializeProfile() {
 
 
         // -----------------------------------------
-        // PROFILE
+        // LOAD WARD PROFILE
         // -----------------------------------------
 
         await loadWardProfile();
