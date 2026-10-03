@@ -9,7 +9,10 @@ import {
     collection,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    query,
+    where,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 import {
@@ -25,23 +28,11 @@ import {
 // FIRESTORE PATHS
 // =========================================================
 
-// Ward profile:
-// parshd / wards / data / {wardId}
-
 const WARD_COLLECTION = [
     "parshd",
     "wards",
     "data"
 ];
-
-// Complaints:
-// parshd / complaints / data / {complaintId}
-//
-// IMPORTANT:
-// "parshd/complaints/data/items" was INVALID because
-// it had an even number of path segments.
-// Therefore complaints are stored directly inside
-// parshd/complaints/data.
 
 const COMPLAINT_COLLECTION = [
     "parshd",
@@ -55,7 +46,7 @@ const COMPLAINT_COLLECTION = [
 // =========================================================
 
 function clean(value) {
-    return String(value || "").trim();
+    return String(value ?? "").trim();
 }
 
 
@@ -69,22 +60,6 @@ function isValidPhone(phone) {
 }
 
 
-function getFileExtension(file) {
-
-    if (!file || !file.name) {
-        return "";
-    }
-
-    const parts = file.name.split(".");
-
-    if (parts.length < 2) {
-        return "";
-    }
-
-    return parts.pop().toLowerCase();
-}
-
-
 function makeComplaintId() {
 
     const chars =
@@ -93,9 +68,13 @@ function makeComplaintId() {
     let result = "";
 
     for (let i = 0; i < 10; i++) {
+
         result += chars.charAt(
-            Math.floor(Math.random() * chars.length)
+            Math.floor(
+                Math.random() * chars.length
+            )
         );
+
     }
 
     return "PSH-" + result;
@@ -108,30 +87,46 @@ function makeComplaintId() {
 
 export async function getWard(wardId) {
 
-    const id = normalizeWard(wardId);
+    const id =
+        normalizeWard(wardId);
 
     if (!id) {
-        throw new Error("Ward number नहीं मिला।");
+
+        throw new Error(
+            "Ward number नहीं मिला।"
+        );
+
     }
 
-    const wardRef = doc(
-        db,
-        ...WARD_COLLECTION,
-        id
-    );
 
-    const snap = await getDoc(wardRef);
+    const wardRef =
+        doc(
+            db,
+            ...WARD_COLLECTION,
+            id
+        );
+
+
+    const snap =
+        await getDoc(
+            wardRef
+        );
+
 
     if (!snap.exists()) {
+
         throw new Error(
             "यह Ward अभी registered नहीं है।"
         );
+
     }
+
 
     return {
         id,
         ...snap.data()
     };
+
 }
 
 
@@ -141,18 +136,29 @@ export async function getWard(wardId) {
 
 export async function createComplaint(data) {
 
-    // -----------------------------------------------------
+    // =====================================================
     // BASIC DATA
-    // -----------------------------------------------------
+    // =====================================================
 
     const citizenName =
-        clean(data.citizenName);
+        clean(
+            data.citizenName ||
+            data.name
+        );
+
 
     const citizenPhone =
-        clean(data.citizenPhone);
+        clean(
+            data.citizenPhone ||
+            data.phone
+        );
+
 
     const wardNumber =
-        normalizeWard(data.wardNumber);
+        normalizeWard(
+            data.wardNumber
+        );
+
 
     const qrWard =
         normalizeWard(
@@ -161,129 +167,166 @@ export async function createComplaint(data) {
             ""
         );
 
+
     const address =
-        clean(data.address);
+        clean(
+            data.address
+        );
+
 
     const complaintText =
         clean(
             data.complaintText ||
-            data.complaint ||
-            ""
+            data.complaint
         );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // VALIDATION
-    // -----------------------------------------------------
+    // =====================================================
 
     if (!citizenName) {
+
         throw new Error(
             "कृपया अपना नाम दर्ज करें।"
         );
+
     }
 
 
     if (!isValidPhone(citizenPhone)) {
+
         throw new Error(
             "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।"
         );
+
     }
 
 
     if (!wardNumber) {
+
         throw new Error(
             "Ward Number दर्ज करें।"
         );
+
     }
 
-
-    // QR Ward और entered Ward MUST match
 
     if (
         qrWard &&
         wardNumber !== qrWard
     ) {
+
         throw new Error(
             "Ward Number QR वाले Ward से match नहीं करता।"
         );
+
     }
 
 
     if (!address) {
+
         throw new Error(
             "कृपया अपना पता / स्थान दर्ज करें।"
         );
+
     }
 
 
     if (!complaintText) {
+
         throw new Error(
             "कृपया शिकायत की जानकारी दर्ज करें।"
         );
+
     }
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // GET WARD PROFILE
-    // -----------------------------------------------------
+    // =====================================================
 
-    const ward = await getWard(
-        wardNumber
-    );
+    const ward =
+        await getWard(
+            wardNumber
+        );
 
 
-    // -----------------------------------------------------
-    // CHECK WARD STATUS
-    // -----------------------------------------------------
+    // =====================================================
+    // WARD STATUS
+    // =====================================================
 
     if (
         ward.active === false ||
         ward.status === "suspended"
     ) {
+
         throw new Error(
             "यह Ward portal अभी उपलब्ध नहीं है।"
         );
+
     }
 
 
-    // -----------------------------------------------------
-    // COMPLAINT REGISTRATION TOGGLE
-    // -----------------------------------------------------
+    // =====================================================
+    // COMPLAINT TOGGLE
+    // =====================================================
 
     if (
         ward.complaintEnabled === false
     ) {
+
         throw new Error(
             "Complaint registration is temporarily unavailable. Please try again after some time."
         );
+
     }
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // FILES
-    // -----------------------------------------------------
+    // =====================================================
+
+    /*
+     IMPORTANT:
+
+     complaint.html में:
+     data.images भेजा जा रहा है।
+
+     पुराने code में:
+     data.photos पढ़ा जा रहा था।
+
+     अब दोनों support होंगे।
+    */
 
     const photos =
         Array.from(
-            data.photos || []
+            data.images ||
+            data.photos ||
+            []
         );
+
 
     const video =
         data.video || null;
 
 
-    // Maximum 2 photos
+    // =====================================================
+    // PHOTO LIMIT
+    // =====================================================
 
     if (photos.length > 2) {
+
         throw new Error(
             "अधिकतम 2 photos upload कर सकते हैं।"
         );
+
     }
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // PHOTO VALIDATION
-    // -----------------------------------------------------
+    // =====================================================
 
     const allowedImageTypes = [
         "image/jpeg",
@@ -292,36 +335,44 @@ export async function createComplaint(data) {
         "image/webp"
     ];
 
+
     const maxImageSize =
         5 * 1024 * 1024;
 
 
-    for (const photo of photos) {
+    for (
+        const photo of photos
+    ) {
 
         if (
             !allowedImageTypes.includes(
                 photo.type
             )
         ) {
+
             throw new Error(
                 "केवल JPG, PNG या WEBP image upload करें।"
             );
+
         }
 
 
         if (
             photo.size > maxImageSize
         ) {
+
             throw new Error(
                 "हर photo अधिकतम 5 MB की हो सकती है।"
             );
+
         }
+
     }
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // VIDEO VALIDATION
-    // -----------------------------------------------------
+    // =====================================================
 
     if (video) {
 
@@ -330,6 +381,7 @@ export async function createComplaint(data) {
             "video/webm",
             "video/quicktime"
         ];
+
 
         const maxVideoSize =
             25 * 1024 * 1024;
@@ -340,36 +392,38 @@ export async function createComplaint(data) {
                 video.type
             )
         ) {
+
             throw new Error(
                 "केवल MP4, WEBM या MOV video upload करें।"
             );
+
         }
 
 
         if (
             video.size > maxVideoSize
         ) {
+
             throw new Error(
                 "Video अधिकतम 25 MB की हो सकती है।"
             );
+
         }
 
-
-        // -------------------------------------------------
-        // VIDEO DURATION CHECK
-        // -------------------------------------------------
 
         await validateVideoDuration(
             video
         );
+
     }
 
 
-    // -----------------------------------------------------
-    // GPS LOCATION
-    // -----------------------------------------------------
+    // =====================================================
+    // GPS
+    // =====================================================
 
     let location = null;
+
 
     try {
 
@@ -378,15 +432,19 @@ export async function createComplaint(data) {
 
     } catch (error) {
 
-        // GPS fail होने पर complaint block नहीं होगी.
+        console.warn(
+            "GPS unavailable:",
+            error
+        );
 
         location = null;
+
     }
 
 
-    // -----------------------------------------------------
-    // CREATE COMPLAINT DOCUMENT REFERENCE
-    // -----------------------------------------------------
+    // =====================================================
+    // CREATE FIRESTORE DOCUMENT
+    // =====================================================
 
     const complaintCollection =
         collection(
@@ -394,8 +452,6 @@ export async function createComplaint(data) {
             ...COMPLAINT_COLLECTION
         );
 
-
-    // Auto generated Firestore document ID
 
     const complaintRef =
         doc(
@@ -407,17 +463,13 @@ export async function createComplaint(data) {
         complaintRef.id;
 
 
-    // -----------------------------------------------------
-    // PUBLIC TRACK ID
-    // -----------------------------------------------------
-
     const publicComplaintId =
         makeComplaintId();
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // COMPLAINT DATA
-    // -----------------------------------------------------
+    // =====================================================
 
     const complaintData = {
 
@@ -447,21 +499,26 @@ export async function createComplaint(data) {
         location,
 
         media: {
+
             images: [],
+
             video: null
+
         },
 
         status: "new",
 
-        createdAt: new Date().toISOString(),
+        createdAt:
+            new Date().toISOString(),
 
         solvedAt: null
+
     };
 
 
-    // -----------------------------------------------------
-    // SAVE COMPLAINT FIRST
-    // -----------------------------------------------------
+    // =====================================================
+    // SAVE COMPLAINT
+    // =====================================================
 
     await setDoc(
         complaintRef,
@@ -469,9 +526,9 @@ export async function createComplaint(data) {
     );
 
 
-    // -----------------------------------------------------
-    // UPLOAD MEDIA
-    // -----------------------------------------------------
+    // =====================================================
+    // UPLOAD PHOTO / VIDEO
+    // =====================================================
 
     try {
 
@@ -491,32 +548,43 @@ export async function createComplaint(data) {
                     photos,
 
                     video
+
                 });
 
 
-            // -------------------------------------------------
-            // UPDATE MEDIA REFERENCES
-            // -------------------------------------------------
+            const finalMedia =
+                media || {
+
+                    images: [],
+
+                    video: null
+
+                };
+
+
+            // =================================================
+            // SAVE MEDIA REFERENCES
+            // =================================================
 
             await setDoc(
                 complaintRef,
                 {
-                    media: media || {
-                        images: [],
-                        video: null
-                    }
+
+                    media:
+                        finalMedia
+
                 },
                 {
+
                     merge: true
+
                 }
             );
 
 
             complaintData.media =
-                media || {
-                    images: [],
-                    video: null
-                };
+                finalMedia;
+
         }
 
 
@@ -527,21 +595,23 @@ export async function createComplaint(data) {
             error
         );
 
+
         /*
-         * Complaint document intentionally remains.
-         * इससे complaint data खोता नहीं है अगर
-         * photo/video upload में temporary problem आए.
-         */
+         Complaint बनी रहेगी।
+         Media upload fail होने पर
+         complaint delete नहीं होगी।
+        */
 
         throw new Error(
-            "शिकायत save हो गई, लेकिन photo/video upload नहीं हो पाया। कृपया बाद में media के साथ दोबारा try करें।"
+            "शिकायत save हो गई, लेकिन photo/video upload नहीं हो पाया। कृपया दोबारा try करें।"
         );
+
     }
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // RESULT
-    // -----------------------------------------------------
+    // =====================================================
 
     return {
 
@@ -559,12 +629,14 @@ export async function createComplaint(data) {
 
         media:
             complaintData.media
+
     };
+
 }
 
 
 // =========================================================
-// VIDEO DURATION VALIDATION
+// VIDEO DURATION
 // =========================================================
 
 function validateVideoDuration(file) {
@@ -577,13 +649,15 @@ function validateVideoDuration(file) {
                     "video"
                 );
 
+
             const url =
                 URL.createObjectURL(
                     file
                 );
 
 
-            video.preload = "metadata";
+            video.preload =
+                "metadata";
 
 
             video.onloadedmetadata =
@@ -613,6 +687,7 @@ function validateVideoDuration(file) {
                         );
 
                         return;
+
                     }
 
 
@@ -627,10 +702,12 @@ function validateVideoDuration(file) {
                         );
 
                         return;
+
                     }
 
 
                     resolve(true);
+
                 };
 
 
@@ -641,17 +718,22 @@ function validateVideoDuration(file) {
                         url
                     );
 
+
                     reject(
                         new Error(
                             "Video file valid नहीं है।"
                         )
                     );
+
                 };
 
 
-            video.src = url;
+            video.src =
+                url;
+
         }
     );
+
 }
 
 
@@ -664,13 +746,17 @@ export async function getComplaint(
 ) {
 
     const id =
-        clean(complaintId);
+        clean(
+            complaintId
+        );
 
 
     if (!id) {
+
         throw new Error(
             "Complaint ID नहीं मिली।"
         );
+
     }
 
 
@@ -681,7 +767,9 @@ export async function getComplaint(
         );
 
 
-    // First try Firestore document ID
+    // =====================================================
+    // TRY FIRESTORE DOCUMENT ID
+    // =====================================================
 
     const directRef =
         doc(
@@ -690,26 +778,69 @@ export async function getComplaint(
         );
 
 
-    const snap =
+    const directSnap =
         await getDoc(
             directRef
         );
 
 
-    if (!snap.exists()) {
+    if (directSnap.exists()) {
+
+        return {
+
+            id:
+                directSnap.id,
+
+            ...directSnap.data()
+
+        };
+
+    }
+
+
+    // =====================================================
+    // TRY PUBLIC COMPLAINT ID
+    // =====================================================
+
+    const q =
+        query(
+            complaintCollection,
+            where(
+                "publicComplaintId",
+                "==",
+                id
+            )
+        );
+
+
+    const result =
+        await getDocs(q);
+
+
+    if (
+        result.empty
+    ) {
 
         throw new Error(
             "Complaint नहीं मिली।"
         );
+
     }
+
+
+    const found =
+        result.docs[0];
 
 
     return {
 
-        id: snap.id,
+        id:
+            found.id,
 
-        ...snap.data()
+        ...found.data()
+
     };
+
 }
 
 
@@ -724,4 +855,5 @@ export default {
     getComplaint,
 
     getWard
+
 };
