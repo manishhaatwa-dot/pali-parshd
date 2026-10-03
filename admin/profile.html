@@ -254,24 +254,129 @@
             color: #991b1b;
         }
 
+
+        /* =====================================================
+           QR CARD
+        ===================================================== */
+
         .qr-box {
             text-align: center;
+            overflow: hidden;
+        }
+
+        .qr-box .section-title {
+            margin-bottom: 5px;
+        }
+
+        .qr-subtitle {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 0 0 20px;
+        }
+
+        .qr-layout {
+            display: grid;
+            grid-template-columns: 145px 1fr 145px;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .qr-feature-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .qr-feature {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .qr-feature-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: #f3f4f6;
+        }
+
+        .qr-feature-text {
+            line-height: 1.25;
+        }
+
+        .qr-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #qrCode {
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
             padding: 12px;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            margin: 10px 0;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            margin: 0 auto;
+            min-width: 224px;
+            min-height: 224px;
+        }
+
+        #qrCode img,
+        #qrCode canvas {
+            display: block;
+            max-width: 200px;
+            height: auto;
+        }
+
+        .scan-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 190px;
+            margin-top: 14px;
+            padding: 12px 22px;
+            border-radius: 30px;
+            background: #16a34a;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            box-shadow: 0 5px 14px rgba(22,163,74,0.18);
+        }
+
+        .scan-icon {
+            font-size: 20px;
+        }
+
+        .scan-subtext {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            opacity: 0.95;
+            margin-top: 2px;
         }
 
         .qr-url {
             word-break: break-all;
             color: #6b7280;
             font-size: 12px;
-            margin: 8px 0 15px;
+            margin: 15px auto 15px;
+            max-width: 600px;
         }
 
         .qr-actions {
@@ -291,7 +396,17 @@
             font-weight: 700;
         }
 
+        .secondary-btn:hover {
+            background: #e5e7eb;
+        }
+
+
+        /* =====================================================
+           MOBILE QR
+        ===================================================== */
+
         @media (max-width: 650px) {
+
             .profile-page {
                 padding: 14px;
             }
@@ -304,7 +419,61 @@
             .page-title {
                 font-size: 20px;
             }
+
+            .qr-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .qr-feature-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .qr-feature {
+                background: #f9fafb;
+                padding: 8px;
+                border-radius: 10px;
+                font-size: 11px;
+            }
+
+            .qr-feature-icon {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                font-size: 16px;
+            }
+
+            .qr-center {
+                order: -1;
+            }
+
+            #qrCode {
+                min-width: 224px;
+                min-height: 224px;
+            }
+
+            .scan-button {
+                min-width: 180px;
+                font-size: 17px;
+            }
         }
+
+        @media (max-width: 380px) {
+
+            .qr-feature-column {
+                grid-template-columns: 1fr;
+            }
+
+            #qrCode {
+                min-width: 214px;
+                min-height: 214px;
+            }
+
+        }
+
     </style>
 </head>
 
@@ -420,7 +589,6 @@
         <h2 class="section-title">
             Basic Details
         </h2>
-
 
         <div class="grid">
 
@@ -587,23 +755,138 @@
     </div>
 
 
-    <!-- QR -->
+    <!-- =====================================================
+         WARD QR CODE
+    ====================================================== -->
+
     <div class="card qr-box">
 
         <h2 class="section-title">
             Ward QR Code
         </h2>
 
-        <p>
+        <p class="qr-subtitle">
             Is QR ko ward ke citizens ke saath share karein.
         </p>
 
-        <div id="qrCode"></div>
+
+        <div class="qr-layout">
+
+
+            <!-- LEFT FEATURES -->
+
+            <div class="qr-feature-column">
+
+                <div class="qr-feature">
+
+                    <div class="qr-feature-icon">
+                        📍
+                    </div>
+
+                    <div class="qr-feature-text">
+                        Register<br>
+                        Complaint
+                    </div>
+
+                </div>
+
+
+                <div class="qr-feature">
+
+                    <div class="qr-feature-icon">
+                        📷
+                    </div>
+
+                    <div class="qr-feature-text">
+                        Upload<br>
+                        Photo
+                    </div>
+
+                </div>
+
+
+                <div class="qr-feature">
+
+                    <div class="qr-feature-icon">
+                        🎥
+                    </div>
+
+                    <div class="qr-feature-text">
+                        Upload<br>
+                        Video
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CENTER QR -->
+
+            <div class="qr-center">
+
+                <div id="qrCode"></div>
+
+
+                <div class="scan-button">
+
+                    <span class="scan-icon">
+                        📱
+                    </span>
+
+                    <span>
+                        SCAN QR
+                        <small class="scan-subtext">
+                            Open Ward Complaint Portal
+                        </small>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT FEATURES -->
+
+            <div class="qr-feature-column">
+
+                <div class="qr-feature">
+
+                    <div class="qr-feature-icon">
+                        📍
+                    </div>
+
+                    <div class="qr-feature-text">
+                        Live GPS<br>
+                        Location
+                    </div>
+
+                </div>
+
+
+                <div class="qr-feature">
+
+                    <div class="qr-feature-icon">
+                        ✓
+                    </div>
+
+                    <div class="qr-feature-text">
+                        Track<br>
+                        Status
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
 
         <div
             id="qrUrl"
             class="qr-url"
         ></div>
+
 
         <div class="qr-actions">
 
@@ -975,8 +1258,6 @@
                     snapshot.data();
 
 
-                // Safety:
-                // Don't load another parshad's profile
                 if (
                     !data.parshadId ||
                     data.parshadId === parshadId
@@ -1104,10 +1385,6 @@
             complaintEnabledInput.checked;
 
 
-        // -------------------------
-        // VALIDATION
-        // -------------------------
-
         if (!name) {
 
             showError(
@@ -1173,10 +1450,6 @@
 
         try {
 
-            // -------------------------
-            // OLD PROFILE
-            // -------------------------
-
             const oldProfileRaw =
                 localStorage.getItem(
                     "parshd_demo_profile"
@@ -1199,10 +1472,6 @@
 
             }
 
-
-            // -------------------------
-            // IMAGE
-            // -------------------------
 
             let profilePhoto =
                 profilePreview.src || "";
@@ -1239,10 +1508,6 @@
             }
 
 
-            // -------------------------
-            // PROFILE OBJECT
-            // -------------------------
-
             const profile = {
 
                 parshadId: parshadId,
@@ -1278,10 +1543,6 @@
             };
 
 
-            // -------------------------
-            // FIRESTORE
-            // -------------------------
-
             const profileRef =
                 doc(
                     db,
@@ -1305,9 +1566,8 @@
             );
 
 
-            // -------------------------
-            // DELETE OLD WARD PROFILE
-            // -------------------------
+            // OLD WARD DELETE:
+            // Only if it belongs to same Parshad
 
             if (
                 oldProfile &&
@@ -1369,17 +1629,12 @@
             }
 
 
-            // -------------------------
-            // LOCAL CACHE
-            // -------------------------
-
             localStorage.setItem(
                 "parshd_demo_profile",
                 JSON.stringify(profile)
             );
 
 
-            // Update account ward
             account.ward =
                 String(ward);
 
@@ -1398,10 +1653,6 @@
             );
 
 
-            // -------------------------
-            // QR
-            // -------------------------
-
             generateQR();
 
 
@@ -1410,21 +1661,21 @@
             );
 
 
-      } catch (error) {
+        } catch (error) {
 
-    console.error(
-        "PROFILE FIREBASE ERROR:",
-        error
-    );
+            console.error(
+                "PROFILE FIREBASE ERROR:",
+                error
+            );
 
-    showError(
-        "Firebase Error: " +
-        (error.code || "unknown") +
-        " — " +
-        (error.message || "Unknown error")
-    );
+            showError(
+                "Firebase Error: " +
+                (error.code || "unknown") +
+                " — " +
+                (error.message || "Unknown error")
+            );
 
-} finally {
+        } finally {
 
             saveButton.disabled =
                 false;
@@ -1457,21 +1708,22 @@
             return;
         }
 
-const baseUrl =
-    window.location.origin +
-    window.location.pathname
-        .replace(
-            /\/admin\/profile\.html$/,
-            ""
-        );
+
+        const baseUrl =
+            window.location.origin +
+            window.location.pathname
+                .replace(
+                    /\/admin\/profile\.html$/,
+                    ""
+                );
 
 
-const portalUrl =
-    baseUrl +
-    "/?ward=" +
-    encodeURIComponent(
-        ward
-    );
+        const portalUrl =
+            baseUrl +
+            "/?ward=" +
+            encodeURIComponent(
+                ward
+            );
 
 
         qrCode.innerHTML = "";
@@ -1533,21 +1785,23 @@ const portalUrl =
                     return;
                 }
 
-const baseUrl =
-    window.location.origin +
-    window.location.pathname
-        .replace(
-            /\/admin\/profile\.html$/,
-            ""
-        );
+
+                const baseUrl =
+                    window.location.origin +
+                    window.location.pathname
+                        .replace(
+                            /\/admin\/profile\.html$/,
+                            ""
+                        );
 
 
-const url =
-    baseUrl +
-    "/?ward=" +
-    encodeURIComponent(
-        ward
-    );
+                const url =
+                    baseUrl +
+                    "/?ward=" +
+                    encodeURIComponent(
+                        ward
+                    );
+
 
                 try {
 
@@ -1598,23 +1852,23 @@ const url =
                 }
 
 
-              const baseUrl =
-    window.location.origin +
-    window.location.pathname
-        .replace(
-            /\/admin\/profile\.html$/,
-            ""
-        );
+                const baseUrl =
+                    window.location.origin +
+                    window.location.pathname
+                        .replace(
+                            /\/admin\/profile\.html$/,
+                            ""
+                        );
 
 
-window.open(
-    baseUrl +
-    "/?ward=" +
-    encodeURIComponent(
-        ward
-    ),
-    "_blank"
-);
+                window.open(
+                    baseUrl +
+                    "/?ward=" +
+                    encodeURIComponent(
+                        ward
+                    ),
+                    "_blank"
+                );
 
             }
         );
