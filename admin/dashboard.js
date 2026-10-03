@@ -29,6 +29,9 @@ import {
 const welcomeTitle =
     document.getElementById("welcomeTitle");
 
+const partyLogo =
+    document.getElementById("partyLogo");
+
 const profilePhoto =
     document.getElementById("profilePhoto");
 
@@ -275,9 +278,24 @@ function renderProfile() {
         parshad.mobile ||
         "";
 
+
+    // =================================================
+    // PARTY LOGO
+    // =================================================
+
+    const logo =
+        profile.partyLogo ||
+        "../assets/images/default-logo.png";
+
+
+    // =================================================
+    // PARSHAD PHOTO
+    // =================================================
+
     const photo =
         profile.profilePhoto ||
         "../assets/images/default-profile.png";
+
 
     const complaintEnabled =
         profile.complaintEnabled !== false;
@@ -291,6 +309,31 @@ function renderProfile() {
 
         welcomeTitle.textContent =
             `Welcome, ${name}`;
+
+    }
+
+
+    // -----------------------------------------
+    // PARTY LOGO
+    // -----------------------------------------
+
+    if (partyLogo) {
+
+        partyLogo.src =
+            logo;
+
+        partyLogo.alt =
+            "Party Logo";
+
+        partyLogo.onerror =
+            function () {
+
+                this.onerror = null;
+
+                this.src =
+                    "../assets/images/default-logo.png";
+
+            };
 
     }
 
