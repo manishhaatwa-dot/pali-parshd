@@ -1,0 +1,325 @@
+/* =========================================================
+   PARSHD - RESPONSIVE CSS
+   Mobile / Tablet / Desktop
+   ========================================================= */
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (min-width: 600px) {
+
+    .app-container {
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .top-header {
+        padding: 14px 24px;
+    }
+
+    .profile-section {
+        padding: 35px 24px 25px;
+    }
+
+    .profile-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .parshad-name {
+        font-size: 28px;
+    }
+
+    .ward-number {
+        font-size: 17px;
+    }
+
+    .hero-section {
+        padding: 28px 24px;
+    }
+
+    .complaint-btn {
+        min-height: 58px;
+        font-size: 18px;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+
+/* =========================
+   DESKTOP
+   ========================= */
+
+@media (min-width: 900px) {
+
+    body {
+        background: #eef2f7;
+    }
+
+    .app-container {
+        max-width: 1050px;
+        min-height: 100vh;
+        background: #ffffff;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .top-header {
+        padding: 16px 32px;
+    }
+
+    .profile-section {
+        padding: 45px 40px 30px;
+    }
+
+    .profile-photo {
+        width: 140px;
+        height: 140px;
+    }
+
+    .parshad-name {
+        font-size: 32px;
+    }
+
+    .hero-section {
+        padding: 35px 40px;
+    }
+
+    .hero-content {
+        max-width: 850px;
+        margin: auto;
+    }
+
+    .complaint-btn {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .quick-actions {
+        max-width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ward-info-section,
+    .contact-section,
+    .about-section {
+        max-width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .footer {
+        padding: 25px 40px;
+    }
+}
+
+
+/* =========================
+   LARGE DESKTOP
+   ========================= */
+
+@media (min-width: 1200px) {
+
+    .app-container {
+        max-width: 1150px;
+    }
+
+    .profile-section {
+        padding-top: 55px;
+    }
+
+    .profile-photo {
+        width: 155px;
+        height: 155px;
+    }
+
+    .parshad-name {
+        font-size: 36px;
+    }
+
+    .area-name {
+        font-size: 18px;
+    }
+
+    .hero-section {
+        padding-top: 45px;
+        padding-bottom: 45px;
+    }
+
+    .quick-actions {
+        gap: 20px;
+    }
+
+    .quick-action-card {
+        min-height: 120px;
+    }
+}
+
+
+/* =========================
+   SMALL MOBILE
+   ========================= */
+
+@media (max-width: 380px) {
+
+    .top-header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .profile-section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .profile-photo {
+        width: 90px;
+        height: 90px;
+    }
+
+    .parshad-name {
+        font-size: 22px;
+    }
+
+    .ward-number {
+        font-size: 14px;
+    }
+
+    .area-name {
+        font-size: 14px;
+    }
+
+    .hero-section {
+        padding: 20px 14px;
+    }
+
+    .hero-title {
+        font-size: 22px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .complaint-btn {
+        min-height: 52px;
+        font-size: 16px;
+    }
+
+    .quick-actions {
+        gap: 10px;
+    }
+
+    .quick-action-card {
+        padding: 14px 8px;
+    }
+
+    .quick-action-icon {
+        font-size: 24px;
+    }
+
+    .quick-action-title {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================
+   LANDSCAPE MOBILE
+   ========================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .profile-section {
+        padding-top: 20px;
+        padding-bottom: 15px;
+    }
+
+    .profile-photo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .hero-section {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+}
+
+
+/* =========================
+   TOUCH DEVICES
+   ========================= */
+
+@media (hover: none) {
+
+    .quick-action-card:hover {
+        transform: none;
+    }
+
+    .complaint-btn:hover {
+        transform: none;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+
+/* =========================
+   REDUCED MOTION
+   ========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =========================
+   DARK MODE DEVICE SUPPORT
+   ========================= */
+
+@media (prefers-color-scheme: dark) {
+
+    /*
+       Intentionally kept light.
+       Parshd branding/theme will be controlled
+       by the application's own theme settings.
+    */
+
+    body {
+        color-scheme: light;
+    }
+}

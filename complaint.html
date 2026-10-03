@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#2563eb"
+    >
+
+    <title>Register Complaint | Parshd</title>
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+    <style>
+
+        .complaint-page {
+            min-height: 100vh;
+            padding: 20px 15px 40px;
+        }
+
+        .complaint-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .complaint-header {
+            margin-bottom: 22px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            margin-bottom: 18px;
+        }
+
+        .complaint-title {
+            margin: 0 0 7px;
+            font-size: 27px;
+        }
+
+        .complaint-subtitle {
+            margin: 0;
+            opacity: .75;
+            line-height: 1.6;
+        }
+
+        .ward-badge {
+            display: inline-flex;
+            margin-top: 12px;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: rgba(37, 99, 235, .10);
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .complaint-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-card {
+            padding: 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,.07);
+            box-shadow: 0 8px 25px rgba(0,0,0,.05);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #d5dbe5;
+            border-radius: 11px;
+            background: #fff;
+            font: inherit;
+            outline: none;
+        }
+
+        .form-textarea {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+        }
+
+        .field-help {
+            margin-top: 6px;
+            font-size: 12px;
+            opacity: .65;
+            line-height: 1.5;
+        }
+
+        .media-box {
+            padding: 14px;
+            border: 1px dashed #b9c2d0;
+            border-radius: 14px;
+            background: #f8fafc;
+        }
+
+        .media-box + .media-box {
+            margin-top: 12px;
+        }
+
+        .media-title {
+            margin: 0 0 5px;
+            font-weight: 700;
+        }
+
+        .media-description {
+            margin: 0 0 12px;
+            font-size: 13px;
+            opacity: .7;
+        }
+
+        .file-input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .location-box {
+            padding: 14px;
+            border-radius: 14px;
+            background: #f1f5f9;
+        }
+
+        .location-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 600;
+        }
+
+        .location-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        .location-dot.active {
+            background: #16a34a;
+        }
+
+        .location-dot.error {
+            background: #dc2626;
+        }
+
+        .location-info {
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: .7;
+        }
+
+        .submit-button {
+            width: 100%;
+            min-height: 55px;
+            border: 0;
+            border-radius: 13px;
+            background: #2563eb;
+            color: #fff;
+            font: inherit;
+            font-weight: 800;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .submit-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .form-message.show {
+            display: block;
+        }
+
+        .form-message.error {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .form-message.success {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .privacy-note {
+            margin-top: 5px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.6;
+            opacity: .65;
+        }
+
+        .success-card {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .success-card.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .complaint-id {
+            display: inline-block;
+            margin: 12px 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .track-link {
+            display: inline-flex;
+            margin-top: 10px;
+            padding: 12px 18px;
+            border-radius: 11px;
+            background: #2563eb;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<main class="complaint-page">
+
+    <div class="complaint-container">
+
+        <!-- HEADER -->
+
+        <header class="complaint-header">
+
+            <a
+                href="javascript:history.back()"
+                class="back-button"
+            >
+                ← वापस जाएँ
+            </a>
+
+            <h1 class="complaint-title">
+                शिकायत दर्ज करें
+            </h1>
+
+            <p class="complaint-subtitle">
+                अपनी समस्या की सही जानकारी भरें।
+                आवश्यक जानकारी Parshad को शिकायत
+                देखने और उसका समाधान करने में मदद करेगी।
+            </p>
+
+            <div
+                id="wardBadge"
+                class="ward-badge"
+            >
+                Ward —
+            </div>
+
+        </header>
+
+
+        <!-- COMPLAINT FORM -->
+
+        <form
+            id="complaintForm"
+            class="complaint-form"
+        >
+
+            <!-- CITIZEN INFORMATION -->
+
+            <section class="form-card">
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="citizenName"
+                    >
+                        आपका नाम
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="citizenName"
+                        name="citizenName"
+                        class="form-input"
+                        placeholder="अपना पूरा नाम लिखें"
+                        maxlength="100"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="citizenPhone"
+                    >
+                        मोबाइल नंबर
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="citizenPhone"
+                        name="citizenPhone"
+                        class="form-input"
+                        placeholder="10 अंकों का मोबाइल नंबर"
+                        maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        required
+                    >
+
+                    <div class="field-help">
+                        यह नंबर Parshad को शिकायत के साथ दिखाई देगा।
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- WARD & ADDRESS -->
+
+            <section class="form-card">
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="wardNumber"
+                    >
+                        Ward Number
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="wardNumber"
+                        name="wardNumber"
+                        class="form-input"
+                        placeholder="Ward Number"
+                        inputmode="numeric"
+                        required
+                    >
+
+                    <div class="field-help">
+                        QR जिस Ward का है, वही Ward Number दर्ज करें।
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="address"
+                    >
+                        आपका पता / स्थान
+                        <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        id="address"
+                        name="address"
+                        class="form-textarea"
+                        placeholder="मोहल्ला, गली, मकान नंबर आदि लिखें"
+                        maxlength="500"
+                        required
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMPLAINT -->
+
+            <section class="form-card">
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="complaintText"
+                    >
+                        शिकायत की जानकारी
+                        <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        id="complaintText"
+                        name="complaintText"
+                        class="form-textarea"
+                        placeholder="अपनी समस्या विस्तार से लिखें..."
+                        maxlength="2000"
+                        required
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- MEDIA -->
+
+            <section class="form-card">
+
+                <div class="media-box">
+
+                    <p class="media-title">
+                        📷 समस्या की Photos
+                    </p>
+
+                    <p class="media-description">
+                        अधिकतम 2 photos • प्रत्येक अधिकतम 5 MB
+                    </p>
+
+                    <input
+                        type="file"
+                        id="complaintImages"
+                        class="file-input"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                    >
+
+                </div>
+
+
+                <div class="media-box">
+
+                    <p class="media-title">
+                        🎥 समस्या का Video
+                    </p>
+
+                    <p class="media-description">
+                        अधिकतम 1 video • अधिकतम 15 seconds • अधिकतम 25 MB
+                    </p>
+
+                    <input
+                        type="file"
+                        id="complaintVideo"
+                        class="file-input"
+                        accept="video/mp4,video/webm,video/quicktime"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- LOCATION -->
+
+            <section class="form-card">
+
+                <div class="location-box">
+
+                    <div class="location-status">
+
+                        <span
+                            id="locationDot"
+                            class="location-dot"
+                        ></span>
+
+                        <span id="locationStatus">
+                            Location प्राप्त की जा रही है...
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="locationInfo"
+                        class="location-info"
+                    >
+                        Location आपकी शिकायत के साथ
+                        Parshad को दिखाई जाएगी।
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="formMessage"
+                class="form-message"
+            ></div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                id="submitComplaint"
+                class="submit-button"
+            >
+                शिकायत दर्ज करें
+            </button>
+
+            <p class="privacy-note">
+                आपकी दी गई जानकारी केवल संबंधित Ward
+                के authorized Parshad/Admin को शिकायत
+                process करने के लिए दिखाई जाएगी।
+            </p>
+
+        </form>
+
+
+        <!-- SUCCESS -->
+
+        <section
+            id="successCard"
+            class="form-card success-card"
+        >
+
+            <div class="success-icon">
+                ✅
+            </div>
+
+            <h2>
+                शिकायत दर्ज हो गई
+            </h2>
+
+            <p>
+                आपकी शिकायत सफलतापूर्वक दर्ज कर दी गई है।
+            </p>
+
+            <p>
+                आपका Complaint ID:
+            </p>
+
+            <div
+                id="complaintId"
+                class="complaint-id"
+            >
+                —
+            </div>
+
+            <br>
+
+            <a
+                id="trackComplaintLink"
+                href="track.html"
+                class="track-link"
+            >
+                शिकायत Track करें
+            </a>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<script type="module">
+
+    import {
+        createComplaint
+    } from "./js/complaints.js";
+
+    import {
+        captureLocation
+    } from "./js/location.js";
+
+
+    // =====================================================
+    // GET QR WARD
+    // =====================================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const qrWard =
+        params.get("ward");
+
+
+    const wardBadge =
+        document.getElementById(
+            "wardBadge"
+        );
+
+    const wardInput =
+        document.getElementById(
+            "wardNumber"
+        );
+
+
+    if (qrWard) {
+
+        wardBadge.textContent =
+            `Ward ${qrWard}`;
+
+        wardInput.value =
+            qrWard;
+
+        /*
+         QR Ward को citizen बदल सकता है,
+         लेकिन submit के समय backend/module
+         फिर से exact match check करेगा.
+        */
+
+    } else {
+
+        wardBadge.textContent =
+            "Ward उपलब्ध नहीं";
+
+    }
+
+
+    // =====================================================
+    // LOCATION
+    // =====================================================
+
+    const locationDot =
+        document.getElementById(
+            "locationDot"
+        );
+
+    const locationStatus =
+        document.getElementById(
+            "locationStatus"
+        );
+
+    const locationInfo =
+        document.getElementById(
+            "locationInfo"
+        );
+
+
+    let capturedLocation = null;
+
+
+    async function requestLocation() {
+
+        try {
+
+            locationStatus.textContent =
+                "Location प्राप्त की जा रही है...";
+
+            const location =
+                await captureLocation();
+
+
+            capturedLocation =
+                location;
+
+
+            if (
+                location.latitude !== null &&
+                location.longitude !== null
+            ) {
+
+                locationDot.classList.add(
+                    "active"
+                );
+
+                locationStatus.textContent =
+                    "Location प्राप्त हो गई ✓";
+
+                locationInfo.textContent =
+                    "Complaint के साथ location save होगी।";
+
+            } else {
+
+                locationDot.classList.add(
+                    "error"
+                );
+
+                locationStatus.textContent =
+                    "Location उपलब्ध नहीं है";
+
+                locationInfo.textContent =
+                    "आप फिर भी complaint submit कर सकते हैं।";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Location error:",
+                error
+            );
+
+            locationDot.classList.add(
+                "error"
+            );
+
+            locationStatus.textContent =
+                "Location प्राप्त नहीं हो सकी";
+
+            locationInfo.textContent =
+                "आप फिर भी complaint submit कर सकते हैं।";
+
+        }
+
+    }
+
+
+    requestLocation();
+
+
+    // =====================================================
+    // FORM
+    // =====================================================
+
+    const form =
+        document.getElementById(
+            "complaintForm"
+        );
+
+    const submitButton =
+        document.getElementById(
+            "submitComplaint"
+        );
+
+    const messageBox =
+        document.getElementById(
+            "formMessage"
+        );
+
+
+    form.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            clearMessage();
+
+
+            if (!qrWard) {
+
+                showMessage(
+                    "यह complaint page किसी Ward QR से open नहीं हुआ है।",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const name =
+                document.getElementById(
+                    "citizenName"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "citizenPhone"
+                ).value.trim();
+
+
+            const wardNumber =
+                document.getElementById(
+                    "wardNumber"
+                ).value.trim();
+
+
+            const address =
+                document.getElementById(
+                    "address"
+                ).value.trim();
+
+
+            const complaint =
+                document.getElementById(
+                    "complaintText"
+                ).value.trim();
+
+
+            const imageInput =
+                document.getElementById(
+                    "complaintImages"
+                );
+
+
+            const videoInput =
+                document.getElementById(
+                    "complaintVideo"
+                );
+
+
+            const images =
+                Array.from(
+                    imageInput.files || []
+                );
+
+
+            const video =
+                videoInput.files &&
+                videoInput.files.length
+                    ? videoInput.files[0]
+                    : null;
+
+
+            // ---------------------------------------------
+            // Disable button
+            // ---------------------------------------------
+
+            submitButton.disabled =
+                true;
+
+            submitButton.textContent =
+                "Complaint submit हो रही है...";
+
+
+            try {
+
+                const result =
+                    await createComplaint({
+
+                        name,
+
+                        phone,
+
+                        wardNumber,
+
+                        qrWard,
+
+                        address,
+
+                        complaint,
+
+                        images,
+
+                        video,
+
+                        location:
+                            capturedLocation
+
+                    });
+
+
+                showSuccess(
+                    result.complaintId
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Complaint submission error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "Complaint submit नहीं हो सकी।",
+                    "error"
+                );
+
+
+                submitButton.disabled =
+                    false;
+
+                submitButton.textContent =
+                    "शिकायत दर्ज करें";
+
+            }
+
+        }
+    );
+
+
+    // =====================================================
+    // MOBILE NUMBER
+    // =====================================================
+
+    document
+        .getElementById("citizenPhone")
+        .addEventListener(
+            "input",
+            event => {
+
+                event.target.value =
+                    event.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+
+            }
+        );
+
+
+    // =====================================================
+    // IMAGE LIMIT
+    // =====================================================
+
+    document
+        .getElementById("complaintImages")
+        .addEventListener(
+            "change",
+            event => {
+
+                const files =
+                    Array.from(
+                        event.target.files || []
+                    );
+
+
+                if (files.length > 2) {
+
+                    showMessage(
+                        "Maximum 2 photos upload कर सकते हैं।",
+                        "error"
+                    );
+
+                    event.target.value = "";
+
+                }
+
+            }
+        );
+
+
+    // =====================================================
+    // VIDEO BASIC LIMIT
+    // =====================================================
+
+    document
+        .getElementById("complaintVideo")
+        .addEventListener(
+            "change",
+            event => {
+
+                const file =
+                    event.target.files &&
+                    event.target.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                const maxSize =
+                    25 * 1024 * 1024;
+
+
+                if (
+                    file.size > maxSize
+                ) {
+
+                    showMessage(
+                        "Video maximum 25 MB का हो सकता है।",
+                        "error"
+                    );
+
+                    event.target.value = "";
+
+                }
+
+            }
+        );
+
+
+    // =====================================================
+    // SHOW MESSAGE
+    // =====================================================
+
+    function showMessage(
+        message,
+        type
+    ) {
+
+        messageBox.textContent =
+            message;
+
+        messageBox.className =
+            `form-message show ${type}`;
+
+        messageBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+
+    // =====================================================
+    // CLEAR MESSAGE
+    // =====================================================
+
+    function clearMessage() {
+
+        messageBox.textContent =
+            "";
+
+        messageBox.className =
+            "form-message";
+
+    }
+
+
+    // =====================================================
+    // SUCCESS
+    // =====================================================
+
+    function showSuccess(
+        complaintId
+    ) {
+
+        form.style.display =
+            "none";
+
+
+        const successCard =
+            document.getElementById(
+                "successCard"
+            );
+
+
+        const idElement =
+            document.getElementById(
+                "complaintId"
+            );
+
+
+        const trackLink =
+            document.getElementById(
+                "trackComplaintLink"
+            );
+
+
+        idElement.textContent =
+            complaintId;
+
+
+        trackLink.href =
+            `track.html?ward=${encodeURIComponent(
+                qrWard
+            )}&id=${encodeURIComponent(
+                complaintId
+            )}`;
+
+
+        successCard.classList.add(
+            "show"
+        );
+
+
+        successCard.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

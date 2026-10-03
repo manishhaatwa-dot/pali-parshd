@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#2563eb"
+    >
+
+    <title>Track Complaint | Parshd</title>
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+    <style>
+
+        .track-page {
+            min-height: 100vh;
+            padding: 22px 15px 40px;
+        }
+
+        .track-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            margin-bottom: 20px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .track-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+            border: 1px solid rgba(0,0,0,.06);
+        }
+
+        .track-title {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+        .track-subtitle {
+            margin: 0 0 20px;
+            line-height: 1.6;
+            opacity: .7;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 700;
+        }
+
+        .track-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid #d5dbe5;
+            border-radius: 11px;
+            font: inherit;
+            outline: none;
+        }
+
+        .track-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+        }
+
+        .track-button {
+            width: 100%;
+            margin-top: 16px;
+            min-height: 53px;
+            border: 0;
+            border-radius: 12px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .track-button:disabled {
+            opacity: .6;
+        }
+
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            background: #fef2f2;
+            color: #b91c1c;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .status-box {
+            text-align: center;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 14px;
+            background: #eff6ff;
+        }
+
+        .status-label {
+            font-size: 13px;
+            opacity: .65;
+        }
+
+        .status-value {
+            margin-top: 5px;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .status-new {
+            color: #2563eb;
+        }
+
+        .status-pending {
+            color: #d97706;
+        }
+
+        .status-solved {
+            color: #16a34a;
+        }
+
+        .info-row {
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .info-row:last-child {
+            border-bottom: 0;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 12px;
+            opacity: .6;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<main class="track-page">
+
+    <div class="track-container">
+
+        <a
+            href="javascript:history.back()"
+            class="back-button"
+        >
+            ← वापस जाएँ
+        </a>
+
+
+        <section class="track-card">
+
+            <h1 class="track-title">
+                शिकायत Track करें
+            </h1>
+
+            <p class="track-subtitle">
+                अपनी Complaint ID डालकर शिकायत की
+                वर्तमान स्थिति देखें।
+            </p>
+
+
+            <form id="trackForm">
+
+                <label
+                    class="form-label"
+                    for="complaintId"
+                >
+                    Complaint ID
+                </label>
+
+                <input
+                    type="text"
+                    id="complaintId"
+                    class="track-input"
+                    placeholder="Complaint ID डालें"
+                    autocomplete="off"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    id="trackButton"
+                    class="track-button"
+                >
+                    Status देखें
+                </button>
+
+            </form>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+            <!-- RESULT -->
+
+            <div
+                id="result"
+                class="result"
+            >
+
+                <div class="status-box">
+
+                    <div class="status-label">
+                        Current Status
+                    </div>
+
+                    <div
+                        id="status"
+                        class="status-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Complaint ID
+                    </span>
+
+                    <div
+                        id="resultId"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Ward
+                    </span>
+
+                    <div
+                        id="resultWard"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        आपकी शिकायत
+                    </span>
+
+                    <div
+                        id="resultComplaint"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        पता
+                    </span>
+
+                    <div
+                        id="resultAddress"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        शिकायत दर्ज होने की तारीख
+                    </span>
+
+                    <div
+                        id="resultDate"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="solvedRow"
+                    class="info-row"
+                    style="display:none;"
+                >
+
+                    <span class="info-label">
+                        समाधान की तारीख
+                    </span>
+
+                    <div
+                        id="resultSolvedDate"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<script type="module">
+
+    import {
+        getComplaint
+    } from "./js/complaints.js";
+
+
+    const form =
+        document.getElementById(
+            "trackForm"
+        );
+
+    const input =
+        document.getElementById(
+            "complaintId"
+        );
+
+    const button =
+        document.getElementById(
+            "trackButton"
+        );
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+
+    // =====================================================
+    // URL COMPLAINT ID
+    // =====================================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const urlId =
+        params.get("id");
+
+
+    if (urlId) {
+        input.value = urlId;
+    }
+
+
+    // =====================================================
+    // SUBMIT
+    // =====================================================
+
+    form.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            hideMessage();
+
+            result.classList.remove(
+                "show"
+            );
+
+
+            const complaintId =
+                input.value.trim();
+
+
+            if (!complaintId) {
+
+                showMessage(
+                    "Complaint ID डालें।"
+                );
+
+                return;
+            }
+
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Loading...";
+
+
+            try {
+
+                const complaint =
+                    await getComplaint(
+                        complaintId
+                    );
+
+
+                if (!complaint) {
+
+                    showMessage(
+                        "इस Complaint ID की शिकायत नहीं मिली।"
+                    );
+
+                    return;
+                }
+
+
+                renderComplaint(
+                    complaint
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Track error:",
+                    error
+                );
+
+                showMessage(
+                    "Complaint status प्राप्त नहीं हो सका।"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Status देखें";
+
+            }
+
+        }
+    );
+
+
+    // =====================================================
+    // RENDER
+    // =====================================================
+
+    function renderComplaint(
+        complaint
+    ) {
+
+        const status =
+            String(
+                complaint.status || "new"
+            ).toLowerCase();
+
+
+        const statusElement =
+            document.getElementById(
+                "status"
+            );
+
+
+        statusElement.className =
+            "status-value";
+
+
+        if (status === "solved") {
+
+            statusElement.textContent =
+                "Solved ✓";
+
+            statusElement.classList.add(
+                "status-solved"
+            );
+
+        } else if (
+            status === "pending"
+        ) {
+
+            statusElement.textContent =
+                "Pending";
+
+            statusElement.classList.add(
+                "status-pending"
+            );
+
+        } else {
+
+            statusElement.textContent =
+                "New";
+
+            statusElement.classList.add(
+                "status-new"
+            );
+
+        }
+
+
+        document.getElementById(
+            "resultId"
+        ).textContent =
+            complaint.id || "—";
+
+
+        document.getElementById(
+            "resultWard"
+        ).textContent =
+            complaint.wardNumber
+                ? `Ward ${complaint.wardNumber}`
+                : "—";
+
+
+        document.getElementById(
+            "resultComplaint"
+        ).textContent =
+            complaint.complaintText || "—";
+
+
+        document.getElementById(
+            "resultAddress"
+        ).textContent =
+            complaint.address || "—";
+
+
+        document.getElementById(
+            "resultDate"
+        ).textContent =
+            formatDate(
+                complaint.createdAt
+            );
+
+
+        const solvedRow =
+            document.getElementById(
+                "solvedRow"
+            );
+
+
+        if (
+            status === "solved" &&
+            complaint.solvedAt
+        ) {
+
+            solvedRow.style.display =
+                "block";
+
+            document.getElementById(
+                "resultSolvedDate"
+            ).textContent =
+                formatDate(
+                    complaint.solvedAt
+                );
+
+        } else {
+
+            solvedRow.style.display =
+                "none";
+
+        }
+
+
+        result.classList.add(
+            "show"
+        );
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+
+    // =====================================================
+    // DATE
+    // =====================================================
+
+    function formatDate(
+        timestamp
+    ) {
+
+        if (!timestamp) {
+            return "—";
+        }
+
+
+        let date;
+
+
+        if (
+            timestamp.seconds
+        ) {
+
+            date =
+                new Date(
+                    timestamp.seconds * 1000
+                );
+
+        } else {
+
+            date =
+                new Date(timestamp);
+
+        }
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "—";
+        }
+
+
+        return date.toLocaleString(
+            "hi-IN",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // MESSAGE
+    // =====================================================
+
+    function showMessage(
+        text
+    ) {
+
+        message.textContent =
+            text;
+
+        message.classList.add(
+            "show"
+        );
+
+    }
+
+
+    function hideMessage() {
+
+        message.textContent =
+            "";
+
+        message.classList.remove(
+            "show"
+        );
+
+    }
+
+</script>
+
+</body>
+
+</html>

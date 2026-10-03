@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#ffffff">
+
+    <title>Create Parshad Account | Parshd</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: #ffffff;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            color: #111827;
+
+            padding:
+                env(safe-area-inset-top)
+                env(safe-area-inset-right)
+                env(safe-area-inset-bottom)
+                env(safe-area-inset-left);
+        }
+
+        .page {
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 24px 15px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 470px;
+
+            padding: 28px 24px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: 68px;
+            height: 68px;
+
+            object-fit: contain;
+
+            border-radius: 16px;
+
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 0;
+
+            font-size: 25px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            margin: 7px 0 0;
+
+            color: #6b7280;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            height: 49px;
+
+            padding: 0 13px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #111827;
+
+            font-size: 16px;
+        }
+
+        input:focus {
+            border-color: #111827;
+
+            box-shadow:
+                0 0 0 3px rgba(17, 24, 39, 0.08);
+        }
+
+        .button {
+            width: 100%;
+            min-height: 50px;
+
+            margin-top: 5px;
+
+            border: 0;
+            border-radius: 10px;
+
+            background: #111827;
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+        }
+
+        .message {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .message.success {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .login-link {
+            display: block;
+
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #374151;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+
+            .page {
+                padding: 15px 12px;
+                align-items: flex-start;
+            }
+
+            .box {
+                margin-top: 10px;
+                padding: 24px 18px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="page">
+
+    <section class="box">
+
+        <header class="header">
+
+            <img
+                src="../assets/icons/icon-192.png"
+                alt="Parshd"
+                class="logo"
+            >
+
+            <h1>Create Parshad Account</h1>
+
+            <p class="subtitle">
+                Demo ke liye apna Parshad account banayein
+            </p>
+
+        </header>
+
+
+        <form id="registerForm">
+
+            <div class="form-group">
+
+                <label for="name">
+                    Parshad Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter full name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="mobile">
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="mobile"
+                    placeholder="10 digit mobile number"
+                    inputmode="numeric"
+                    maxlength="10"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="ward">
+                    Ward Number
+                </label>
+
+                <input
+                    type="text"
+                    id="ward"
+                    placeholder="Example: 44"
+                    inputmode="numeric"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="area">
+                    Area / Ward Name
+                </label>
+
+                <input
+                    type="text"
+                    id="area"
+                    placeholder="Enter area name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Create password"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="createButton"
+                class="button"
+            >
+                Create Parshad Account
+            </button>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+        </form>
+
+
+        <a
+            href="./index.html"
+            class="login-link"
+        >
+            Already have an account? Login
+        </a>
+
+    </section>
+
+</main>
+
+
+<script>
+
+const form =
+    document.getElementById("registerForm");
+
+const message =
+    document.getElementById("message");
+
+const createButton =
+    document.getElementById("createButton");
+
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+        `message show ${type}`;
+}
+
+
+form.addEventListener("submit", (event) => {
+
+    event.preventDefault();
+
+
+    const name =
+        document.getElementById("name")
+            .value.trim();
+
+    const email =
+        document.getElementById("email")
+            .value.trim();
+
+    const mobile =
+        document.getElementById("mobile")
+            .value.trim();
+
+    const ward =
+        document.getElementById("ward")
+            .value.trim();
+
+    const area =
+        document.getElementById("area")
+            .value.trim();
+
+    const password =
+        document.getElementById("password")
+            .value;
+
+
+    if (!name || !email || !mobile ||
+        !ward || !area || !password) {
+
+        showMessage(
+            "सभी details भरें।",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!/^\d{10}$/.test(mobile)) {
+
+        showMessage(
+            "Mobile number 10 digit का होना चाहिए।",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (password.length < 6) {
+
+        showMessage(
+            "Password कम से कम 6 characters का रखें।",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const parshadId =
+        "P" +
+        Date.now().toString(36).toUpperCase();
+
+
+    const account = {
+
+        parshadId,
+
+        name,
+
+        email,
+
+        mobile,
+
+        ward,
+
+        area,
+
+        password,
+
+        createdAt: Date.now(),
+
+        status: "active",
+
+        complaintEnabled: true
+
+    };
+
+
+    localStorage.setItem(
+        "parshd_demo_account",
+        JSON.stringify(account)
+    );
+
+
+    localStorage.setItem(
+        "parshd_demo_session",
+        JSON.stringify({
+
+            loggedIn: true,
+
+            parshadId,
+
+            loginTime: Date.now()
+
+        })
+    );
+
+
+    createButton.disabled = true;
+
+    createButton.textContent =
+        "Account Created...";
+
+
+    showMessage(
+        "Parshad account successfully create हो गया।",
+        "success"
+    );
+
+
+    setTimeout(() => {
+
+        window.location.href =
+            "./dashboard.html";
+
+    }, 700);
+
+});
+
+</script>
+
+</body>
+</html>
