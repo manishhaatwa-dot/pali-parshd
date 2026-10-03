@@ -1,26 +1,69 @@
-const DEMO_ACCOUNT_KEY = "parshd_demo_account";
-const DEMO_SESSION_KEY = "parshd_demo_session";
+// =====================================================
+// PARSHD MANAGER LOGIN
+// FIREBASE AUTH
+// =====================================================
 
-const loginForm = document.getElementById("loginForm");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginButton = document.getElementById("loginButton");
-const togglePassword = document.getElementById("togglePassword");
-const loginMessage = document.getElementById("loginMessage");
+import {
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+import {
+    auth,
+    db
+} from "../js/firebase-config.js";
 
 
-// ================================
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+
+// =====================================================
 // MESSAGE
-// ================================
+// =====================================================
 
 function showMessage(message, type = "error") {
+
+    if (!loginMessage) return;
+
     loginMessage.textContent = message;
 
     loginMessage.className =
         `login-message show ${type}`;
 }
 
+
 function hideMessage() {
+
+    if (!loginMessage) return;
+
     loginMessage.textContent = "";
 
     loginMessage.className =
@@ -28,58 +71,80 @@ function hideMessage() {
 }
 
 
-// ================================
+// =====================================================
 // PASSWORD SHOW / HIDE
-// ================================
+// =====================================================
 
 if (togglePassword) {
 
-    togglePassword.addEventListener("click", () => {
+    togglePassword.addEventListener(
+        "click",
+        () => {
 
-        const isPassword =
-            passwordInput.type === "password";
+            const isPassword =
+                passwordInput.type === "password";
 
-        passwordInput.type =
-            isPassword ? "text" : "password";
+            passwordInput.type =
+                isPassword
+                    ? "text"
+                    : "password";
 
-        togglePassword.textContent =
-            isPassword ? "🙈" : "👁";
-    });
+            togglePassword.textContent =
+                isPassword
+                    ? "🙈"
+                    : "👁";
+        }
+    );
 }
 
 
-// ================================
-// DEMO ACCOUNT
-// ================================
+// =====================================================
+// CHECK MANAGER
+// =====================================================
 
-function getDemoAccount() {
-    try {
+async function checkManager(uid) {
 
-        const account =
-            localStorage.getItem(DEMO_ACCOUNT_KEY);
+    const managerRef =
+        doc(
+            db,
+            "parshd",
+            "managers",
+            "data",
+            uid
+        );
 
-        return account
-            ? JSON.parse(account)
-            : null;
+    const managerSnap =
+        await getDoc(managerRef);
 
-    } catch (error) {
-
-        console.error(error);
+    if (!managerSnap.exists()) {
 
         return null;
     }
+
+    const manager =
+        managerSnap.data();
+
+    if (
+        manager.active !== true ||
+        manager.role !== "manager"
+    ) {
+
+        return null;
+    }
+
+    return manager;
 }
 
 
-// ================================
+// =====================================================
 // LOGIN
-// ================================
+// =====================================================
 
 if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        (event) => {
+        async (event) => {
 
             event.preventDefault();
 
@@ -92,6 +157,10 @@ if (loginForm) {
                 passwordInput.value;
 
 
+            // -----------------------------------------
+            // VALIDATION
+            // -----------------------------------------
+
             if (!email || !password) {
 
                 showMessage(
@@ -102,144 +171,278 @@ if (loginForm) {
             }
 
 
-            const account =
-                getDemoAccount();
+            // -----------------------------------------
+            // BUTTON
+            // -----------------------------------------
 
+            if (loginButton) {
 
-            // अभी account बना नहीं है
-            if (!account) {
+                loginButton.disabled = true;
 
-                showMessage(
-                    "पहले Parshad account बनाइए।"
-                );
-
-                return;
+                loginButton.textContent =
+                    "Checking...";
             }
 
 
-            // Login check
-            if (
-                email.toLowerCase() !==
-                account.email.toLowerCase() ||
-                password !== account.password
-            ) {
+            try {
+
+                // -------------------------------------
+                // FIREBASE LOGIN
+                // -------------------------------------
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                // -------------------------------------
+                // MANAGER CHECK
+                // -------------------------------------
+
+                const manager =
+                    await checkManager(user.uid);
+
+
+                // -------------------------------------
+                // NOT A MANAGER
+                // -------------------------------------
+
+                if (!manager) {
+
+                    await signOut(auth);
+
+                    showMessage(
+                        "इस account को Manager access नहीं मिला है।"
+                    );
+
+                    return;
+                }
+
+
+                // -------------------------------------
+                // SUCCESS
+                // -------------------------------------
 
                 showMessage(
-                    "Email या password गलत है।"
+                    "Manager login successful...",
+                    "success"
                 );
 
-                return;
+
+                if (loginButton) {
+
+                    loginButton.textContent =
+                        "Opening Manager Panel...";
+                }
+
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "./dashboard.html";
+
+                }, 500);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Manager login error:",
+                    error
+                );
+
+
+                let message =
+                    "Login नहीं हो सका।";
+
+
+                if (
+                    error.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    message =
+                        "Email या password गलत है।";
+
+                } else if (
+                    error.code ===
+                    "auth/user-not-found"
+                ) {
+
+                    message =
+                        "यह Manager account मौजूद नहीं है।";
+
+                } else if (
+                    error.code ===
+                    "auth/wrong-password"
+                ) {
+
+                    message =
+                        "Password गलत है।";
+
+                } else if (
+                    error.code ===
+                    "auth/too-many-requests"
+                ) {
+
+                    message =
+                        "बहुत ज्यादा login attempts हुए हैं। थोड़ी देर बाद कोशिश करें।";
+
+                } else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    message =
+                        "Email सही नहीं है।";
+                }
+
+
+                showMessage(message);
+
+
+            } finally {
+
+                if (loginButton) {
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "Manager Login";
+                }
             }
+        }
+    );
+}
 
 
-            // Session
-            localStorage.setItem(
-                DEMO_SESSION_KEY,
-                JSON.stringify({
-                    loggedIn: true,
-                    parshadId: account.parshadId,
-                    loginTime: Date.now()
-                })
-            );
+// =====================================================
+// ALREADY LOGGED-IN MANAGER
+// =====================================================
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) return;
+
+        try {
+
+            const manager =
+                await checkManager(user.uid);
 
 
-            showMessage(
-                "Login successful...",
-                "success"
-            );
-
-
-            loginButton.disabled = true;
-
-            loginButton.textContent =
-                "Opening Dashboard...";
-
-
-            setTimeout(() => {
+            if (manager) {
 
                 window.location.href =
                     "./dashboard.html";
 
-            }, 500);
+            } else {
 
+                await signOut(auth);
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Manager session check error:",
+                error
+            );
         }
-    );
-}
+    }
+);
 
 
-// ================================
-// ALREADY LOGGED IN
-// ================================
+// =====================================================
+// LOGOUT HELPER
+// =====================================================
 
-function isLoggedIn() {
+export async function managerLogout() {
 
     try {
 
-        const session =
-            localStorage.getItem(
-                DEMO_SESSION_KEY
-            );
-
-        if (!session) {
-            return false;
-        }
-
-        const data =
-            JSON.parse(session);
-
-        return data.loggedIn === true;
-
-    } catch (error) {
-
-        return false;
-    }
-}
-
-
-// ================================
-// EXPORT HELPERS
-// ================================
-
-export function getDemoSession() {
-
-    try {
-
-        const session =
-            localStorage.getItem(
-                DEMO_SESSION_KEY
-            );
-
-        return session
-            ? JSON.parse(session)
-            : null;
-
-    } catch (error) {
-
-        return null;
-    }
-}
-
-
-export function demoLogout() {
-
-    localStorage.removeItem(
-        DEMO_SESSION_KEY
-    );
-
-    window.location.href =
-        "./index.html";
-}
-
-
-export function requireDemoLogin() {
-
-    if (!isLoggedIn()) {
+        await signOut(auth);
 
         window.location.href =
             "./index.html";
 
-        return false;
-    }
+    } catch (error) {
 
-    return true;
+        console.error(
+            "Logout error:",
+            error
+        );
+    }
+}
+
+
+// =====================================================
+// REQUIRE MANAGER LOGIN
+// =====================================================
+
+export function requireManagerLogin(
+    redirect = "./index.html"
+) {
+
+    return new Promise((resolve) => {
+
+        onAuthStateChanged(
+            auth,
+            async (user) => {
+
+                if (!user) {
+
+                    window.location.href =
+                        redirect;
+
+                    resolve(false);
+
+                    return;
+                }
+
+
+                try {
+
+                    const manager =
+                        await checkManager(
+                            user.uid
+                        );
+
+
+                    if (!manager) {
+
+                        await signOut(auth);
+
+                        window.location.href =
+                            redirect;
+
+                        resolve(false);
+
+                        return;
+                    }
+
+
+                    resolve(true);
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    await signOut(auth);
+
+                    window.location.href =
+                        redirect;
+
+                    resolve(false);
+                }
+            }
+        );
+    });
 }
