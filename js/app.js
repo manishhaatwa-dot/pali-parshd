@@ -116,7 +116,7 @@ document.addEventListener(
         } catch (error) {
 
             console.error(
-                "Parshd App Error:",
+                "Parshad App Error:",
                 error
             );
 
@@ -1242,6 +1242,70 @@ function showNoWardState() {
             "#app"
         );
 
+
+    const errorBox =
+        document.querySelector(
+            "#errorMessage"
+        );
+
+
+    // -----------------------------------------
+    // MAIN WEBSITE
+    // https://parshd.in/
+    // -----------------------------------------
+
+    const path =
+        window.location.pathname;
+
+
+    const isMainWebsite =
+        path === "/" ||
+        path === "" ||
+        path === "/index.html";
+
+
+    const hasWard =
+        new URLSearchParams(
+            window.location.search
+        ).has("ward");
+
+
+    // -----------------------------------------
+    // ROOT WEBSITE PAR ERROR NAHI DIKHANA
+    // -----------------------------------------
+
+    if (
+        isMainWebsite &&
+        !hasWard
+    ) {
+
+        if (app) {
+
+            app.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (errorBox) {
+
+            errorBox.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // -----------------------------------------
+    // WRONG / INVALID WARD SCAN
+    // ERROR SAME RAHEGA
+    // -----------------------------------------
 
     if (app) {
 
