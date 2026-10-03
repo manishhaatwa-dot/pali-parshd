@@ -151,10 +151,6 @@
             font-weight: 800;
         }
 
-        .status-new {
-            color: #2563eb;
-        }
-
         .status-pending {
             color: #d97706;
         }
@@ -162,11 +158,6 @@
         .status-solved {
             color: #16a34a;
         }
-
-
-        /* ================================================
-           EXPECTED RESOLUTION MESSAGE
-        ================================================ */
 
         .resolution-note {
             margin-top: 12px;
@@ -185,7 +176,6 @@
             margin-bottom: 3px;
             font-size: 14px;
         }
-
 
         .info-row {
             padding: 13px 0;
@@ -296,7 +286,7 @@
                     </div>
 
 
-                    <!-- 7 DAY INFORMATION -->
+                    <!-- ONLY NEW / PENDING -->
 
                     <div
                         id="resolutionNote"
@@ -432,8 +422,24 @@
 <script type="module">
 
     import {
-        getComplaint
-    } from "./js/complaints.js";
+        collection,
+        query,
+        where,
+        limit,
+        getDocs
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    import {
+        db
+    } from "./js/firebase-config.js";
+
+
+    const COMPLAINTS_PATH =
+        [
+            "parshd",
+            "complaints",
+            "data"
+        ];
 
 
     const form =
@@ -481,7 +487,62 @@
 
 
     if (urlId) {
-        input.value = urlId;
+
+        input.value =
+            urlId;
+
+    }
+
+
+    // =====================================================
+    // FIND COMPLAINT
+    // =====================================================
+
+    async function findComplaint(
+        publicComplaintId
+    ) {
+
+        const complaintsRef =
+            collection(
+                db,
+                ...COMPLAINTS_PATH
+            );
+
+
+        const complaintQuery =
+            query(
+                complaintsRef,
+                where(
+                    "publicComplaintId",
+                    "==",
+                    publicComplaintId
+                ),
+                limit(1)
+            );
+
+
+        const snapshot =
+            await getDocs(
+                complaintQuery
+            );
+
+
+        if (snapshot.empty) {
+
+            return null;
+
+        }
+
+
+        const complaintDoc =
+            snapshot.docs[0];
+
+
+        return {
+            id: complaintDoc.id,
+            ...complaintDoc.data()
+        };
+
     }
 
 
@@ -504,7 +565,8 @@
 
 
             const complaintId =
-                input.value.trim();
+                input.value
+                    .trim();
 
 
             if (!complaintId) {
@@ -514,6 +576,7 @@
                 );
 
                 return;
+
             }
 
 
@@ -527,7 +590,7 @@
             try {
 
                 const complaint =
-                    await getComplaint(
+                    await findComplaint(
                         complaintId
                     );
 
@@ -539,6 +602,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -573,7 +637,7 @@
 
 
     // =====================================================
-    // RENDER
+    // RENDER COMPLAINT
     // =====================================================
 
     function renderComplaint(
@@ -597,10 +661,12 @@
 
 
         // =================================================
-        // CITIZEN STATUS
+        // SOLVED
         // =================================================
 
-        if (status === "solved") {
+        if (
+            status === "solved"
+        ) {
 
             statusElement.textContent =
                 "Solved ✓";
@@ -610,7 +676,7 @@
             );
 
 
-            // Solved होने पर 7-day message hide
+            // Solved में 7 दिन वाला message नहीं दिखेगा
 
             resolutionNote.style.display =
                 "none";
@@ -618,8 +684,9 @@
 
         } else {
 
-            // new + pending
-            // Citizen को Under Process दिखे
+            // =================================================
+            // NEW + PENDING
+            // =================================================
 
             statusElement.textContent =
                 "Under Process";
@@ -636,13 +703,15 @@
 
 
         // =================================================
-        // COMPLAINT DETAILS
+        // DETAILS
         // =================================================
 
         document.getElementById(
             "resultId"
         ).textContent =
-            complaint.id || "—";
+            complaint.publicComplaintId ||
+            complaint.id ||
+            "—";
 
 
         document.getElementById(
@@ -656,13 +725,15 @@
         document.getElementById(
             "resultComplaint"
         ).textContent =
-            complaint.complaintText || "—";
+            complaint.complaintText ||
+            "—";
 
 
         document.getElementById(
             "resultAddress"
         ).textContent =
-            complaint.address || "—";
+            complaint.address ||
+            "—";
 
 
         document.getElementById(
@@ -691,6 +762,7 @@
             solvedRow.style.display =
                 "block";
 
+
             document.getElementById(
                 "resultSolvedDate"
             ).textContent =
@@ -710,6 +782,7 @@
             "show"
         );
 
+
         result.scrollIntoView({
             behavior: "smooth",
             block: "start"
@@ -719,7 +792,7 @@
 
 
     // =====================================================
-    // DATE
+    // DATE FORMAT
     // =====================================================
 
     function formatDate(
@@ -727,26 +800,49 @@
     ) {
 
         if (!timestamp) {
+
             return "—";
+
         }
 
 
         let date;
 
 
+        // Firestore Timestamp
+
         if (
-            timestamp.seconds
+            typeof timestamp.seconds ===
+            "number"
         ) {
 
             date =
                 new Date(
-                    timestamp.seconds * 1000
+                    timestamp.seconds *
+                    1000
                 );
 
-        } else {
+        }
+
+        // JavaScript Date
+
+        else if (
+            timestamp instanceof Date
+        ) {
 
             date =
-                new Date(timestamp);
+                timestamp;
+
+        }
+
+        // ISO / string
+
+        else {
+
+            date =
+                new Date(
+                    timestamp
+                );
 
         }
 
@@ -756,7 +852,9 @@
                 date.getTime()
             )
         ) {
+
             return "—";
+
         }
 
 
