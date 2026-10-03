@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -108,8 +110,7 @@
         }
 
         .form-input,
-        .form-textarea,
-        .form-select {
+        .form-textarea {
             width: 100%;
             box-sizing: border-box;
             padding: 13px 14px;
@@ -286,7 +287,9 @@
         }
 
     </style>
+
 </head>
+
 
 <body>
 
@@ -325,14 +328,14 @@
         </header>
 
 
-        <!-- COMPLAINT FORM -->
+        <!-- FORM -->
 
         <form
             id="complaintForm"
             class="complaint-form"
         >
 
-            <!-- CITIZEN INFORMATION -->
+            <!-- CITIZEN -->
 
             <section class="form-card">
 
@@ -391,7 +394,7 @@
             </section>
 
 
-            <!-- WARD & ADDRESS -->
+            <!-- WARD + ADDRESS -->
 
             <section class="form-card">
 
@@ -571,6 +574,7 @@
                 शिकायत दर्ज करें
             </button>
 
+
             <p class="privacy-note">
                 आपकी दी गई जानकारी केवल संबंधित Ward
                 के authorized Parshad/Admin को शिकायत
@@ -633,13 +637,14 @@
         createComplaint
     } from "./js/complaints.js";
 
+
     import {
-        captureLocation
+        getCurrentLocation
     } from "./js/location.js";
 
 
     // =====================================================
-    // GET QR WARD
+    // QR WARD
     // =====================================================
 
     const params =
@@ -647,14 +652,16 @@
             window.location.search
         );
 
+
     const qrWard =
-        params.get("ward");
+        (params.get("ward") || "").trim();
 
 
     const wardBadge =
         document.getElementById(
             "wardBadge"
         );
+
 
     const wardInput =
         document.getElementById(
@@ -669,12 +676,6 @@
 
         wardInput.value =
             qrWard;
-
-        /*
-         QR Ward को citizen बदल सकता है,
-         लेकिन submit के समय backend/module
-         फिर से exact match check करेगा.
-        */
 
     } else {
 
@@ -693,10 +694,12 @@
             "locationDot"
         );
 
+
     const locationStatus =
         document.getElementById(
             "locationStatus"
         );
+
 
     const locationInfo =
         document.getElementById(
@@ -714,8 +717,9 @@
             locationStatus.textContent =
                 "Location प्राप्त की जा रही है...";
 
+
             const location =
-                await captureLocation();
+                await getCurrentLocation();
 
 
             capturedLocation =
@@ -723,6 +727,7 @@
 
 
             if (
+                location &&
                 location.latitude !== null &&
                 location.longitude !== null
             ) {
@@ -731,8 +736,10 @@
                     "active"
                 );
 
+
                 locationStatus.textContent =
                     "Location प्राप्त हो गई ✓";
+
 
                 locationInfo.textContent =
                     "Complaint के साथ location save होगी।";
@@ -743,8 +750,10 @@
                     "error"
                 );
 
+
                 locationStatus.textContent =
                     "Location उपलब्ध नहीं है";
+
 
                 locationInfo.textContent =
                     "आप फिर भी complaint submit कर सकते हैं।";
@@ -758,12 +767,15 @@
                 error
             );
 
+
             locationDot.classList.add(
                 "error"
             );
 
+
             locationStatus.textContent =
                 "Location प्राप्त नहीं हो सकी";
+
 
             locationInfo.textContent =
                 "आप फिर भी complaint submit कर सकते हैं।";
@@ -785,10 +797,12 @@
             "complaintForm"
         );
 
+
     const submitButton =
         document.getElementById(
             "submitComplaint"
         );
+
 
     const messageBox =
         document.getElementById(
@@ -806,6 +820,10 @@
             clearMessage();
 
 
+            // ---------------------------------------------
+            // QR CHECK
+            // ---------------------------------------------
+
             if (!qrWard) {
 
                 showMessage(
@@ -814,38 +832,52 @@
                 );
 
                 return;
+
             }
 
 
-            const name =
-                document.getElementById(
-                    "citizenName"
-                ).value.trim();
+            // ---------------------------------------------
+            // READ FORM VALUES
+            // ---------------------------------------------
+
+            const citizenName =
+                document
+                    .getElementById("citizenName")
+                    .value
+                    .trim();
 
 
-            const phone =
-                document.getElementById(
-                    "citizenPhone"
-                ).value.trim();
+            const citizenPhone =
+                document
+                    .getElementById("citizenPhone")
+                    .value
+                    .trim();
 
 
             const wardNumber =
-                document.getElementById(
-                    "wardNumber"
-                ).value.trim();
+                document
+                    .getElementById("wardNumber")
+                    .value
+                    .trim();
 
 
             const address =
-                document.getElementById(
-                    "address"
-                ).value.trim();
+                document
+                    .getElementById("address")
+                    .value
+                    .trim();
 
 
-            const complaint =
-                document.getElementById(
-                    "complaintText"
-                ).value.trim();
+            const complaintText =
+                document
+                    .getElementById("complaintText")
+                    .value
+                    .trim();
 
+
+            // ---------------------------------------------
+            // FILES
+            // ---------------------------------------------
 
             const imageInput =
                 document.getElementById(
@@ -859,7 +891,7 @@
                 );
 
 
-            const images =
+            const photos =
                 Array.from(
                     imageInput.files || []
                 );
@@ -867,17 +899,109 @@
 
             const video =
                 videoInput.files &&
-                videoInput.files.length
+                videoInput.files.length > 0
                     ? videoInput.files[0]
                     : null;
 
 
             // ---------------------------------------------
-            // Disable button
+            // FRONTEND BASIC VALIDATION
+            // ---------------------------------------------
+
+            if (!citizenName) {
+
+                showMessage(
+                    "कृपया अपना नाम दर्ज करें।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!/^[6-9]\d{9}$/.test(citizenPhone)) {
+
+                showMessage(
+                    "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!wardNumber) {
+
+                showMessage(
+                    "कृपया Ward Number दर्ज करें।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                wardNumber.replace(/\s/g, "") !==
+                qrWard.replace(/\s/g, "")
+            ) {
+
+                showMessage(
+                    "Ward Number QR वाले Ward से match नहीं करता।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!address) {
+
+                showMessage(
+                    "कृपया अपना पता / स्थान दर्ज करें।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!complaintText) {
+
+                showMessage(
+                    "कृपया शिकायत की जानकारी दर्ज करें।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (photos.length > 2) {
+
+                showMessage(
+                    "अधिकतम 2 photos upload कर सकते हैं।",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // DISABLE BUTTON
             // ---------------------------------------------
 
             submitButton.disabled =
                 true;
+
 
             submitButton.textContent =
                 "Complaint submit हो रही है...";
@@ -885,12 +1009,16 @@
 
             try {
 
+                // -----------------------------------------
+                // CREATE COMPLAINT
+                // -----------------------------------------
+
                 const result =
                     await createComplaint({
 
-                        name,
+                        citizenName,
 
-                        phone,
+                        citizenPhone,
 
                         wardNumber,
 
@@ -898,9 +1026,9 @@
 
                         address,
 
-                        complaint,
+                        complaintText,
 
-                        images,
+                        photos,
 
                         video,
 
@@ -910,7 +1038,12 @@
                     });
 
 
+                // -----------------------------------------
+                // SUCCESS
+                // -----------------------------------------
+
                 showSuccess(
+                    result.publicComplaintId ||
                     result.complaintId
                 );
 
@@ -932,6 +1065,7 @@
 
                 submitButton.disabled =
                     false;
+
 
                 submitButton.textContent =
                     "शिकायत दर्ज करें";
@@ -984,7 +1118,9 @@
                         "error"
                     );
 
-                    event.target.value = "";
+
+                    event.target.value =
+                        "";
 
                 }
 
@@ -993,7 +1129,7 @@
 
 
     // =====================================================
-    // VIDEO BASIC LIMIT
+    // VIDEO SIZE CHECK
     // =====================================================
 
     document
@@ -1025,7 +1161,9 @@
                         "error"
                     );
 
-                    event.target.value = "";
+
+                    event.target.value =
+                        "";
 
                 }
 
@@ -1034,7 +1172,7 @@
 
 
     // =====================================================
-    // SHOW MESSAGE
+    // MESSAGE
     // =====================================================
 
     function showMessage(
@@ -1045,8 +1183,10 @@
         messageBox.textContent =
             message;
 
+
         messageBox.className =
             `form-message show ${type}`;
+
 
         messageBox.scrollIntoView({
             behavior: "smooth",
@@ -1056,14 +1196,11 @@
     }
 
 
-    // =====================================================
-    // CLEAR MESSAGE
-    // =====================================================
-
     function clearMessage() {
 
         messageBox.textContent =
             "";
+
 
         messageBox.className =
             "form-message";
@@ -1127,4 +1264,5 @@
 </script>
 
 </body>
+
 </html>
