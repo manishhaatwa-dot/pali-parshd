@@ -48,7 +48,9 @@ const loginButton =
     );
 
 
-// Possible message elements
+// =====================================================
+// MESSAGE ELEMENT
+// =====================================================
 
 const message =
     document.getElementById("message") ||
@@ -58,7 +60,7 @@ const message =
 
 
 // =====================================================
-// MESSAGE
+// SHOW MESSAGE
 // =====================================================
 
 function showMessage(
@@ -73,7 +75,6 @@ function showMessage(
         return;
 
     }
-
 
     message.textContent =
         text;
@@ -99,6 +100,22 @@ function showMessage(
 
         message.style.color =
             "#991b1b";
+
+    }
+
+}
+
+
+// =====================================================
+// HIDE MESSAGE
+// =====================================================
+
+function hideMessage() {
+
+    if (message) {
+
+        message.style.display =
+            "none";
 
     }
 
@@ -153,33 +170,52 @@ function firebaseErrorMessage(error) {
     switch (error.code) {
 
         case "auth/invalid-credential":
+
             return "Email ya password galat hai.";
+
 
         case "auth/invalid-login-credentials":
+
             return "Email ya password galat hai.";
 
+
         case "auth/user-not-found":
+
             return "Is email se koi Parshad account nahi mila.";
 
+
         case "auth/wrong-password":
+
             return "Password galat hai.";
 
+
         case "auth/invalid-email":
+
             return "Email address galat hai.";
 
+
         case "auth/too-many-requests":
+
             return "Bahut baar login try hua hai. Thodi der baad try karein.";
 
+
         case "auth/network-request-failed":
+
             return "Internet connection check karein.";
 
+
         case "auth/user-disabled":
+
             return "Ye Firebase account disabled hai.";
 
+
         case "permission-denied":
+
             return "Firestore permission denied. Firebase rules check karni hongi.";
 
+
         default:
+
             return (
                 error.message ||
                 "Login nahi ho paya."
@@ -191,7 +227,7 @@ function firebaseErrorMessage(error) {
 
 
 // =====================================================
-// LOGIN
+// LOGIN USER
 // =====================================================
 
 async function loginUser() {
@@ -215,6 +251,10 @@ async function loginUser() {
     const password =
         passwordInput.value;
 
+
+    // =================================================
+    // VALIDATION
+    // =================================================
 
     if (!email) {
 
@@ -241,6 +281,10 @@ async function loginUser() {
 
     }
 
+
+    // =================================================
+    // BUTTON LOADING
+    // =================================================
 
     if (loginButton) {
 
@@ -309,6 +353,7 @@ async function loginUser() {
         // =================================================
 
         let account;
+
 
         try {
 
@@ -413,6 +458,10 @@ async function loginUser() {
         }
 
 
+        // =================================================
+        // APPROVED FLAG CHECK
+        // =================================================
+
         if (
             account.approved !==
             true
@@ -446,7 +495,9 @@ async function loginUser() {
         );
 
 
-        // Small delay so Firebase auth state settles
+        // =================================================
+        // AUTH STATE SETTLE
+        // =================================================
 
         await new Promise(
             resolve =>
@@ -456,6 +507,10 @@ async function loginUser() {
                 )
         );
 
+
+        // =================================================
+        // OPEN DASHBOARD
+        // =================================================
 
         window.location.href =
             "./dashboard.html";
@@ -470,8 +525,9 @@ async function loginUser() {
         );
 
 
-        // If Firebase user accidentally remained signed in,
-        // clear it so next attempt is clean.
+        // =================================================
+        // CLEAN AUTH SESSION
+        // =================================================
 
         try {
 
@@ -511,29 +567,15 @@ async function loginUser() {
 
 
 // =====================================================
-// HIDE MESSAGE
-// =====================================================
-
-function hideMessage() {
-
-    if (message) {
-
-        message.style.display =
-            "none";
-
-    }
-
-}
-
-
-// =====================================================
 // FORGOT PASSWORD
 // =====================================================
 
 async function forgotPassword() {
 
     if (!emailInput) {
+
         return;
+
     }
 
 
@@ -583,6 +625,37 @@ async function forgotPassword() {
             firebaseErrorMessage(
                 error
             )
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// PARSHAD LOGOUT
+// =====================================================
+
+async function parshadLogout() {
+
+    try {
+
+        await signOut(
+            auth
+        );
+
+
+        window.location.replace(
+            "./index.html"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "LOGOUT ERROR:",
+            error
         );
 
     }
@@ -699,5 +772,6 @@ if (passwordInput) {
 
 export {
     loginUser,
-    getParshadRecord
+    getParshadRecord,
+    parshadLogout
 };
