@@ -1457,17 +1457,21 @@
             return;
         }
 
+const baseUrl =
+    window.location.origin +
+    window.location.pathname
+        .replace(
+            /\/admin\/profile\.html$/,
+            ""
+        );
 
-        const baseUrl =
-            window.location.origin;
 
-
-        const portalUrl =
-            baseUrl +
-            "/ward/" +
-            encodeURIComponent(
-                ward
-            );
+const portalUrl =
+    baseUrl +
+    "/?ward=" +
+    encodeURIComponent(
+        ward
+    );
 
 
         qrCode.innerHTML = "";
@@ -1529,14 +1533,21 @@
                     return;
                 }
 
+const baseUrl =
+    window.location.origin +
+    window.location.pathname
+        .replace(
+            /\/admin\/profile\.html$/,
+            ""
+        );
 
-                const url =
-                    window.location.origin +
-                    "/ward/" +
-                    encodeURIComponent(
-                        ward
-                    );
 
+const url =
+    baseUrl +
+    "/?ward=" +
+    encodeURIComponent(
+        ward
+    );
 
                 try {
 
@@ -1587,13 +1598,23 @@
                 }
 
 
-                window.open(
-                    "../ward/" +
-                    encodeURIComponent(
-                        ward
-                    ),
-                    "_blank"
-                );
+              const baseUrl =
+    window.location.origin +
+    window.location.pathname
+        .replace(
+            /\/admin\/profile\.html$/,
+            ""
+        );
+
+
+window.open(
+    baseUrl +
+    "/?ward=" +
+    encodeURIComponent(
+        ward
+    ),
+    "_blank"
+);
 
             }
         );
