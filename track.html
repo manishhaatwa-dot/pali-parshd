@@ -544,6 +544,18 @@
             "status-value";
 
 
+        // =================================================
+        // CITIZEN STATUS DISPLAY
+        // =================================================
+        // Database status:
+        // new     -> Under Process
+        // pending -> Under Process
+        // solved  -> Solved ✓
+        //
+        // Admin dashboard ka actual status change
+        // bilkul nahi kiya ja raha.
+        // =================================================
+
         if (status === "solved") {
 
             statusElement.textContent =
@@ -553,28 +565,21 @@
                 "status-solved"
             );
 
-        } else if (
-            status === "pending"
-        ) {
+        } else {
 
             statusElement.textContent =
-                "Pending";
+                "Under Process";
 
             statusElement.classList.add(
                 "status-pending"
             );
 
-        } else {
-
-            statusElement.textContent =
-                "New";
-
-            statusElement.classList.add(
-                "status-new"
-            );
-
         }
 
+
+        // =================================================
+        // COMPLAINT DETAILS
+        // =================================================
 
         document.getElementById(
             "resultId"
@@ -609,6 +614,10 @@
                 complaint.createdAt
             );
 
+
+        // =================================================
+        // SOLVED DATE
+        // =================================================
 
         const solvedRow =
             document.getElementById(
