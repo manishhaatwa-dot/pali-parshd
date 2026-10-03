@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -10,11 +11,11 @@
     <meta name="theme-color" content="#0f172a">
 
     <meta name="description"
-          content="Parshd.in - अपने वार्ड की समस्या दर्ज करें और समाधान की स्थिति देखें।">
+          content="Parshd.in - अपने वार्ड के लिए डिजिटल नागरिक सेवा पोर्टल बनाएं।">
 
     <meta name="robots" content="index, follow">
 
-    <title>Parshd.in | Ward Citizen Portal</title>
+    <title>Parshd.in | Parshad Portal</title>
 
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -23,8 +24,9 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
 
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
     <link rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -32,552 +34,831 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
+
+    <style>
+
+        /* =========================================
+           PARSHAD LANDING PAGE
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: #0f172a;
+            font-family:
+                "Noto Sans Devanagari",
+                "Inter",
+                sans-serif;
+        }
+
+        .parshad-page {
+            min-height: 100vh;
+            background: #ffffff;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================== */
+
+        .parshad-header {
+            width: 100%;
+            border-bottom: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        .header-inner {
+            width: min(1100px, 92%);
+            margin: auto;
+            min-height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .brand-subtitle {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            width: min(1100px, 92%);
+            margin: auto;
+
+            padding: 70px 0 55px;
+
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 7px 14px;
+            border-radius: 999px;
+
+            background: #f1f5f9;
+            color: #334155;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            max-width: 780px;
+            margin: 22px auto 15px;
+
+            font-size: clamp(32px, 6vw, 58px);
+            line-height: 1.15;
+            font-weight: 800;
+
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin: 0 auto;
+
+            color: #64748b;
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================== */
+
+        .hero-actions {
+            margin-top: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-button {
+            min-height: 50px;
+            padding: 0 24px;
+
+            border-radius: 12px;
+            border: 1px solid transparent;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            text-decoration: none;
+
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .hero-button.primary {
+            background: #0f172a;
+            color: #ffffff;
+        }
+
+        .hero-button.primary:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+        }
+
+        .hero-button.secondary {
+            background: #ffffff;
+            color: #0f172a;
+            border-color: #cbd5e1;
+        }
+
+        .hero-button.secondary:hover {
+            background: #f8fafc;
+        }
+
+
+        /* =========================================
+           HOW IT WORKS
+        ========================================== */
+
+        .steps-section {
+            width: min(1050px, 92%);
+            margin: auto;
+
+            padding: 20px 0 70px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title small {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .section-title h2 {
+            margin: 7px 0 0;
+
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .step-card {
+            padding: 25px;
+
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+
+            text-align: center;
+        }
+
+        .step-number {
+            width: 46px;
+            height: 46px;
+
+            margin: 0 auto 16px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .step-card h3 {
+            margin: 0 0 8px;
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .step-card p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           FEATURES
+        ========================================== */
+
+        .features-section {
+            width: min(1050px, 92%);
+            margin: auto;
+
+            padding-bottom: 70px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+        }
+
+        .feature-card {
+            padding: 22px;
+
+            border-radius: 16px;
+
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-icon {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 7px;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .feature-card p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           CITIZEN INFO
+        ========================================== */
+
+        .citizen-info {
+            width: min(850px, 92%);
+            margin: 0 auto 70px;
+
+            padding: 28px;
+
+            border: 1px solid #dbeafe;
+            border-radius: 20px;
+
+            background: #f8fbff;
+
+            text-align: center;
+        }
+
+        .citizen-info h2 {
+            margin: 0 0 10px;
+
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .citizen-info p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        .parshad-footer {
+            border-top: 1px solid #e5e7eb;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            background: #ffffff;
+        }
+
+        .parshad-footer strong {
+            display: block;
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .parshad-footer span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+        .parshad-footer small {
+            display: block;
+
+            margin-top: 15px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            .header-inner {
+                min-height: 64px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .hero {
+                padding:
+                    48px 0
+                    40px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .hero-button {
+                width: 100%;
+                max-width: 330px;
+            }
+
+            .steps-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-section,
+            .features-section {
+                padding-bottom: 48px;
+            }
+
+            .citizen-info {
+                margin-bottom: 48px;
+                padding: 23px 18px;
+            }
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <!-- =========================================
-         APP LOADING SCREEN
-    ========================================== -->
-
-    <div id="appLoader" class="app-loader">
-
-        <div class="loader-logo">
-            P
-        </div>
-
-        <div class="loader-spinner"></div>
-
-        <p>Portal loading...</p>
-
-    </div>
+<div class="parshad-page">
 
 
     <!-- =========================================
-         MAIN APP
+         HEADER
     ========================================== -->
 
-    <main id="app" class="app-shell hidden">
+    <header class="parshad-header">
 
-        <!-- =====================================
-             TOP HEADER
-        ====================================== -->
+        <div class="header-inner">
 
-        <header class="top-header">
+            <div class="brand">
 
-            <div class="brand-area">
-
-                <!-- Dynamic Party / Organization Logo -->
-                <div class="party-logo-wrapper">
-
-                    <img
-                        id="partyLogo"
-                        class="party-logo"
-                        src="assets/images/default-logo.png"
-                        alt="Party Logo"
-                    >
-
+                <div class="brand-logo">
+                    P
                 </div>
 
                 <div class="brand-text">
 
-                    <span class="brand-small">
-                        नागरिक सेवा पोर्टल
-                    </span>
-
-                    <strong id="portalName">
+                    <span class="brand-name">
                         Parshd.in
-                    </strong>
+                    </span>
 
-                </div>
-
-            </div>
-
-            <button
-                id="menuButton"
-                class="icon-button"
-                type="button"
-                aria-label="Menu"
-            >
-                ☰
-            </button>
-
-        </header>
-
-
-        <!-- =====================================
-             PARSHAD PROFILE
-        ====================================== -->
-
-        <section class="profile-section">
-
-            <div class="profile-card">
-
-                <div class="profile-photo-wrapper">
-
-                    <img
-                        id="parshadPhoto"
-                        class="profile-photo"
-                        src="assets/images/default-profile.png"
-                        alt="Parshad Profile Photo"
-                    >
-
-                    <span
-                        id="verifiedBadge"
-                        class="verified-badge hidden"
-                        title="Verified"
-                    >
-                        ✓
+                    <span class="brand-subtitle">
+                        Ward Citizen Service Platform
                     </span>
 
                 </div>
 
-
-                <div class="profile-info">
-
-                    <p
-                        id="designation"
-                        class="designation"
-                    >
-                        पार्षद
-                    </p>
-
-                    <h1 id="parshadName">
-                        पार्षद का नाम
-                    </h1>
-
-                    <p class="ward-info">
-
-                        <span>वार्ड</span>
-
-                        <strong id="wardNumber">
-                            --
-                        </strong>
-
-                    </p>
-
-                    <p
-                        id="wardArea"
-                        class="ward-area"
-                    >
-                        वार्ड क्षेत्र
-                    </p>
-
-                </div>
-
             </div>
 
-        </section>
+        </div>
 
+    </header>
 
-        <!-- =====================================
-             WELCOME / HERO
-        ====================================== -->
 
-        <section class="hero-section">
+    <!-- =========================================
+         HERO
+    ========================================== -->
 
-            <div class="hero-content">
+    <main>
 
-                <span class="hero-label">
-                    आपकी समस्या • हमारी जिम्मेदारी
-                </span>
+        <section class="hero">
 
-                <h2>
-                    अपने वार्ड की समस्या दर्ज करें
-                </h2>
+            <span class="hero-badge">
+                🏛️ डिजिटल वार्ड सेवा
+            </span>
 
-                <p>
-                    सड़क, सफाई, स्ट्रीट लाइट, पानी या
-                    अन्य स्थानीय समस्या की शिकायत सीधे
-                    दर्ज करें।
-                </p>
 
-                <button
-                    id="registerComplaintButton"
-                    class="primary-button"
-                    type="button"
-                >
-                    <span>📝</span>
-                    शिकायत दर्ज करें
-                </button>
+            <h1>
+                अपने वार्ड की
+                <span>डिजिटल सेवा</span>
+                शुरू करें
+            </h1>
 
-                <p
-                    id="complaintClosedMessage"
-                    class="closed-message hidden"
-                >
-                    🚧 शिकायत पंजीकरण फिलहाल अस्थायी रूप से बंद है।
-                    कृपया कुछ समय बाद पुनः प्रयास करें।
-                </p>
 
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             QUICK ACTIONS
-        ====================================== -->
-
-        <section class="quick-actions">
-
-            <button
-                id="trackComplaintButton"
-                class="action-card"
-                type="button"
-            >
-
-                <span class="action-icon">
-                    🔎
-                </span>
-
-                <span>
-                    <strong>शिकायत की स्थिति</strong>
-                    <small>अपनी शिकायत देखें</small>
-                </span>
-
-                <span class="arrow">
-                    →
-                </span>
-
-            </button>
-
-
-            <button
-                id="solvedProblemsButton"
-                class="action-card"
-                type="button"
-            >
-
-                <span class="action-icon">
-                    ✅
-                </span>
-
-                <span>
-                    <strong>समाधान की गई समस्याएँ</strong>
-                    <small>हाल में हल हुई शिकायतें</small>
-                </span>
-
-                <span class="arrow">
-                    →
-                </span>
-
-            </button>
-
-        </section>
-
-
-        <!-- =====================================
-             WARD INFORMATION
-        ====================================== -->
-
-        <section class="information-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <span class="section-kicker">
-                        हमारे वार्ड के बारे में
-                    </span>
-
-                    <h2>
-                        वार्ड जानकारी
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="info-grid">
-
-                <div class="info-card">
-
-                    <span class="info-icon">
-                        📍
-                    </span>
-
-                    <div>
-
-                        <small>
-                            वार्ड
-                        </small>
-
-                        <strong id="infoWardNumber">
-                            --
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <span class="info-icon">
-                        🏘️
-                    </span>
-
-                    <div>
-
-                        <small>
-                            क्षेत्र
-                        </small>
-
-                        <strong id="infoWardArea">
-                            --
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             CONTACT SECTION
-        ====================================== -->
-
-        <section
-            id="contactSection"
-            class="contact-section hidden"
-        >
-
-            <div class="contact-card">
-
-                <div class="contact-heading">
-
-                    <span class="contact-icon">
-                        📞
-                    </span>
-
-                    <div>
-
-                        <small>
-                            संपर्क
-                        </small>
-
-                        <h3>
-                            पार्षद से संपर्क करें
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-                <div class="contact-actions">
-
-                    <a
-                        id="callButton"
-                        class="contact-button call-button hidden"
-                        href="#"
-                    >
-                        📞 कॉल
-                    </a>
-
-                    <a
-                        id="whatsappButton"
-                        class="contact-button whatsapp-button hidden"
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        💬 WhatsApp
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             ABOUT PARSHAD
-        ====================================== -->
-
-        <section
-            id="aboutSection"
-            class="about-section hidden"
-        >
-
-            <div class="section-heading">
-
-                <div>
-
-                    <span class="section-kicker">
-                        परिचय
-                    </span>
-
-                    <h2>
-                        पार्षद के बारे में
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div class="about-card">
-
-                <p id="aboutText"></p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             FOOTER
-        ====================================== -->
-
-        <footer class="app-footer">
-
-            <div class="footer-brand">
-                <strong>Parshd.in</strong>
-                <span>Ward Citizen Service Portal</span>
-            </div>
-
-            <p>
-                नागरिकों और वार्ड सेवा के बीच एक आसान डिजिटल माध्यम।
+            <p class="hero-description">
+                Parshd.in के माध्यम से अपने वार्ड के नागरिकों
+                को शिकायत दर्ज करने और उसकी स्थिति देखने की
+                आसान डिजिटल सुविधा दें।
             </p>
 
-            <small>
-                © <span id="currentYear"></span> Parshd.in
-            </small>
 
-        </footer>
+            <div class="hero-actions">
+
+                <a
+                    href="admin/register.html"
+                    class="hero-button primary"
+                >
+                    👤 Parshad Registration
+                </a>
+
+
+                <a
+                    href="admin/index.html"
+                    class="hero-button secondary"
+                >
+                    🔐 Parshad Login
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             HOW IT WORKS
+        ====================================== -->
+
+        <section class="steps-section">
+
+            <div class="section-title">
+
+                <small>
+                    कैसे काम करेगा?
+                </small>
+
+                <h2>
+                    केवल 3 आसान चरण
+                </h2>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Parshad Account बनाएं
+                    </h3>
+
+                    <p>
+                        अपना नाम, वार्ड और जरूरी
+                        प्रोफाइल जानकारी देकर अपना
+                        Parshad account बनाएं।
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Profile और QR तैयार करें
+                    </h3>
+
+                    <p>
+                        Dashboard में अपनी profile पूरी करें
+                        और अपने वार्ड का unique QR generate करें।
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h3>
+                        QR नागरिकों को दें
+                    </h3>
+
+                    <p>
+                        नागरिक QR scan करके सीधे आपके
+                        ward portal पर शिकायत दर्ज कर सकेंगे।
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             FEATURES
+        ========================================== -->
+
+        <section class="features-section">
+
+            <div class="section-title">
+
+                <small>
+                    Parshad Portal
+                </small>
+
+                <h2>
+                    आपके वार्ड के लिए
+                </h2>
+
+            </div>
+
+
+            <div class="features-grid">
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Citizen Complaints
+                    </h3>
+
+                    <p>
+                        नागरिक अपने वार्ड की समस्या
+                        सीधे online दर्ज कर सकते हैं।
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Complaint Dashboard
+                    </h3>
+
+                    <p>
+                        New, Pending और Solved complaints
+                        को एक ही dashboard से manage करें।
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Ward QR
+                    </h3>
+
+                    <p>
+                        एक unique QR से नागरिक आपके
+                        personalized ward portal तक पहुंचेंगे।
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📍
+                    </div>
+
+                    <h3>
+                        Complaint Location
+                    </h3>
+
+                    <p>
+                        शिकायत के साथ उपलब्ध होने पर
+                        location information भी सुरक्षित रहेगी।
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📷
+                    </div>
+
+                    <h3>
+                        Photo & Video
+                    </h3>
+
+                    <p>
+                        नागरिक समस्या की photo और
+                        short video भी भेज सकते हैं।
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📲
+                    </div>
+
+                    <h3>
+                        Mobile Friendly
+                    </h3>
+
+                    <p>
+                        मोबाइल, tablet और desktop पर
+                        responsive portal।
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             CITIZEN INFO
+        ========================================== -->
+
+        <section class="citizen-info">
+
+            <h2>
+                नागरिक यहाँ से शिकायत दर्ज नहीं करते
+            </h2>
+
+            <p>
+                Citizen को अपने संबंधित Parshad द्वारा दिए गए
+                QR code को scan करना होगा। QR scan करने के बाद
+                सीधे उसी वार्ड का personalized portal खुलेगा
+                और वहीं से शिकायत दर्ज की जा सकेगी।
+            </p>
+
+        </section>
 
     </main>
 
 
     <!-- =========================================
-         MENU DRAWER
+         FOOTER
     ========================================== -->
 
-    <div
-        id="menuOverlay"
-        class="menu-overlay hidden"
-    ></div>
+    <footer class="parshad-footer">
+
+        <strong>
+            Parshd.in
+        </strong>
+
+        <span>
+            Ward Citizen Service Platform
+        </span>
+
+        <small>
+            © <span id="currentYear"></span> Parshd.in
+        </small>
+
+    </footer>
+
+</div>
 
 
-    <aside
-        id="sideMenu"
-        class="side-menu"
-        aria-hidden="true"
-    >
+<script>
 
-        <div class="side-menu-header">
+    document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
 
-            <div>
-
-                <span>
-                    Menu
-                </span>
-
-                <strong>
-                    Parshd.in
-                </strong>
-
-            </div>
-
-            <button
-                id="closeMenuButton"
-                class="icon-button"
-                type="button"
-                aria-label="Close menu"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <nav class="side-navigation">
-
-            <button
-                id="menuHome"
-                type="button"
-            >
-                🏠
-                <span>मुख्य पृष्ठ</span>
-            </button>
-
-            <button
-                id="menuComplaint"
-                type="button"
-            >
-                📝
-                <span>शिकायत दर्ज करें</span>
-            </button>
-
-            <button
-                id="menuTrack"
-                type="button"
-            >
-                🔎
-                <span>शिकायत ट्रैक करें</span>
-            </button>
-
-            <button
-                id="menuSolved"
-                type="button"
-            >
-                ✅
-                <span>समाधान की गई समस्याएँ</span>
-            </button>
-
-        </nav>
-
-    </aside>
-
-
-    <!-- =========================================
-         SECURITY / ERROR MESSAGE
-    ========================================== -->
-
-    <div
-        id="errorMessage"
-        class="system-message hidden"
-        role="alert"
-    >
-        <div class="system-message-card">
-
-            <span class="system-message-icon">
-                ⚠️
-            </span>
-
-            <h3>
-                Portal उपलब्ध नहीं है
-            </h3>
-
-            <p id="errorText">
-                कृपया कुछ समय बाद पुनः प्रयास करें।
-            </p>
-
-            <button
-                id="reloadButton"
-                class="primary-button"
-                type="button"
-            >
-                पुनः प्रयास करें
-            </button>
-
-        </div>
-    </div>
-
-
-    <!-- =========================================
-         JAVASCRIPT
-    ========================================== -->
-
-    <script
-        type="module"
-        src="js/app.js"
-    ></script>
+</script>
 
 </body>
 </html>
