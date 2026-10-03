@@ -25,14 +25,12 @@
     box-sizing: border-box;
 }
 
-
 body {
     margin: 0;
     background: #ffffff;
     color: #111827;
     font-family: Arial, sans-serif;
 }
-
 
 .profile-page {
     width: 100%;
@@ -54,7 +52,6 @@ body {
     margin-bottom: 20px;
 }
 
-
 .back-btn {
     border: 0;
     background: #f3f4f6;
@@ -64,7 +61,6 @@ body {
     cursor: pointer;
     font-weight: 600;
 }
-
 
 .page-title {
     font-size: 24px;
@@ -86,7 +82,6 @@ body {
     box-shadow: 0 4px 18px rgba(0,0,0,0.04);
 }
 
-
 .section-title {
     margin: 0 0 15px;
     font-size: 18px;
@@ -107,11 +102,9 @@ body {
     margin-bottom: 20px;
 }
 
-
 .preview-box {
     text-align: center;
 }
-
 
 .preview-box span {
     display: block;
@@ -121,7 +114,6 @@ body {
     font-weight: 600;
 }
 
-
 .profile-preview {
     width: 130px;
     height: 130px;
@@ -130,7 +122,6 @@ body {
     border: 4px solid #f3f4f6;
     background: #f3f4f6;
 }
-
 
 .logo-preview {
     width: 75px;
@@ -150,14 +141,12 @@ body {
     margin-bottom: 15px;
 }
 
-
 .field label {
     display: block;
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 7px;
 }
-
 
 .field input,
 .field textarea,
@@ -171,26 +160,22 @@ body {
     background: #fff;
 }
 
-
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
     border-color: #2563eb;
 }
 
-
 .field textarea {
     min-height: 120px;
     resize: vertical;
 }
-
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
-
 
 .file-info {
     margin-top: 6px;
@@ -213,18 +198,15 @@ body {
     border-radius: 12px;
 }
 
-
 .switch-title {
     font-weight: 700;
 }
-
 
 .switch-description {
     font-size: 12px;
     color: #6b7280;
     margin-top: 4px;
 }
-
 
 .switch {
     position: relative;
@@ -233,13 +215,11 @@ body {
     flex-shrink: 0;
 }
 
-
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-
 
 .slider {
     position: absolute;
@@ -249,7 +229,6 @@ body {
     cursor: pointer;
     transition: 0.2s;
 }
-
 
 .slider:before {
     content: "";
@@ -263,11 +242,9 @@ body {
     transition: 0.2s;
 }
 
-
 .switch input:checked + .slider {
     background: #16a34a;
 }
-
 
 .switch input:checked + .slider:before {
     transform: translateX(23px);
@@ -290,7 +267,6 @@ body {
     cursor: pointer;
 }
 
-
 .save-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -310,12 +286,10 @@ body {
     font-weight: 600;
 }
 
-
 .success {
     background: #dcfce7;
     color: #166534;
 }
-
 
 .error {
     background: #fee2e2;
@@ -331,39 +305,66 @@ body {
     position: relative;
     overflow: hidden;
     text-align: center;
-    padding: 24px 18px 22px;
+    padding: 28px 18px 24px;
 }
 
 
-/* Decorative background curves */
+/* =====================================================
+   BLUE CORNER LINES
+===================================================== */
 
-.qr-box:before,
-.qr-box:after {
+.qr-box::before,
+.qr-box::after {
     content: "";
     position: absolute;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
+    width: 150px;
+    height: 150px;
     pointer-events: none;
-    opacity: 0.9;
+    z-index: 1;
 }
 
 
-.qr-box:before {
-    left: -125px;
-    top: -125px;
-    border: 16px solid #ff7a00;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
+/* TOP LEFT */
+
+.qr-box::before {
+    left: 0;
+    top: 0;
+
+    border-top: 7px solid #2563eb;
+    border-left: 7px solid #2563eb;
+
+    border-top-left-radius: 28px;
 }
 
 
-.qr-box:after {
-    right: -125px;
-    bottom: -125px;
-    border: 16px solid #16a34a;
-    border-left-color: transparent;
-    border-top-color: transparent;
+/* BOTTOM RIGHT */
+
+.qr-box::after {
+    right: 0;
+    bottom: 0;
+
+    border-right: 7px solid #2563eb;
+    border-bottom: 7px solid #2563eb;
+
+    border-bottom-right-radius: 28px;
+}
+
+
+/* Extra corner lines */
+
+.qr-box {
+    background:
+        linear-gradient(
+            #2563eb,
+            #2563eb
+        ) 100% 0 / 90px 7px no-repeat,
+
+        linear-gradient(
+            #2563eb,
+            #2563eb
+        ) 0 100% / 90px 7px no-repeat,
+
+        #ffffff;
 }
 
 
@@ -375,33 +376,25 @@ body {
     position: relative;
     z-index: 2;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 17px;
 }
 
-
 .qr-top-logo {
-    width: 76px;
-    height: 76px;
+    width: 82px;
+    height: 82px;
     object-fit: contain;
     display: block;
     margin: 0 auto 7px;
 }
 
-
 .qr-area-name {
     margin: 0;
-
     font-size: 18px;
-
     font-weight: 800;
-
     letter-spacing: 2px;
-
     text-transform: uppercase;
-
     color: #087f45;
 }
-
 
 .qr-area-lines {
     display: flex;
@@ -411,50 +404,35 @@ body {
     margin: 5px auto 8px;
 }
 
-
 .qr-area-lines span {
     width: 70px;
     height: 3px;
     display: block;
 }
 
-
 .qr-area-lines span:first-child {
     background: #ff7900;
 }
-
 
 .qr-area-lines span:last-child {
     background: #16a34a;
 }
 
-
 .qr-main-title {
     margin: 0;
-
     font-size: 30px;
-
     line-height: 1.05;
-
     font-weight: 900;
-
     letter-spacing: 1px;
-
     color: #103f39;
-
     text-transform: uppercase;
 }
 
-
 .qr-tagline {
     margin: 7px 0 15px;
-
     font-size: 13px;
-
     color: #374151;
-
     font-weight: 600;
-
     letter-spacing: 0.5px;
 }
 
@@ -469,7 +447,7 @@ body {
 
     display: grid;
 
-    grid-template-columns: 165px 1fr 135px;
+    grid-template-columns: 165px 1fr 175px;
 
     align-items: center;
 
@@ -482,7 +460,7 @@ body {
 
 
 /* =====================================================
-   LEFT FEATURES
+   FEATURES
 ===================================================== */
 
 .qr-feature-column {
@@ -491,7 +469,6 @@ body {
     gap: 15px;
 }
 
-
 .qr-feature {
     display: flex;
     align-items: center;
@@ -499,11 +476,10 @@ body {
     text-align: left;
 }
 
-
 .qr-feature-icon {
-    width: 47px;
-    height: 47px;
-    min-width: 47px;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
 
     border-radius: 50%;
 
@@ -513,39 +489,34 @@ body {
 
     color: white;
 
-    font-size: 23px;
+    font-size: 25px;
 
     box-shadow:
         0 3px 8px rgba(0,0,0,0.12);
 }
 
 
-/* अलग-अलग colourful icons */
+/* COLOURS */
 
 .qr-feature:nth-child(1) .qr-feature-icon {
     background: #f97316;
 }
 
-
 .qr-feature:nth-child(2) .qr-feature-icon {
     background: #0f9d8a;
 }
-
 
 .qr-feature:nth-child(3) .qr-feature-icon {
     background: #1976d2;
 }
 
-
 .qr-feature:nth-child(4) .qr-feature-icon {
     background: #7040c5;
 }
 
-
 .qr-feature:nth-child(5) .qr-feature-icon {
     background: #263238;
 }
-
 
 .qr-feature-text {
     font-size: 12px;
@@ -565,9 +536,6 @@ body {
     align-items: center;
 }
 
-
-/* QR double border */
-
 .qr-frame {
     position: relative;
 
@@ -585,26 +553,20 @@ body {
     min-height: 230px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
-
 
 #qrCode {
     width: 200px;
     height: 200px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     background: white;
 }
-
 
 #qrCode img,
 #qrCode canvas {
@@ -615,7 +577,7 @@ body {
 
 
 /* =====================================================
-   SCAN ME
+   SCAN BUTTON
 ===================================================== */
 
 .scan-decor {
@@ -626,25 +588,21 @@ body {
     margin-top: 10px;
 }
 
-
 .scan-line {
     width: 32px;
     height: 4px;
     border-radius: 5px;
 }
 
-
 .scan-line.orange {
     background: #ff7900;
     transform: rotate(35deg);
 }
 
-
 .scan-line.green {
     background: #16a34a;
     transform: rotate(-35deg);
 }
-
 
 .scan-button {
     min-width: 205px;
@@ -673,82 +631,57 @@ body {
         0 5px 14px rgba(0,0,0,0.13);
 }
 
-
 .scan-phone {
     font-size: 25px;
 }
 
-
 .scan-subtext {
     display: block;
-
     font-size: 9px;
-
     font-weight: 500;
-
     margin-top: 2px;
 }
 
 
 /* =====================================================
-   RIGHT SIDE LOGO + PHOTO
+   RIGHT SIDE - ONLY PARSHAD PHOTO
 ===================================================== */
 
 .qr-right-profile {
     display: flex;
 
-    flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
-    gap: 15px;
+    width: 100%;
 }
 
 
-/* Logo */
-
-.qr-side-logo {
-    width: 100px;
-    height: 100px;
-
-    object-fit: contain;
-
-    padding: 5px;
-
-    background: white;
-
-    border-radius: 12px;
-}
-
-
-/* Photo */
+/* BIG SQUARE PHOTO */
 
 .qr-side-photo {
-    width: 125px;
-    height: 125px;
+    width: 150px;
+    height: 175px;
 
     object-fit: cover;
 
-    border-radius: 50%;
+    border-radius: 14px;
 
-    border: 5px solid white;
+    border: 5px solid #ffffff;
 
     box-shadow:
-        0 3px 14px rgba(0,0,0,0.14);
+        0 5px 18px rgba(0,0,0,0.18);
 
     background: #f3f4f6;
 }
 
 
 /* =====================================================
-   ORGANIZATION NAME
+   ORGANIZATION
 ===================================================== */
 
 .qr-organization {
     position: relative;
-
     z-index: 2;
 
     margin: 18px auto 8px;
@@ -768,16 +701,14 @@ body {
     font-weight: 800;
 }
 
-
 .qr-organization-line {
     width: 55px;
     height: 2px;
-    background: #ff7900;
+    background: #2563eb;
 }
 
-
 .qr-organization-line:last-child {
-    background: #16a34a;
+    background: #2563eb;
 }
 
 
@@ -802,7 +733,7 @@ body {
 
 
 /* =====================================================
-   ACTION BUTTONS
+   ACTIONS
 ===================================================== */
 
 .qr-actions {
@@ -820,7 +751,6 @@ body {
     margin-top: 10px;
 }
 
-
 .secondary-btn {
     border: 0;
 
@@ -837,7 +767,6 @@ body {
     font-weight: 700;
 }
 
-
 .secondary-btn:hover {
     background: #e5e7eb;
 }
@@ -853,48 +782,40 @@ body {
         padding: 14px;
     }
 
-
     .grid {
         grid-template-columns: 1fr;
         gap: 0;
     }
 
-
     .page-title {
         font-size: 20px;
     }
 
-
     .qr-box {
-        padding: 20px 12px;
+        padding: 22px 10px;
     }
-
 
     .qr-main-title {
         font-size: 24px;
     }
-
 
     .qr-area-name {
         font-size: 15px;
         letter-spacing: 1px;
     }
 
-
     .qr-poster-content {
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
-
-    /* QR ऊपर */
+    /* QR */
 
     .qr-center {
         order: 1;
     }
 
-
-    /* Features नीचे */
+    /* FEATURES */
 
     .qr-feature-column {
         order: 2;
@@ -906,7 +827,6 @@ body {
         gap: 9px;
     }
 
-
     .qr-feature {
         padding: 7px;
 
@@ -915,55 +835,38 @@ body {
         border-radius: 11px;
     }
 
-
     .qr-feature-icon {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
+        width: 43px;
+        height: 43px;
+        min-width: 43px;
 
-        font-size: 20px;
+        font-size: 21px;
     }
-
 
     .qr-feature-text {
         font-size: 10px;
     }
 
-
-    /* Photo + logo */
+    /* PARSHAD PHOTO */
 
     .qr-right-profile {
         order: 3;
-
-        flex-direction: row;
-
-        gap: 25px;
     }
-
-
-    .qr-side-logo {
-        width: 90px;
-        height: 90px;
-    }
-
 
     .qr-side-photo {
-        width: 105px;
-        height: 105px;
+        width: 145px;
+        height: 165px;
     }
-
 
     .qr-frame {
         min-width: 224px;
         min-height: 224px;
     }
 
-
     #qrCode {
         width: 196px;
         height: 196px;
     }
-
 
     #qrCode img,
     #qrCode canvas {
@@ -971,6 +874,11 @@ body {
         height: 196px !important;
     }
 
+    .qr-box::before,
+    .qr-box::after {
+        width: 100px;
+        height: 100px;
+    }
 }
 
 
@@ -980,21 +888,13 @@ body {
         grid-template-columns: 1fr;
     }
 
-
     .qr-main-title {
         font-size: 21px;
     }
 
-
-    .qr-side-logo {
-        width: 80px;
-        height: 80px;
-    }
-
-
     .qr-side-photo {
-        width: 95px;
-        height: 95px;
+        width: 135px;
+        height: 155px;
     }
 
 }
@@ -1006,13 +906,10 @@ body {
 
 <body>
 
-
 <div class="profile-page">
 
 
-    <!-- =================================================
-         TOP
-    ================================================== -->
+    <!-- TOP -->
 
     <div class="topbar">
 
@@ -1024,26 +921,21 @@ body {
 
         </button>
 
-
         <h1 class="page-title">
             Profile Manager
         </h1>
-
 
         <div style="width:90px;"></div>
 
     </div>
 
 
-    <!-- =================================================
-         MESSAGE
-    ================================================== -->
+    <!-- MESSAGE -->
 
     <div
         id="successMessage"
         class="message success">
     </div>
-
 
     <div
         id="errorMessage"
@@ -1051,9 +943,7 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PROFILE IMAGES
-    ================================================== -->
+    <!-- PROFILE IMAGES -->
 
     <div class="card">
 
@@ -1061,16 +951,13 @@ body {
             Profile & Organization
         </h2>
 
-
         <div class="preview-row">
-
 
             <div class="preview-box">
 
                 <span>
                     Parshad Photo
                 </span>
-
 
                 <img
                     id="profilePreview"
@@ -1088,7 +975,6 @@ body {
                     Party / Organization Logo
                 </span>
 
-
                 <img
                     id="logoPreview"
                     class="logo-preview"
@@ -1103,20 +989,17 @@ body {
 
         <div class="grid">
 
-
             <div class="field">
 
                 <label for="profilePhoto">
                     Parshad Photo
                 </label>
 
-
                 <input
                     type="file"
                     id="profilePhoto"
                     accept="image/*"
                 >
-
 
                 <div class="file-info">
                     JPG, PNG, WEBP recommended
@@ -1131,13 +1014,11 @@ body {
                     Party / Organization Logo
                 </label>
 
-
                 <input
                     type="file"
                     id="partyLogo"
                     accept="image/*"
                 >
-
 
                 <div class="file-info">
                     JPG, PNG, WEBP recommended
@@ -1150,9 +1031,7 @@ body {
     </div>
 
 
-    <!-- =================================================
-         BASIC DETAILS
-    ================================================== -->
+    <!-- BASIC DETAILS -->
 
     <div class="card">
 
@@ -1160,16 +1039,13 @@ body {
             Basic Details
         </h2>
 
-
         <div class="grid">
-
 
             <div class="field">
 
                 <label for="name">
                     Parshad Name *
                 </label>
-
 
                 <input
                     type="text"
@@ -1186,7 +1062,6 @@ body {
                     Designation
                 </label>
 
-
                 <input
                     type="text"
                     id="designation"
@@ -1201,7 +1076,6 @@ body {
                 <label for="ward">
                     Ward Number *
                 </label>
-
 
                 <input
                     type="text"
@@ -1218,7 +1092,6 @@ body {
                     Ward / Area Name
                 </label>
 
-
                 <input
                     type="text"
                     id="area"
@@ -1233,7 +1106,6 @@ body {
                 <label for="organizationName">
                     Party / Organization Name
                 </label>
-
 
                 <input
                     type="text"
@@ -1250,7 +1122,6 @@ body {
                     Phone Number
                 </label>
 
-
                 <input
                     type="tel"
                     id="phone"
@@ -1266,7 +1137,6 @@ body {
                 <label for="whatsapp">
                     WhatsApp Number
                 </label>
-
 
                 <input
                     type="tel"
@@ -1286,7 +1156,6 @@ body {
                 About Parshad
             </label>
 
-
             <textarea
                 id="about"
                 placeholder="Parshad ke baare mein short information..."
@@ -1297,9 +1166,7 @@ body {
     </div>
 
 
-    <!-- =================================================
-         COMPLAINT SETTING
-    ================================================== -->
+    <!-- COMPLAINT SETTING -->
 
     <div class="card">
 
@@ -1307,9 +1174,7 @@ body {
             Complaint Settings
         </h2>
 
-
         <div class="switch-row">
-
 
             <div>
 
@@ -1317,13 +1182,11 @@ body {
                     Complaint Registration
                 </div>
 
-
                 <div class="switch-description">
                     ON hone par ward ke citizens complaint register kar sakenge.
                 </div>
 
             </div>
-
 
             <label class="switch">
 
@@ -1332,7 +1195,6 @@ body {
                     id="complaintEnabled"
                     checked
                 >
-
 
                 <span class="slider"></span>
 
@@ -1343,9 +1205,7 @@ body {
     </div>
 
 
-    <!-- =================================================
-         SAVE
-    ================================================== -->
+    <!-- SAVE -->
 
     <div class="card">
 
@@ -1367,12 +1227,11 @@ body {
     <div class="card qr-box">
 
 
-        <!-- POSTER HEADER -->
+        <!-- HEADER -->
 
         <div class="qr-poster-header">
 
-
-            <!-- PARTY LOGO -->
+            <!-- TOP LOGO -->
 
             <img
                 id="qrTopLogo"
@@ -1382,7 +1241,7 @@ body {
             >
 
 
-            <!-- AREA NAME -->
+            <!-- AREA -->
 
             <div class="qr-area-lines">
 
@@ -1396,7 +1255,7 @@ body {
                 id="qrAreaName"
                 class="qr-area-name">
 
-                AREA NAME
+                WARD AREA
 
             </h3>
 
@@ -1409,7 +1268,7 @@ body {
             </div>
 
 
-            <!-- WARD TITLE -->
+            <!-- WARD -->
 
             <h2
                 id="qrMainTitle"
@@ -1421,25 +1280,24 @@ body {
 
 
             <p class="qr-tagline">
+
                 Your Voice &nbsp; | &nbsp;
                 Our Priority &nbsp; | &nbsp;
                 Better Ward Services
+
             </p>
 
         </div>
 
 
-        <!-- POSTER CONTENT -->
+        <!-- CONTENT -->
 
         <div class="qr-poster-content">
 
 
-            <!-- =========================================
-                 LEFT FEATURES
-            ========================================== -->
+            <!-- LEFT -->
 
             <div class="qr-feature-column">
-
 
                 <div class="qr-feature">
 
@@ -1513,12 +1371,9 @@ body {
             </div>
 
 
-            <!-- =========================================
-                 CENTER QR
-            ========================================== -->
+            <!-- CENTER QR -->
 
             <div class="qr-center">
-
 
                 <div class="qr-frame">
 
@@ -1530,6 +1385,7 @@ body {
                 <div class="scan-decor">
 
                     <span class="scan-line orange"></span>
+
 
                     <div class="scan-button">
 
@@ -1549,6 +1405,7 @@ body {
 
                     </div>
 
+
                     <span class="scan-line green"></span>
 
                 </div>
@@ -1556,24 +1413,9 @@ body {
             </div>
 
 
-            <!-- =========================================
-                 RIGHT LOGO + PHOTO
-            ========================================== -->
+            <!-- RIGHT : ONLY PHOTO -->
 
             <div class="qr-right-profile">
-
-
-                <!-- LOGO -->
-
-                <img
-                    id="qrSideLogo"
-                    class="qr-side-logo"
-                    src="../assets/images/default-logo.png"
-                    alt="Organization Logo"
-                >
-
-
-                <!-- PARSHAD PHOTO -->
 
                 <img
                     id="qrSidePhoto"
@@ -1616,7 +1458,6 @@ body {
 
         <div class="qr-actions">
 
-
             <button
                 class="secondary-btn"
                 id="copyQrUrlButton">
@@ -1641,9 +1482,7 @@ body {
 </div>
 
 
-<!-- =====================================================
-     QR LIBRARY
-===================================================== -->
+<!-- QR LIBRARY -->
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
@@ -1664,7 +1503,6 @@ import {
 from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 
-
 /* =====================================================
    ELEMENTS
 ===================================================== */
@@ -1672,136 +1510,74 @@ from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 const nameInput =
     document.getElementById("name");
 
-
 const designationInput =
     document.getElementById("designation");
-
 
 const wardInput =
     document.getElementById("ward");
 
-
 const areaInput =
     document.getElementById("area");
 
-
 const organizationNameInput =
-    document.getElementById(
-        "organizationName"
-    );
-
+    document.getElementById("organizationName");
 
 const phoneInput =
     document.getElementById("phone");
 
-
 const whatsappInput =
     document.getElementById("whatsapp");
-
 
 const aboutInput =
     document.getElementById("about");
 
-
 const complaintEnabledInput =
-    document.getElementById(
-        "complaintEnabled"
-    );
-
+    document.getElementById("complaintEnabled");
 
 const profilePhotoInput =
-    document.getElementById(
-        "profilePhoto"
-    );
-
+    document.getElementById("profilePhoto");
 
 const partyLogoInput =
-    document.getElementById(
-        "partyLogo"
-    );
-
+    document.getElementById("partyLogo");
 
 const profilePreview =
-    document.getElementById(
-        "profilePreview"
-    );
-
+    document.getElementById("profilePreview");
 
 const logoPreview =
-    document.getElementById(
-        "logoPreview"
-    );
+    document.getElementById("logoPreview");
 
 
-/* QR IMAGES */
+/* QR */
 
 const qrTopLogo =
-    document.getElementById(
-        "qrTopLogo"
-    );
-
-
-const qrSideLogo =
-    document.getElementById(
-        "qrSideLogo"
-    );
-
+    document.getElementById("qrTopLogo");
 
 const qrSidePhoto =
-    document.getElementById(
-        "qrSidePhoto"
-    );
-
-
-/* QR TEXT */
+    document.getElementById("qrSidePhoto");
 
 const qrAreaName =
-    document.getElementById(
-        "qrAreaName"
-    );
-
+    document.getElementById("qrAreaName");
 
 const qrMainTitle =
-    document.getElementById(
-        "qrMainTitle"
-    );
-
+    document.getElementById("qrMainTitle");
 
 const qrOrganizationText =
-    document.getElementById(
-        "qrOrganizationText"
-    );
-
+    document.getElementById("qrOrganizationText");
 
 const saveButton =
-    document.getElementById(
-        "saveButton"
-    );
-
+    document.getElementById("saveButton");
 
 const successMessage =
-    document.getElementById(
-        "successMessage"
-    );
-
+    document.getElementById("successMessage");
 
 const errorMessage =
-    document.getElementById(
-        "errorMessage"
-    );
-
+    document.getElementById("errorMessage");
 
 const qrCode =
-    document.getElementById(
-        "qrCode"
-    );
-
+    document.getElementById("qrCode");
 
 const qrUrl =
-    document.getElementById(
-        "qrUrl"
-    );
-
+    document.getElementById("qrUrl");
 
 
 /* =====================================================
@@ -1849,7 +1625,6 @@ const parshadId =
     ("demo_" + Date.now());
 
 
-
 /* =====================================================
    IMAGE COMPRESS
 ===================================================== */
@@ -1886,7 +1661,6 @@ function compressImage(
 
                             let width =
                                 img.width;
-
 
                             let height =
                                 img.height;
@@ -1945,7 +1719,6 @@ function compressImage(
                             canvas.width =
                                 width;
 
-
                             canvas.height =
                                 height;
 
@@ -1965,14 +1738,12 @@ function compressImage(
                             );
 
 
-                            const result =
+                            resolve(
                                 canvas.toDataURL(
                                     "image/jpeg",
                                     0.75
-                                );
-
-
-                            resolve(result);
+                                )
+                            );
 
                         };
 
@@ -1999,14 +1770,11 @@ function compressImage(
 }
 
 
-
 /* =====================================================
    QR POSTER RENDER
 ===================================================== */
 
-function renderQRProfile(
-    profile
-) {
+function renderQRProfile(profile) {
 
     const ward =
         profile.wardNumber ||
@@ -2036,14 +1804,10 @@ function renderQRProfile(
         "../assets/images/default-logo.png";
 
 
-    /* AREA */
-
     qrAreaName.textContent =
         area ||
         "WARD AREA";
 
-
-    /* WARD TITLE */
 
     qrMainTitle.textContent =
         "WARD " +
@@ -2051,31 +1815,22 @@ function renderQRProfile(
         " COMPLAINT PORTAL";
 
 
-    /* ORGANIZATION */
-
     qrOrganizationText.textContent =
         organization;
 
 
-    /* TOP LOGO */
+    /* ONLY TOP LOGO */
 
     qrTopLogo.src =
         logo;
 
 
-    /* SIDE LOGO */
-
-    qrSideLogo.src =
-        logo;
-
-
-    /* PARSHAD PHOTO */
+    /* ONLY PARSHAD PHOTO */
 
     qrSidePhoto.src =
         photo;
 
 }
-
 
 
 /* =====================================================
@@ -2089,9 +1844,7 @@ profilePhotoInput.addEventListener(
         const file =
             profilePhotoInput.files[0];
 
-
         if (!file) return;
-
 
         try {
 
@@ -2101,14 +1854,11 @@ profilePhotoInput.addEventListener(
                     600
                 );
 
-
             profilePreview.src =
                 image;
 
-
             qrSidePhoto.src =
                 image;
-
 
         } catch (error) {
 
@@ -2122,7 +1872,6 @@ profilePhotoInput.addEventListener(
 );
 
 
-
 /* =====================================================
    PARTY LOGO PREVIEW
 ===================================================== */
@@ -2134,9 +1883,7 @@ partyLogoInput.addEventListener(
         const file =
             partyLogoInput.files[0];
 
-
         if (!file) return;
-
 
         try {
 
@@ -2146,18 +1893,11 @@ partyLogoInput.addEventListener(
                     350
                 );
 
-
             logoPreview.src =
                 image;
 
-
             qrTopLogo.src =
                 image;
-
-
-            qrSideLogo.src =
-                image;
-
 
         } catch (error) {
 
@@ -2169,7 +1909,6 @@ partyLogoInput.addEventListener(
 
     }
 );
-
 
 
 /* =====================================================
@@ -2194,7 +1933,6 @@ async function loadProfile() {
                     JSON.parse(
                         localProfileRaw
                     );
-
 
                 fillForm(
                     localProfile
@@ -2265,11 +2003,9 @@ async function loadProfile() {
 
     }
 
-
     generateQR();
 
 }
-
 
 
 /* =====================================================
@@ -2281,10 +2017,8 @@ function fillForm(data) {
     nameInput.value =
         data.name || "";
 
-
     designationInput.value =
         data.designation || "";
-
 
     wardInput.value =
         data.wardNumber ||
@@ -2292,33 +2026,27 @@ function fillForm(data) {
         account.ward ||
         "";
 
-
     areaInput.value =
         data.areaName ||
         data.area ||
         "";
 
-
     organizationNameInput.value =
         data.organizationName ||
         "";
-
 
     phoneInput.value =
         data.phone ||
         account.mobile ||
         "";
 
-
     whatsappInput.value =
         data.whatsapp ||
         "";
 
-
     aboutInput.value =
         data.about ||
         "";
-
 
     complaintEnabledInput.checked =
         data.complaintEnabled !== false;
@@ -2351,7 +2079,6 @@ function fillForm(data) {
 }
 
 
-
 /* =====================================================
    SAVE
 ===================================================== */
@@ -2362,7 +2089,6 @@ saveButton.addEventListener(
 );
 
 
-
 async function saveProfile() {
 
     hideMessages();
@@ -2371,41 +2097,30 @@ async function saveProfile() {
     const name =
         nameInput.value.trim();
 
-
     const designation =
         designationInput.value.trim();
-
 
     const ward =
         wardInput.value.trim();
 
-
     const area =
         areaInput.value.trim();
-
 
     const organizationName =
         organizationNameInput.value.trim();
 
-
     const phone =
         phoneInput.value.trim();
-
 
     const whatsapp =
         whatsappInput.value.trim();
 
-
     const about =
         aboutInput.value.trim();
-
 
     const complaintEnabled =
         complaintEnabledInput.checked;
 
-
-
-    /* VALIDATION */
 
     if (!name) {
 
@@ -2468,14 +2183,11 @@ async function saveProfile() {
     saveButton.disabled =
         true;
 
-
     saveButton.textContent =
         "Saving...";
 
 
     try {
-
-        /* OLD PROFILE */
 
         const oldProfileRaw =
             localStorage.getItem(
@@ -2500,8 +2212,6 @@ async function saveProfile() {
 
         }
 
-
-        /* IMAGES */
 
         let profilePhoto =
             profilePreview.src || "";
@@ -2538,8 +2248,6 @@ async function saveProfile() {
 
         }
 
-
-        /* PROFILE */
 
         const profile = {
 
@@ -2590,8 +2298,6 @@ async function saveProfile() {
 
         };
 
-
-        /* FIRESTORE */
 
         const profileRef =
             doc(
@@ -2681,8 +2387,6 @@ async function saveProfile() {
         }
 
 
-        /* LOCAL CACHE */
-
         localStorage.setItem(
             "parshd_demo_profile",
             JSON.stringify(profile)
@@ -2692,10 +2396,8 @@ async function saveProfile() {
         account.ward =
             String(ward);
 
-
         account.name =
             name;
-
 
         account.mobile =
             phone ||
@@ -2708,8 +2410,6 @@ async function saveProfile() {
             JSON.stringify(account)
         );
 
-
-        /* UPDATE POSTER */
 
         renderQRProfile(
             profile
@@ -2751,14 +2451,12 @@ async function saveProfile() {
         saveButton.disabled =
             false;
 
-
         saveButton.textContent =
             "Save Profile";
 
     }
 
 }
-
 
 
 /* =====================================================
@@ -2776,10 +2474,8 @@ function generateQR() {
         qrCode.innerHTML =
             "";
 
-
         qrUrl.textContent =
             "Ward number save karne ke baad QR generate hoga.";
-
 
         return;
     }
@@ -2814,7 +2510,6 @@ function generateQR() {
         new QRCode(
             qrCode,
             {
-
                 text:
                     portalUrl,
 
@@ -2826,7 +2521,6 @@ function generateQR() {
 
                 correctLevel:
                     QRCode.CorrectLevel.H
-
             }
         );
 
@@ -2885,7 +2579,6 @@ organizationNameInput.addEventListener(
 
     }
 );
-
 
 
 /* =====================================================
@@ -2955,7 +2648,6 @@ document
     );
 
 
-
 /* =====================================================
    OPEN PORTAL
 ===================================================== */
@@ -3004,7 +2696,6 @@ document
     );
 
 
-
 /* =====================================================
    DASHBOARD
 ===================================================== */
@@ -3024,7 +2715,6 @@ document
     );
 
 
-
 /* =====================================================
    MESSAGES
 ===================================================== */
@@ -3033,7 +2723,6 @@ function hideMessages() {
 
     successMessage.style.display =
         "none";
-
 
     errorMessage.style.display =
         "none";
@@ -3048,14 +2737,11 @@ function showSuccess(
     successMessage.textContent =
         message;
 
-
     successMessage.style.display =
         "block";
 
-
     errorMessage.style.display =
         "none";
-
 
     window.scrollTo({
 
@@ -3075,14 +2761,11 @@ function showError(
     errorMessage.textContent =
         message;
 
-
     errorMessage.style.display =
         "block";
 
-
     successMessage.style.display =
         "none";
-
 
     window.scrollTo({
 
@@ -3093,7 +2776,6 @@ function showError(
     });
 
 }
-
 
 
 /* =====================================================
