@@ -191,112 +191,83 @@ async function createComplaint(data = {}) {
     }
 
 
-    // =====================================================
-    // PHOTO VALIDATION
-    // =====================================================
+// =====================================================
+// PHOTO VALIDATION
+// =====================================================
 
-    if (photos.length > 2) {
+if (photos.length > 2) {
+
+    throw new Error(
+        "अधिकतम 2 photos upload कर सकते हैं।"
+    );
+
+}
+
+
+for (
+    const photo of photos
+) {
+
+    if (!photo) {
+        continue;
+    }
+
+
+    // -----------------------------------------
+    // PHOTO SIZE
+    // Maximum 15 MB per photo
+    // -----------------------------------------
+
+    const maxImageSize =
+        15 * 1024 * 1024;
+
+
+    if (
+        photo.size >
+        maxImageSize
+    ) {
 
         throw new Error(
-            "अधिकतम 2 photos upload कर सकते हैं।"
+            "हर photo अधिकतम 15 MB का हो सकता है।"
         );
 
     }
 
+}
 
-    for (
-        const photo of photos
+
+// =====================================================
+// VIDEO VALIDATION
+// =====================================================
+
+if (video) {
+
+    // -----------------------------------------
+    // VIDEO SIZE
+    // Maximum 25 MB
+    // -----------------------------------------
+
+    const maxVideoSize =
+        25 * 1024 * 1024;
+
+
+    if (
+        video.size >
+        maxVideoSize
     ) {
 
-        if (!photo) {
-            continue;
-        }
-
-
-        const maxImageSize =
-            5 * 1024 * 1024;
-
-
-        if (
-            photo.size >
-            maxImageSize
-        ) {
-
-            throw new Error(
-                "हर photo अधिकतम 5 MB का हो सकता है।"
-            );
-
-        }
-
-
-        const allowedImageTypes = [
-            "image/jpeg",
-            "image/jpg",
-            "image/png",
-            "image/webp"
-        ];
-
-
-        if (
-            photo.type &&
-            !allowedImageTypes.includes(
-                photo.type
-            )
-        ) {
-
-            throw new Error(
-                "केवल JPG, PNG या WEBP photo upload करें।"
-            );
-
-        }
+        throw new Error(
+            "Video अधिकतम 25 MB का हो सकता है।"
+        );
 
     }
 
+    // -----------------------------------------
+    // NO FIXED VIDEO TYPE RESTRICTION
+    // MP4 / WEBM / MOV आदि पर कोई fixed condition नहीं
+    // -----------------------------------------
 
-    // =====================================================
-    // VIDEO VALIDATION
-    // =====================================================
-
-    if (video) {
-
-        const maxVideoSize =
-            25 * 1024 * 1024;
-
-
-        if (
-            video.size >
-            maxVideoSize
-        ) {
-
-            throw new Error(
-                "Video अधिकतम 25 MB का हो सकता है।"
-            );
-
-        }
-
-
-        const allowedVideoTypes = [
-            "video/mp4",
-            "video/webm",
-            "video/quicktime"
-        ];
-
-
-        if (
-            video.type &&
-            !allowedVideoTypes.includes(
-                video.type
-            )
-        ) {
-
-            throw new Error(
-                "केवल MP4, WEBM या MOV video upload करें।"
-            );
-
-        }
-
-    }
-
+}
 
     // =====================================================
     // LOAD WARD
