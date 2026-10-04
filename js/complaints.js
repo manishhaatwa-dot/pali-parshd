@@ -371,21 +371,32 @@ async function createComplaint(data = {}) {
 
     }
 
+// =====================================================
+// COMPLAINT REGISTRATION ENABLED / DISABLED
+// =====================================================
 
-    // =====================================================
-    // COMPLAINT ENABLED
-    // =====================================================
+/*
+ * complaintEnabled Firebase me boolean false,
+ * string "false" ya 0 kisi bhi form me ho,
+ * complaint registration block rahegi.
+ */
 
-    if (
-        ward.complaintEnabled === false
-    ) {
+const complaintRegistrationEnabled =
+    !(
+        ward.complaintEnabled === false ||
+        ward.complaintEnabled === "false" ||
+        ward.complaintEnabled === 0 ||
+        ward.complaintEnabled === "0"
+    );
 
-        throw new Error(
-            "इस Ward में अभी complaint registration बंद है।"
-        );
 
-    }
+if (!complaintRegistrationEnabled) {
 
+    throw new Error(
+        "तकनीकी समस्या के कारण हम अभी आपकी शिकायत नहीं ले सकते। कृपया कुछ देर बाद पुनः प्रयास करें।"
+    );
+
+}
 
     // =====================================================
     // PARSHAD ID
