@@ -343,7 +343,6 @@ async function loginUser() {
     try {
 
         // =================================================
-        // STEP 0
         // KEEP LOGIN SESSION ON DEVICE
         // =================================================
 
@@ -354,7 +353,6 @@ async function loginUser() {
 
 
         // =================================================
-        // STEP 1
         // FIREBASE AUTH
         // =================================================
 
@@ -377,7 +375,6 @@ async function loginUser() {
 
 
         // =================================================
-        // STEP 2
         // EMAIL VERIFICATION
         // =================================================
 
@@ -398,7 +395,6 @@ async function loginUser() {
 
 
         // =================================================
-        // STEP 3
         // FIRESTORE PARSHAD RECORD
         // =================================================
 
@@ -621,46 +617,11 @@ async function requireParshadLogin(
     redirectPath = "./index.html"
 ) {
 
-    return new Promise(
-        resolve => {
-
-            let finished = false;
-
-            const finish = (
-                result
-            ) => {
-
-                if (finished) {
-
-                    return;
-
-                }
-
-                finished = true;
-
-                unsubscribe();
-
-                resolve(result);
-
-            };
-
-
-         // =====================================================
-// REQUIRE PARSHAD LOGIN
-// Dashboard / Profile ke liye
-// =====================================================
-
-async function requireParshadLogin(
-    redirectPath = "./index.html"
-) {
-
     try {
 
         // =================================================
         // IMPORTANT:
-        // Firebase ko pehle saved login session restore
-        // karne ka time do.
-        // PWA me ye especially important hai.
+        // Firebase saved login session ko pehle restore kare
         // =================================================
 
         await auth.authStateReady();
@@ -732,26 +693,74 @@ async function requireParshadLogin(
         let account = null;
 
 
-        try {
+        let firestoreReadSuccess =
+            false;
 
-            account =
-                await getParshadRecord(
-                    user.uid
+
+        // Mobile/PWA startup ke liye retry
+        for (
+            let attempt = 1;
+            attempt <= 3;
+            attempt++
+        ) {
+
+            try {
+
+                account =
+                    await getParshadRecord(
+                        user.uid
+                    );
+
+
+                firestoreReadSuccess =
+                    true;
+
+
+                break;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "PARSHAD RECORD READ ERROR - ATTEMPT " +
+                    attempt +
+                    ":",
+                    error
                 );
+
+
+                if (
+                    attempt < 3
+                ) {
+
+                    await new Promise(
+                        resolve =>
+                            setTimeout(
+                                resolve,
+                                700
+                            )
+                    );
+
+                }
+
+            }
 
         }
 
-        catch (error) {
 
-            console.error(
-                "PARSHAD RECORD READ ERROR:",
-                error
+        // =================================
+        // FIRESTORE READ FAILED
+        // =================================
+
+        if (
+            !firestoreReadSuccess
+        ) {
+
+            console.log(
+                "Firestore temporarily unavailable. Login session kept."
             );
 
-
-            // Firebase login ko sirf temporary
-            // Firestore/network problem par logout
-            // nahi karna.
 
             window.location.replace(
                 redirectPath
@@ -852,279 +861,6 @@ async function requireParshadLogin(
         return false;
 
     }
-
-}
-
-                        try {
-
-                            // =================================
-                            // USER LOGIN NAHI HAI
-                            // =================================
-
-                            if (!user) {
-
-                                console.log(
-                                    "No Firebase user found."
-                                );
-
-
-                                window.location.replace(
-                                    redirectPath
-                                );
-
-
-                                finish(
-                                    false
-                                );
-
-                                return;
-
-                            }
-
-
-                            console.log(
-                                "Auth user found:",
-                                user.uid
-                            );
-
-
-                            // =================================
-                            // EMAIL VERIFICATION
-                            // =================================
-
-                            if (
-                                !user.emailVerified
-                            ) {
-
-                                console.log(
-                                    "Email is not verified."
-                                );
-
-
-                                await signOut(
-                                    auth
-                                );
-
-
-                                window.location.replace(
-                                    redirectPath
-                                );
-
-
-                                finish(
-                                    false
-                                );
-
-                                return;
-
-                            }
-
-
-                            // =================================
-                            // FIRESTORE PARSHAD RECORD
-                            // =================================
-
-                            let account = null;
-
-                            let firestoreReadSuccess =
-                                false;
-
-
-                            // Small retry for mobile/PWA startup
-                            for (
-                                let attempt = 1;
-                                attempt <= 3;
-                                attempt++
-                            ) {
-
-                                try {
-
-                                    account =
-                                        await getParshadRecord(
-                                            user.uid
-                                        );
-
-                                    firestoreReadSuccess =
-                                        true;
-
-                                    break;
-
-                                }
-
-                                catch (error) {
-
-                                    console.error(
-                                        "PARSHAD RECORD READ ERROR - ATTEMPT " +
-                                        attempt +
-                                        ":",
-                                        error
-                                    );
-
-
-                                    if (
-                                        attempt < 3
-                                    ) {
-
-                                        await new Promise(
-                                            resolve =>
-                                                setTimeout(
-                                                    resolve,
-                                                    700
-                                                )
-                                        );
-
-                                    }
-
-                                }
-
-                            }
-
-
-                            // =================================
-                            // FIRESTORE READ FAILED
-                            // =================================
-
-                            if (
-                                !firestoreReadSuccess
-                            ) {
-
-                                console.log(
-                                    "Firestore record temporarily unavailable. Login session kept."
-                                );
-
-
-                                window.location.replace(
-                                    redirectPath
-                                );
-
-
-                                finish(
-                                    false
-                                );
-
-                                return;
-
-                            }
-
-
-                            // =================================
-                            // RECORD NOT FOUND
-                            // =================================
-
-                            if (!account) {
-
-                                console.log(
-                                    "Parshad record not found."
-                                );
-
-
-                                await signOut(
-                                    auth
-                                );
-
-
-                                window.location.replace(
-                                    redirectPath
-                                );
-
-
-                                finish(
-                                    false
-                                );
-
-                                return;
-
-                            }
-
-
-                            // =================================
-                            // APPROVAL CHECK
-                            // =================================
-
-                            if (
-                                account.status !==
-                                    "approved" ||
-                                account.approved !==
-                                    true
-                            ) {
-
-                                console.log(
-                                    "Parshad is not approved.",
-                                    account.status,
-                                    account.approved
-                                );
-
-
-                                await signOut(
-                                    auth
-                                );
-
-
-                                window.location.replace(
-                                    redirectPath
-                                );
-
-
-                                finish(
-                                    false
-                                );
-
-                                return;
-
-                            }
-
-
-                            // =================================
-                            // EVERYTHING OK
-                            // =================================
-
-                            console.log(
-                                "Parshad session verified:",
-                                user.uid
-                            );
-
-
-                            finish(
-                                true
-                            );
-
-                        }
-
-                        catch (error) {
-
-                            console.error(
-                                "requireParshadLogin ERROR:",
-                                error
-                            );
-
-
-                            try {
-
-                                await signOut(
-                                    auth
-                                );
-
-                            }
-
-                            catch (_) {}
-
-
-                            window.location.replace(
-                                redirectPath
-                            );
-
-
-                            finish(
-                                false
-                            );
-
-                        }
-
-                    }
-                );
-
-        }
-    );
 
 }
 
