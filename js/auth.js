@@ -8,8 +8,21 @@ import { auth } from "./firebase-config.js";
 import {
     signInWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+
+// =========================================================
+// AUTH PERSISTENCE
+// =========================================================
+
+const persistenceReady =
+    setPersistence(
+        auth,
+        browserLocalPersistence
+    );
 
 
 // =========================================================
@@ -42,6 +55,11 @@ export async function login(
 
 
     try {
+
+        // Make sure login session is saved
+        // on the device/browser.
+        await persistenceReady;
+
 
         const result =
             await signInWithEmailAndPassword(
