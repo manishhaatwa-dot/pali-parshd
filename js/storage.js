@@ -24,7 +24,7 @@ const MAX_VIDEOS = 1;
 const MAX_VIDEO_DURATION = 15;
 
 const MAX_IMAGE_SIZE =
-    5 * 1024 * 1024;
+    15 * 1024 * 1024;
 
 const MAX_VIDEO_SIZE =
     25 * 1024 * 1024;
@@ -57,7 +57,7 @@ export function validateImage(file) {
         return {
             valid: false,
             message:
-                "एक image का maximum size 5 MB है।"
+                "एक image का maximum size 15 MB है।"
         };
 
     }
