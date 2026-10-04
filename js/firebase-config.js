@@ -6,7 +6,9 @@ import { initializeApp } from
     "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
-    getAuth
+    initializeAuth,
+    indexedDBLocalPersistence,
+    browserLocalPersistence
 } from
     "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
@@ -28,7 +30,7 @@ import {
 const firebaseConfig = {
 
     apiKey:
-        "AIzaSyCes4Ir1Q_QHpLlhCqAPWKLMpA9Zez6cyY",
+        "AIzaSyCes4Ir1Q_QHpLlhcQAPWKLMpA9Zez6cyY",
 
     authDomain:
         "zeng-chatt.firebaseapp.com",
@@ -59,12 +61,31 @@ const app = initializeApp(firebaseConfig);
 
 
 // =====================================================
-// SERVICES
+// FIREBASE AUTH
+// =====================================================
+// Installed PWA ke liye strong local persistence.
+// Pehle IndexedDB try hoga.
+// Agar IndexedDB available nahi hua to browserLocalPersistence use hoga.
 // =====================================================
 
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, {
+    persistence: [
+        indexedDBLocalPersistence,
+        browserLocalPersistence
+    ]
+});
+
+
+// =====================================================
+// FIRESTORE
+// =====================================================
 
 export const db = getFirestore(app);
+
+
+// =====================================================
+// STORAGE
+// =====================================================
 
 export const storage = getStorage(app);
 
