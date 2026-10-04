@@ -1263,44 +1263,27 @@ async function initializeDashboard() {
 
         showLoading();
 
-
-        // Firebase login + email verification
-        // + Manager approval check
+        // -----------------------------------------
+        // RESTORE FIREBASE LOGIN SESSION
+        // -----------------------------------------
 
         const allowed =
             await requireParshadLogin(
                 "./index.html"
             );
 
-
         if (!allowed) {
-
             return;
-
         }
 
 
-        // requireParshadLogin() ke baad
-        // current Firebase session directly milega.
+        // -----------------------------------------
+        // CURRENT USER
+        // -----------------------------------------
 
         currentUser =
             auth.currentUser;
 
-        await requireParshadLogin("./index.html");
-
-currentUser = auth.currentUser;
-
-try {
-    await registerParshdNotification();
-} catch (error) {
-    console.warn(
-        "Parshd notification registration skipped:",
-        error
-    );
-}
-
-// बाकी existing dashboard code
-        
 
         if (!currentUser) {
 
@@ -1309,11 +1292,30 @@ try {
             );
 
             return;
-
         }
 
 
-        // Dashboard load
+        // -----------------------------------------
+        // NOTIFICATION REGISTRATION
+        // IMPORTANT:
+        // Notification registration dashboard
+        // loading ko block nahi karegi.
+        // -----------------------------------------
+
+        registerParshdNotification()
+            .catch(error => {
+
+                console.warn(
+                    "Parshd notification registration skipped:",
+                    error
+                );
+
+            });
+
+
+        // -----------------------------------------
+        // LOAD DASHBOARD
+        // -----------------------------------------
 
         await loadDashboard();
 
