@@ -1070,7 +1070,67 @@ if (passwordInput) {
 
 }
 
+// =====================================================
+// RESTORE EXISTING LOGIN SESSION
+// =====================================================
 
+async function restoreLoginSession() {
+
+    try {
+
+        await auth.authStateReady();
+
+        const user = auth.currentUser;
+
+        if (!user) {
+            return;
+        }
+
+        console.log(
+            "Existing Firebase session found:",
+            user.uid
+        );
+
+        if (!user.emailVerified) {
+            return;
+        }
+
+        const account =
+            await getParshadRecord(user.uid);
+
+        if (
+            account &&
+            account.status === "approved" &&
+            account.approved === true
+        ) {
+
+            console.log(
+                "Existing Parshad session valid. Opening dashboard..."
+            );
+
+            window.location.replace(
+                "./dashboard.html"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "RESTORE LOGIN SESSION ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// CHECK SAVED SESSION ON LOGIN PAGE OPEN
+// =====================================================
+
+restoreLoginSession();
 // =====================================================
 // EXPORTS
 // =====================================================
