@@ -1908,8 +1908,12 @@ function fillForm(
         data.about ||
         "";
 
+    if (typeof data.complaintEnabled === "boolean") {
     complaintEnabledInput.checked =
-        data.complaintEnabled !== false;
+        data.complaintEnabled;
+} else {
+    complaintEnabledInput.checked = true;
+}
 
 
     profilePreview.src =
@@ -2780,6 +2784,93 @@ saveButton.addEventListener(
     saveProfile
 );
 
+   // =====================================================
+// COMPLAINT TOGGLE - DIRECT SAVE
+// =====================================================
+
+complaintEnabledInput.addEventListener(
+    "change",
+    async function () {
+
+        if (!currentUser) {
+            showError(
+                "Login session nahi mila."
+            );
+            return;
+        }
+
+        const newValue =
+            complaintEnabledInput.checked;
+
+        complaintEnabledInput.disabled = true;
+
+        try {
+
+            const ward =
+                wardInput.value.trim();
+
+            if (!ward) {
+                throw new Error(
+                    "Ward number available nahi hai."
+                );
+            }
+
+            const wardRef =
+                doc(
+                    db,
+                    ...WARDS_PATH,
+                    String(ward)
+                );
+
+            await setDoc(
+                wardRef,
+                {
+                    complaintEnabled:
+                        newValue,
+
+                    updatedAt:
+                        serverTimestamp()
+                },
+                {
+                    merge: true
+                }
+            );
+
+            if (currentProfile) {
+                currentProfile.complaintEnabled =
+                    newValue;
+            }
+
+            showSuccess(
+                newValue
+                    ? "Complaint Registration ON kar di gayi hai."
+                    : "Complaint Registration OFF kar di gayi hai."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Complaint toggle save error:",
+                error
+            );
+
+            complaintEnabledInput.checked =
+                !newValue;
+
+            showError(
+                error.message ||
+                "Complaint setting save nahi ho payi."
+            );
+
+        } finally {
+
+            complaintEnabledInput.disabled =
+                false;
+
+        }
+
+    }
+); 
 
 // =====================================================
 // COPY LINK
