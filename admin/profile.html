@@ -129,6 +129,11 @@
             object-fit: cover;
             border: 4px solid #f3f4f6;
             background: #f3f4f6;
+            cursor: pointer;
+        }
+
+        .profile-preview:hover {
+            opacity: 0.88;
         }
 
         .logo-preview {
@@ -138,6 +143,11 @@
             object-fit: contain;
             border: 3px solid #f3f4f6;
             background: #f3f4f6;
+            cursor: pointer;
+        }
+
+        .logo-preview:hover {
+            opacity: 0.88;
         }
 
         .grid {
@@ -810,6 +820,7 @@
                     id="profilePreview"
                     class="profile-preview"
                     alt="Profile"
+                    title="Photo change karne ke liye click karein"
                 >
 
             </div>
@@ -825,6 +836,7 @@
                     id="logoPreview"
                     class="logo-preview"
                     alt="Logo"
+                    title="Logo change karne ke liye click karein"
                 >
 
             </div>
@@ -1441,7 +1453,6 @@ let oldWardNumber = "";
 
 // =====================================================
 // FALLBACK IMAGES
-// No missing asset / 404 error
 // =====================================================
 
 const DEFAULT_PROFILE =
@@ -1986,6 +1997,7 @@ async function loadAccount() {
 
 }
 
+
 // =====================================================
 // LOAD WARD PROFILE
 // =====================================================
@@ -2102,16 +2114,6 @@ async function loadWardProfile() {
         snapshot.data();
 
 
-    // =====================================================
-    // TEMPORARY DEBUG
-    // =====================================================
-
-    console.log("=== PARSHD PROFILE DEBUG ===");
-    console.log("CURRENT AUTH UID:", currentUser?.uid);
-    console.log("ACCOUNT UID:", account?.parshadId);
-    console.log("WARD PROFILE UID:", data?.parshadId);
-
-
     if (
         data.parshadId &&
         data.parshadId !==
@@ -2146,6 +2148,7 @@ async function loadWardProfile() {
 
 }
 
+
 // =====================================================
 // SAVE PROFILE
 // =====================================================
@@ -2154,10 +2157,6 @@ async function saveProfile() {
 
     hideMessages();
 
-
-    // IMPORTANT:
-    // Use the already authenticated user.
-    // Do NOT call login.js here.
 
     if (!currentUser) {
 
@@ -2205,8 +2204,6 @@ async function saveProfile() {
     const complaintEnabled =
         complaintEnabledInput.checked;
 
-
-    // VALIDATION
 
     if (!name) {
 
@@ -2278,20 +2275,12 @@ async function saveProfile() {
 
     try {
 
-        // -----------------------------------------
-        // CHECK ACCOUNT AGAIN
-        // -----------------------------------------
-
         const latestAccount =
             await loadAccount();
 
         account =
             latestAccount;
 
-
-        // -----------------------------------------
-        // IMAGE DATA
-        // -----------------------------------------
 
         let profilePhoto =
             currentProfile?.profilePhoto ||
@@ -2329,10 +2318,6 @@ async function saveProfile() {
 
         }
 
-
-        // -----------------------------------------
-        // NEW PROFILE
-        // -----------------------------------------
 
         const profile = {
 
@@ -2390,10 +2375,6 @@ async function saveProfile() {
         };
 
 
-        // -----------------------------------------
-        // NEW WARD REF
-        // -----------------------------------------
-
         const newWardRef =
             doc(
                 db,
@@ -2401,10 +2382,6 @@ async function saveProfile() {
                 String(ward)
             );
 
-
-        // -----------------------------------------
-        // CHECK EXISTING WARD
-        // -----------------------------------------
 
         const existingWard =
             await getDoc(
@@ -2435,10 +2412,6 @@ async function saveProfile() {
         }
 
 
-        // -----------------------------------------
-        // SAVE PROFILE
-        // -----------------------------------------
-
         await setDoc(
             newWardRef,
             profile,
@@ -2447,10 +2420,6 @@ async function saveProfile() {
             }
         );
 
-
-        // -----------------------------------------
-        // DELETE OLD WARD ONLY IF CHANGED
-        // -----------------------------------------
 
         if (
             oldWardNumber &&
@@ -2496,10 +2465,6 @@ async function saveProfile() {
         }
 
 
-        // -----------------------------------------
-        // UPDATE LOCAL STATE
-        // -----------------------------------------
-
         oldWardNumber =
             String(ward);
 
@@ -2520,10 +2485,6 @@ async function saveProfile() {
             account.mobile ||
             "";
 
-
-        // -----------------------------------------
-        // UPDATE UI
-        // -----------------------------------------
 
         renderQRProfile(
             profile
@@ -2644,6 +2605,30 @@ function generateQR() {
         portalUrl;
 
 }
+
+
+// =====================================================
+// CLICK PREVIEW TO SELECT FILE
+// =====================================================
+
+profilePreview.addEventListener(
+    "click",
+    function() {
+
+        profilePhotoInput.click();
+
+    }
+);
+
+
+logoPreview.addEventListener(
+    "click",
+    function() {
+
+        partyLogoInput.click();
+
+    }
+);
 
 
 // =====================================================
@@ -2914,10 +2899,6 @@ async function initializeProfile() {
         hideMessages();
 
 
-        // -----------------------------------------
-        // WAIT FOR FIREBASE AUTH
-        // -----------------------------------------
-
         currentUser =
             auth.currentUser;
 
@@ -2929,10 +2910,6 @@ async function initializeProfile() {
 
         }
 
-
-        // -----------------------------------------
-        // NO LOGIN
-        // -----------------------------------------
 
         if (!currentUser) {
 
@@ -2958,17 +2935,9 @@ async function initializeProfile() {
         }
 
 
-        // -----------------------------------------
-        // LOAD ACCOUNT
-        // -----------------------------------------
-
         account =
             await loadAccount();
 
-
-        // -----------------------------------------
-        // LOAD WARD PROFILE
-        // -----------------------------------------
 
         await loadWardProfile();
 
