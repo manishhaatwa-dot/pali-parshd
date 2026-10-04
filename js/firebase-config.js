@@ -29,9 +29,9 @@ import {
 
 const firebaseConfig = {
 
-    apiKey:
-        "AIzaSyCes4Ir1Q_QHpLlhcQAPWKLMpA9Zez6cyY",
-
+  apiKey:
+    "AIzaSyCes4Ir1Q_QHpLlhcQAPLm7W9pZpEez6cyY",
+    
     authDomain:
         "zeng-chatt.firebaseapp.com",
 
