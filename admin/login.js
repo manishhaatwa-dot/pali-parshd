@@ -1130,7 +1130,13 @@ async function restoreLoginSession() {
 // CHECK SAVED SESSION ON LOGIN PAGE OPEN
 // =====================================================
 
-restoreLoginSession();
+if (
+    window.location.pathname.endsWith(
+        "/admin/index.html"
+    )
+) {
+    restoreLoginSession();
+}
 // =====================================================
 // EXPORTS
 // =====================================================
