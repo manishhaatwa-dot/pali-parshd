@@ -1986,7 +1986,6 @@ async function loadAccount() {
 
 }
 
-
 // =====================================================
 // LOAD WARD PROFILE
 // =====================================================
@@ -2103,6 +2102,16 @@ async function loadWardProfile() {
         snapshot.data();
 
 
+    // =====================================================
+    // TEMPORARY DEBUG
+    // =====================================================
+
+    console.log("=== PARSHD PROFILE DEBUG ===");
+    console.log("CURRENT AUTH UID:", currentUser?.uid);
+    console.log("ACCOUNT UID:", account?.parshadId);
+    console.log("WARD PROFILE UID:", data?.parshadId);
+
+
     if (
         data.parshadId &&
         data.parshadId !==
@@ -2136,7 +2145,6 @@ async function loadWardProfile() {
     generateQR();
 
 }
-
 
 // =====================================================
 // SAVE PROFILE
