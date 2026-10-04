@@ -1221,11 +1221,10 @@
     if (newStatus === "solved") {
 
       const confirmed =
-        confirm(
-          "Complaint ko Solved mark karna hai?\n\n" +
-          "Is complaint ki photos aur video Firebase Storage se permanently delete ho jayengi."
-        );
-
+  confirm(
+    "क्या आप इस शिकायत को हल की गई के रूप में दर्ज करना चाहते हैं?"
+  );
+       
 
       if (!confirmed) {
 
@@ -1388,10 +1387,8 @@
 
 
         alert(
-          "Complaint Solved kar di gayi.\n\n" +
-          "Is complaint ki photos aur video Firebase Storage se delete ho gayi hain."
-        );
-
+  "शिकायत सफलतापूर्वक हल कर दी गई है।"
+);
       }
 
     } catch (error) {
