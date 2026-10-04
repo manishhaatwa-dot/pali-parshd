@@ -31,24 +31,6 @@ const MAX_VIDEO_SIZE =
 
 
 // =========================================================
-// ALLOWED TYPES
-// =========================================================
-
-const ALLOWED_IMAGE_TYPES = [
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "image/webp"
-];
-
-const ALLOWED_VIDEO_TYPES = [
-    "video/mp4",
-    "video/webm",
-    "video/quicktime"
-];
-
-
-// =========================================================
 // VALIDATE IMAGE
 // =========================================================
 
@@ -64,19 +46,8 @@ export function validateImage(file) {
     }
 
 
-    if (
-        !ALLOWED_IMAGE_TYPES.includes(
-            file.type
-        )
-    ) {
-
-        return {
-            valid: false,
-            message:
-                "केवल JPG, PNG या WEBP image upload करें।"
-        };
-
-    }
+    // MIME TYPE RESTRICTION नहीं है
+    // कोई fixed JPG/PNG/WEBP condition नहीं
 
 
     if (
@@ -116,19 +87,8 @@ export function validateVideo(file) {
     }
 
 
-    if (
-        !ALLOWED_VIDEO_TYPES.includes(
-            file.type
-        )
-    ) {
-
-        return {
-            valid: false,
-            message:
-                "केवल MP4, WebM या MOV video upload करें।"
-        };
-
-    }
+    // MIME TYPE RESTRICTION नहीं है
+    // कोई fixed MP4/WebM/MOV condition नहीं
 
 
     if (
@@ -422,13 +382,17 @@ function getExtension(filename) {
     }
 
 
-    return parts
-        .pop()
-        .toLowerCase()
-        .replace(
-            /[^a-z0-9]/g,
-            ""
-        );
+    const extension =
+        parts
+            .pop()
+            .toLowerCase()
+            .replace(
+                /[^a-z0-9]/g,
+                ""
+            );
+
+
+    return extension || "file";
 
 }
 
@@ -514,7 +478,8 @@ export async function uploadImage(
     const metadata = {
 
         contentType:
-            file.type || "image/jpeg",
+            file.type ||
+            "application/octet-stream",
 
         customMetadata: {
 
@@ -563,7 +528,7 @@ export async function uploadImage(
             file.size,
 
         contentType:
-            file.type
+            file.type || ""
 
     };
 
@@ -636,7 +601,8 @@ export async function uploadVideo(
     const metadata = {
 
         contentType:
-            file.type || "video/mp4",
+            file.type ||
+            "application/octet-stream",
 
         customMetadata: {
 
@@ -688,7 +654,7 @@ export async function uploadVideo(
             file.size,
 
         contentType:
-            file.type,
+            file.type || "",
 
         duration:
             validation.duration || null
