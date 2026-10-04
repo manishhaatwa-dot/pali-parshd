@@ -645,10 +645,215 @@ async function requireParshadLogin(
             };
 
 
-            const unsubscribe =
-                onAuthStateChanged(
-                    auth,
-                    async user => {
+         // =====================================================
+// REQUIRE PARSHAD LOGIN
+// Dashboard / Profile ke liye
+// =====================================================
+
+async function requireParshadLogin(
+    redirectPath = "./index.html"
+) {
+
+    try {
+
+        // =================================================
+        // IMPORTANT:
+        // Firebase ko pehle saved login session restore
+        // karne ka time do.
+        // PWA me ye especially important hai.
+        // =================================================
+
+        await auth.authStateReady();
+
+
+        const user =
+            auth.currentUser;
+
+
+        // =================================
+        // USER LOGIN NAHI HAI
+        // =================================
+
+        if (!user) {
+
+            console.log(
+                "No Firebase user found."
+            );
+
+
+            window.location.replace(
+                redirectPath
+            );
+
+
+            return false;
+
+        }
+
+
+        console.log(
+            "Auth user found:",
+            user.uid
+        );
+
+
+        // =================================
+        // EMAIL VERIFICATION
+        // =================================
+
+        if (
+            !user.emailVerified
+        ) {
+
+            console.log(
+                "Email is not verified."
+            );
+
+
+            await signOut(
+                auth
+            );
+
+
+            window.location.replace(
+                redirectPath
+            );
+
+
+            return false;
+
+        }
+
+
+        // =================================
+        // FIRESTORE PARSHAD RECORD
+        // =================================
+
+        let account = null;
+
+
+        try {
+
+            account =
+                await getParshadRecord(
+                    user.uid
+                );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "PARSHAD RECORD READ ERROR:",
+                error
+            );
+
+
+            // Firebase login ko sirf temporary
+            // Firestore/network problem par logout
+            // nahi karna.
+
+            window.location.replace(
+                redirectPath
+            );
+
+
+            return false;
+
+        }
+
+
+        // =================================
+        // RECORD NOT FOUND
+        // =================================
+
+        if (!account) {
+
+            console.log(
+                "Parshad record not found."
+            );
+
+
+            await signOut(
+                auth
+            );
+
+
+            window.location.replace(
+                redirectPath
+            );
+
+
+            return false;
+
+        }
+
+
+        // =================================
+        // APPROVAL CHECK
+        // =================================
+
+        if (
+            account.status !==
+                "approved" ||
+            account.approved !==
+                true
+        ) {
+
+            console.log(
+                "Parshad is not approved.",
+                account.status,
+                account.approved
+            );
+
+
+            await signOut(
+                auth
+            );
+
+
+            window.location.replace(
+                redirectPath
+            );
+
+
+            return false;
+
+        }
+
+
+        // =================================
+        // EVERYTHING OK
+        // =================================
+
+        console.log(
+            "Parshad session verified:",
+            user.uid
+        );
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "requireParshadLogin ERROR:",
+            error
+        );
+
+
+        window.location.replace(
+            redirectPath
+        );
+
+
+        return false;
+
+    }
+
+}
 
                         try {
 
