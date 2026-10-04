@@ -12,7 +12,9 @@ import {
     signInWithEmailAndPassword,
     signOut,
     sendPasswordResetEmail,
-    onAuthStateChanged
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import {
@@ -160,7 +162,6 @@ async function isApprovedParshad(user) {
 
     }
 
-    // Email verification required
     if (!user.emailVerified) {
 
         return false;
@@ -340,6 +341,17 @@ async function loginUser() {
 
 
     try {
+
+        // =================================================
+        // STEP 0
+        // KEEP LOGIN SESSION ON DEVICE
+        // =================================================
+
+        await setPersistence(
+            auth,
+            browserLocalPersistence
+        );
+
 
         // =================================================
         // STEP 1
@@ -540,7 +552,6 @@ async function loginUser() {
         );
 
 
-        // Firebase auth state ko settle hone ka time
         await new Promise(
             resolve =>
                 setTimeout(
@@ -708,27 +719,72 @@ async function requireParshadLogin(
                             // FIRESTORE PARSHAD RECORD
                             // =================================
 
-                            let account;
+                            let account = null;
 
-                            try {
+                            let firestoreReadSuccess =
+                                false;
 
-                                account =
-                                    await getParshadRecord(
-                                        user.uid
+
+                            // Small retry for mobile/PWA startup
+                            for (
+                                let attempt = 1;
+                                attempt <= 3;
+                                attempt++
+                            ) {
+
+                                try {
+
+                                    account =
+                                        await getParshadRecord(
+                                            user.uid
+                                        );
+
+                                    firestoreReadSuccess =
+                                        true;
+
+                                    break;
+
+                                }
+
+                                catch (error) {
+
+                                    console.error(
+                                        "PARSHAD RECORD READ ERROR - ATTEMPT " +
+                                        attempt +
+                                        ":",
+                                        error
                                     );
+
+
+                                    if (
+                                        attempt < 3
+                                    ) {
+
+                                        await new Promise(
+                                            resolve =>
+                                                setTimeout(
+                                                    resolve,
+                                                    700
+                                                )
+                                        );
+
+                                    }
+
+                                }
 
                             }
 
-                            catch (error) {
 
-                                console.error(
-                                    "PARSHAD RECORD READ ERROR:",
-                                    error
-                                );
+                            // =================================
+                            // FIRESTORE READ FAILED
+                            // =================================
 
+                            if (
+                                !firestoreReadSuccess
+                            ) {
 
-                                await signOut(
-                                    auth
+                                console.log(
+                                    "Firestore record temporarily unavailable. Login session kept."
                                 );
 
 
