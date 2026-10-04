@@ -1,2354 +1,1519 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#0f172a"
-    >
-
-    <title>Complaints | Parshd</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #ffffff;
-            color: #0f172a;
-            font-family:
-                Inter,
-                Arial,
-                sans-serif;
-        }
-
-        button,
-        select {
-            font-family: inherit;
-        }
-
-        .header {
-            min-height: 70px;
-            border-bottom: 1px solid #e5e7eb;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 6%;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 11px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #0f172a;
-            color: #ffffff;
-
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .brand-text strong {
-            display: block;
-            font-size: 18px;
-        }
-
-        .brand-text span {
-            color: #64748b;
-            font-size: 11px;
-        }
-
-        .back-button {
-            border: 1px solid #dbe1e8;
-            background: #ffffff;
-
-            padding: 9px 15px;
-            border-radius: 9px;
-
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .container {
-            width: min(1100px, 92%);
-            margin: auto;
-            padding: 38px 0 60px;
-        }
-
-        .page-heading {
-            margin-bottom: 25px;
-        }
-
-        .page-heading h1 {
-            margin: 0 0 7px;
-            font-size: 30px;
-        }
-
-        .page-heading p {
-            margin: 0;
-            color: #64748b;
-        }
-
-        .filters {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .filter-button {
-            border: 1px solid #dbe1e8;
-            background: #ffffff;
-
-            padding: 10px 17px;
-            border-radius: 9px;
-
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .filter-button.active {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
-        }
-
-        .complaints-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .complaint-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-
-            padding: 20px;
-
-            background: #ffffff;
-
-            cursor: pointer;
-
-            transition:
-                transform .15s ease,
-                box-shadow .15s ease;
-        }
-
-        .complaint-card:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 8px 25px rgba(0,0,0,.07);
-        }
-
-        .complaint-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .complaint-id {
-            color: #64748b;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .complaint-name {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .complaint-text {
-            margin: 14px 0 10px;
-            line-height: 1.6;
-            color: #334155;
-        }
-
-        .complaint-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px 18px;
-
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .status {
-            display: inline-flex;
-
-            padding: 6px 10px;
-            border-radius: 999px;
-
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .status-new {
-            background: #eff6ff;
-            color: #2563eb;
-        }
-
-        .status-pending {
-            background: #fff7ed;
-            color: #c2410c;
-        }
-
-        .status-solved {
-            background: #ecfdf5;
-            color: #047857;
-        }
-
-        .complaint-actions {
-            margin-top: 18px;
-
-            display: flex;
-            gap: 9px;
-            flex-wrap: wrap;
-        }
-
-        .action-button {
-            border: 1px solid #dbe1e8;
-            background: #ffffff;
-
-            padding: 9px 13px;
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .action-button.primary {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
-        }
-
-        .empty {
-            text-align: center;
-
-            padding: 65px 20px;
-
-            border: 1px dashed #cbd5e1;
-            border-radius: 16px;
-
-            color: #64748b;
-        }
-
-        .empty-icon {
-            font-size: 38px;
-            margin-bottom: 12px;
-        }
-
-        .empty strong {
-            display: block;
-            color: #334155;
-            margin-bottom: 5px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #64748b;
-        }
-
-        .error-box {
-            padding: 20px;
-            border-radius: 14px;
-            background: #fef2f2;
-            color: #b91c1c;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-
-            background:
-                rgba(15, 23, 42, .45);
-
-            display: none;
-
-            align-items: center;
-            justify-content: center;
-
-            padding: 20px;
-
-            z-index: 100;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-card {
-            width: min(650px, 100%);
-            max-height: 90vh;
-            overflow-y: auto;
-
-            background: #ffffff;
-
-            border-radius: 18px;
-
-            padding: 25px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-        }
-
-        .close-button {
-            border: 0;
-            background: #f1f5f9;
-
-            width: 36px;
-            height: 36px;
-
-            border-radius: 50%;
-
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .detail-row {
-            padding: 12px 0;
-            border-bottom: 1px solid #eef2f7;
-        }
-
-        .detail-row small {
-            display: block;
-            color: #64748b;
-            margin-bottom: 4px;
-        }
-
-        .detail-row strong {
-            word-break: break-word;
-        }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .media-grid img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .video-preview {
-            width: 100%;
-            max-height: 400px;
-            margin-top: 10px;
-            border-radius: 10px;
-            background: #000000;
-        }
-
-        .media-link {
-            display: inline-flex;
-
-            padding: 9px 12px;
-
-            border-radius: 8px;
-
-            background: #eff6ff;
-            color: #2563eb;
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 700;
-
-            margin: 5px 5px 0 0;
-        }
-
-        .map-link {
-            display: inline-flex;
-
-            margin-top: 8px;
-
-            padding: 9px 12px;
-
-            border-radius: 8px;
-
-            background: #ecfdf5;
-            color: #047857;
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .modal-status-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-
-            margin-top: 20px;
-        }
-
-        @media (max-width: 650px) {
-
-            .header {
-                padding: 0 4%;
-            }
-
-            .container {
-                width: 92%;
-                padding-top: 28px;
-            }
-
-            .page-heading h1 {
-                font-size: 25px;
-            }
-
-            .complaint-top {
-                flex-direction: column;
-            }
-
-            .status {
-                align-self: flex-start;
-            }
-
-            .media-grid {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Complaints | Parshd</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
+
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .back-btn {
+      color: white;
+      text-decoration: none;
+      background: #2563eb;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .top-info {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .top-info strong {
+      color: #2563eb;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .filter-btn {
+      border: 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      background: #e5e7eb;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .filter-btn.active {
+      background: #2563eb;
+      color: white;
+    }
+
+    .complaint-card {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .complaint-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .complaint-id {
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-new {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-solved {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .complaint-info {
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .complaint-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .btn {
+      border: 0;
+      padding: 9px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-details {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-pending {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-solved {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      background: white;
+      padding: 35px 20px;
+      text-align: center;
+      border-radius: 12px;
+      color: #6b7280;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      z-index: 9999;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      width: 100%;
+      max-width: 720px;
+      max-height: 92vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      border: 0;
+      background: #ef4444;
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-title {
+      margin: 0 45px 15px 0;
+    }
+
+    .detail-row {
+      padding: 9px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .detail-row strong {
+      display: inline-block;
+      min-width: 120px;
+    }
+
+    .media-section {
+      margin-top: 20px;
+    }
+
+    .media-section h3 {
+      margin-bottom: 10px;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .image-grid img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .video-box video {
+      width: 100%;
+      max-height: 400px;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #111827;
+      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    .map-link {
+      display: inline-block;
+      margin-top: 5px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 13px;
+      }
+
+      header h1 {
+        font-size: 18px;
+      }
+
+      .container {
+        padding: 0 10px;
+      }
+
+      .complaint-card {
+        padding: 13px;
+      }
+
+      .complaint-actions .btn {
+        width: 100%;
+      }
+
+      .detail-row strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-
-<header class="header">
-
-    <div class="brand">
-
-        <div class="brand-logo">
-            P
-        </div>
-
-        <div class="brand-text">
-
-            <strong>
-                Parshd
-            </strong>
-
-            <span>
-                Complaint Management
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <button
-        class="back-button"
-        id="backButton"
-        type="button"
-    >
-        ← Dashboard
-    </button>
-
+<header>
+  <h1>Complaints</h1>
+  <a href="./dashboard.html" class="back-btn">← Dashboard</a>
 </header>
 
+<div class="container">
 
+  <div class="top-info" id="accountInfo">
+    Loading...
+  </div>
 
-<main class="container">
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="new">New</button>
+    <button class="filter-btn" data-filter="pending">Pending</button>
+    <button class="filter-btn" data-filter="solved">Solved</button>
+  </div>
 
-    <div class="page-heading">
-
-        <h1>
-            Complaints
-        </h1>
-
-        <p id="wardText">
-            आपके वार्ड की नागरिक शिकायतें
-        </p>
-
-    </div>
-
-
-    <div class="filters">
-
-        <button
-            class="filter-button active"
-            data-filter="all"
-            type="button"
-        >
-            सभी
-        </button>
-
-        <button
-            class="filter-button"
-            data-filter="new"
-            type="button"
-        >
-            New
-        </button>
-
-        <button
-            class="filter-button"
-            data-filter="pending"
-            type="button"
-        >
-            Pending
-        </button>
-
-        <button
-            class="filter-button"
-            data-filter="solved"
-            type="button"
-        >
-            Solved
-        </button>
-
-    </div>
-
-
-    <section
-        id="complaintsList"
-        class="complaints-list"
-    >
-
-        <div class="loading">
-            Complaints load हो रही हैं...
-        </div>
-
-    </section>
-
-</main>
-
-
-
-<!-- =====================================================
-     DETAILS MODAL
-===================================================== -->
-
-<div
-    id="detailsModal"
-    class="modal"
->
-
-    <div class="modal-card">
-
-        <div class="modal-header">
-
-            <h2>
-                Complaint Details
-            </h2>
-
-            <button
-                id="closeModal"
-                class="close-button"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div id="modalContent"></div>
-
-    </div>
+  <div id="complaintsContainer">
+    <div class="loading">Complaints load ho rahi hain...</div>
+  </div>
 
 </div>
 
 
+<!-- DETAILS MODAL -->
+
+<div class="modal" id="detailsModal">
+
+  <div class="modal-box">
+
+    <button class="modal-close" id="closeModal">×</button>
+
+    <h2 class="modal-title">Complaint Details</h2>
+
+    <div id="detailsContent"></div>
+
+  </div>
+
+</div>
+
 
 <script type="module">
 
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
-import {
+  import {
     auth,
-    db
-} from "../js/firebase-config.js";
+    db,
+    storage
+  } from "../js/firebase-config.js";
 
-
-import {
+  import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-
-import {
+  import {
     collection,
     getDocs,
     getDoc,
     doc,
     updateDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+  import {
+    ref,
+    deleteObject
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
 
 
-/* =====================================================
-   FIRESTORE PATHS
-===================================================== */
+  const complaintsContainer =
+    document.getElementById("complaintsContainer");
 
-const PARSHADS_PATH = [
-    "parshd",
-    "parshads",
-    "data"
-];
+  const accountInfo =
+    document.getElementById("accountInfo");
 
+  const detailsModal =
+    document.getElementById("detailsModal");
 
-const COMPLAINTS_PATH = [
-    "parshd",
-    "complaints",
-    "data"
-];
+  const detailsContent =
+    document.getElementById("detailsContent");
+
+  const closeModal =
+    document.getElementById("closeModal");
 
 
-/* =====================================================
-   GLOBAL DATA
-===================================================== */
-
-let currentUser = null;
-
-let account = null;
-
-let complaints = [];
-
-let currentFilter = "all";
+  let currentUser = null;
+  let currentAccount = null;
+  let complaints = [];
+  let currentFilter = "all";
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
+  /* =========================================================
+     AUTH
+  ========================================================= */
 
-const list =
-    document.getElementById(
-        "complaintsList"
-    );
+  onAuthStateChanged(auth, async (user) => {
 
-
-const modal =
-    document.getElementById(
-        "detailsModal"
-    );
-
-
-const modalContent =
-    document.getElementById(
-        "modalContent"
-    );
-
-
-/* =====================================================
-   GET PARSHAD ACCOUNT
-   IMPORTANT:
-   Direct document read only.
-   No collection getDocs here.
-===================================================== */
-
-async function getParshadAccount(uid) {
-
-    if (!uid) {
-
-        throw new Error(
-            "Parshad UID नहीं मिला।"
-        );
-
+    if (!user) {
+      window.location.href = "./index.html";
+      return;
     }
 
-
-    const accountRef =
-        doc(
-            db,
-            ...PARSHADS_PATH,
-            uid
-        );
-
-
-    const snapshot =
-        await getDoc(
-            accountRef
-        );
-
-
-    if (!snapshot.exists()) {
-
-        throw new Error(
-            "इस Firebase account का Parshad record नहीं मिला।"
-        );
-
-    }
-
-
-    const data =
-        snapshot.data();
-
-
-    if (
-        data.status !== "approved" ||
-        data.approved !== true
-    ) {
-
-        throw new Error(
-            "आपका Parshad account अभी approved नहीं है।"
-        );
-
-    }
-
-
-    return {
-
-        id:
-            snapshot.id,
-
-        ...data
-
-    };
-
-}
-
-
-/* =====================================================
-   AUTH READY
-===================================================== */
-
-function waitForAuth() {
-
-    return new Promise(
-        resolve => {
-
-            const unsubscribe =
-                onAuthStateChanged(
-                    auth,
-                    user => {
-
-                        unsubscribe();
-
-                        resolve(
-                            user || null
-                        );
-
-                    }
-                );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   LOAD COMPLAINTS
-===================================================== */
-
-async function loadComplaints() {
+    currentUser = user;
 
     try {
 
-        list.innerHTML = `
-
-            <div class="loading">
-                Complaints load हो रही हैं...
-            </div>
-
-        `;
-
-
-        /* ---------------------------------------------
-           AUTH
-        --------------------------------------------- */
-
-        currentUser =
-            await waitForAuth();
-
-
-        if (!currentUser) {
-
-            window.location.replace(
-                "./index.html"
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-           PARSHAD ACCOUNT
-        --------------------------------------------- */
-
-        account =
-            await getParshadAccount(
-                currentUser.uid
-            );
-
-
-        const currentWard =
-            String(
-                account.ward ||
-                account.wardNumber ||
-                ""
-            ).trim();
-
-
-        if (!currentWard) {
-
-            throw new Error(
-                "Parshad account में Ward Number नहीं मिला।"
-            );
-
-        }
-
-
-        /* ---------------------------------------------
-           WARD TEXT
-        --------------------------------------------- */
-
-        const wardText =
-            document.getElementById(
-                "wardText"
-            );
-
-
-        if (wardText) {
-
-            wardText.textContent =
-                `Ward ${currentWard} की नागरिक शिकायतें`;
-
-        }
-
-
-        /* ---------------------------------------------
-           COMPLAINT COLLECTION
-        --------------------------------------------- */
-
-        const complaintsRef =
-            collection(
-                db,
-                ...COMPLAINTS_PATH
-            );
-
-
-        const snapshot =
-            await getDocs(
-                complaintsRef
-            );
-
-
-        complaints = [];
-
-
-        snapshot.forEach(
-            item => {
-
-                const data =
-                    item.data();
-
-
-                /* -------------------------------------
-                   TENANT / WARD FILTER
-                ------------------------------------- */
-
-                const complaintWard =
-                    String(
-                        data.wardNumber ||
-                        data.wardId ||
-                        data.ward ||
-                        ""
-                    ).trim();
-
-
-                const complaintParshad =
-                    String(
-                        data.parshadId ||
-                        ""
-                    ).trim();
-
-
-                /*
-                 * Primary check:
-                 * complaint must belong to
-                 * current Parshad.
-                 *
-                 * Ward check is also applied.
-                 */
-
-                if (
-                    complaintParshad ===
-                    String(currentUser.uid)
-                    &&
-                    complaintWard ===
-                    currentWard
-                ) {
-
-                    complaints.push({
-
-                        id:
-                            item.id,
-
-                        ...data
-
-                    });
-
-                }
-
-            }
-        );
-
-
-        /* ---------------------------------------------
-           SORT
-        --------------------------------------------- */
-
-        complaints.sort(
-            (a, b) => {
-
-                return (
-                    getTime(
-                        b.createdAt
-                    )
-                    -
-                    getTime(
-                        a.createdAt
-                    )
-                );
-
-            }
-        );
-
-
-        renderComplaints();
-
+      await loadAccount();
+      await loadComplaints();
 
     } catch (error) {
 
-        console.error(
-            "Firestore complaint load error:",
-            error
-        );
+      console.error(error);
 
-
-        list.innerHTML = `
-
-            <div class="error-box">
-
-                <strong>
-                    Complaints load नहीं हो सकीं
-                </strong>
-
-                <br><br>
-
-                ${escapeHtml(
-                    error?.message ||
-                    "Unknown error"
-                )}
-
-            </div>
-
-        `;
+      complaintsContainer.innerHTML = `
+        <div class="empty">
+          Data load nahi ho paya.<br>
+          ${escapeHtml(error.message || "")}
+        </div>
+      `;
 
     }
 
-}
+  });
 
 
-/* =====================================================
-   FILTER BUTTONS
-===================================================== */
+  /* =========================================================
+     LOAD PARSHAD ACCOUNT
+  ========================================================= */
 
-document
-    .querySelectorAll(
-        "[data-filter]"
-    )
-    .forEach(
-        button => {
+  async function loadAccount() {
 
-            button.addEventListener(
-                "click",
-                () => {
+    const accountRef =
+      doc(db, "parshd", "parshads", "data", currentUser.uid);
 
-                    document
-                        .querySelectorAll(
-                            "[data-filter]"
-                        )
-                        .forEach(
-                            btn => {
+    const accountSnap =
+      await getDoc(accountRef);
 
-                                btn.classList.remove(
-                                    "active"
-                                );
+    if (!accountSnap.exists()) {
+      throw new Error("Parshad account nahi mila.");
+    }
 
-                            }
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    currentFilter =
-                        button.dataset.filter;
-
-
-                    renderComplaints();
-
-                }
-            );
-
-        }
-    );
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderComplaints() {
-
-    let filtered =
-        complaints;
+    currentAccount = {
+      id: accountSnap.id,
+      ...accountSnap.data()
+    };
 
 
     if (
-        currentFilter !==
-        "all"
+      currentAccount.status !== "approved" ||
+      currentAccount.approved !== true
     ) {
 
-        filtered =
-            complaints.filter(
-                complaint =>
-                    (
-                        complaint.status ||
-                        "new"
-                    ) ===
-                    currentFilter
+      throw new Error(
+        "Aapka Parshad account approved nahi hai."
+      );
+
+    }
+
+
+    accountInfo.innerHTML = `
+      <div>
+        <strong>${escapeHtml(currentAccount.name || "Parshad")}</strong>
+      </div>
+
+      <div>
+        Ward:
+        <strong>${escapeHtml(String(currentAccount.ward || ""))}</strong>
+      </div>
+
+      <div>
+        Complaints:
+        <strong>
+          ${
+            currentAccount.complaintEnabled === false
+              ? "OFF"
+              : "ON"
+          }
+        </strong>
+      </div>
+    `;
+
+  }
+
+
+  /* =========================================================
+     LOAD COMPLAINTS
+  ========================================================= */
+
+  async function loadComplaints() {
+
+    complaintsContainer.innerHTML = `
+      <div class="loading">
+        Complaints load ho rahi hain...
+      </div>
+    `;
+
+
+    const complaintsRef =
+      collection(db, "parshd", "complaints", "data");
+
+    const snapshot =
+      await getDocs(complaintsRef);
+
+
+    complaints = [];
+
+
+    snapshot.forEach((item) => {
+
+      const data = item.data();
+
+      /*
+       * IMPORTANT:
+       * Sirf current logged-in Parshad ki complaints.
+       */
+
+      if (
+        data.parshadId !== currentUser.uid
+      ) {
+        return;
+      }
+
+
+      /*
+       * Ward bhi match hona chahiye.
+       */
+
+      if (
+        String(data.wardNumber || "") !==
+        String(currentAccount.ward || "")
+      ) {
+        return;
+      }
+
+
+      complaints.push({
+        id: item.id,
+        ...data
+      });
+
+    });
+
+
+    complaints.sort((a, b) => {
+
+      const aTime =
+        a.createdAt?.seconds || 0;
+
+      const bTime =
+        b.createdAt?.seconds || 0;
+
+      return bTime - aTime;
+
+    });
+
+
+    renderComplaints();
+
+  }
+
+
+  /* =========================================================
+     FILTER BUTTONS
+  ========================================================= */
+
+  document.querySelectorAll(".filter-btn")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document.querySelectorAll(".filter-btn")
+          .forEach(btn =>
+            btn.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        currentFilter =
+          button.dataset.filter;
+
+        renderComplaints();
+
+      });
+
+    });
+
+
+  /* =========================================================
+     RENDER COMPLAINTS
+  ========================================================= */
+
+  function renderComplaints() {
+
+    let list = [...complaints];
+
+
+    if (currentFilter !== "all") {
+
+      list =
+        list.filter(
+          complaint =>
+            complaint.status === currentFilter
+        );
+
+    }
+
+
+    if (list.length === 0) {
+
+      complaintsContainer.innerHTML = `
+        <div class="empty">
+          Is category me koi complaint nahi hai.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    complaintsContainer.innerHTML =
+      list.map(renderComplaintCard).join("");
+
+
+    document
+      .querySelectorAll("[data-details]")
+      .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+          const id =
+            button.dataset.details;
+
+          const complaint =
+            complaints.find(
+              item => item.id === id
             );
 
-    }
+          if (complaint) {
+            showDetails(complaint);
+          }
+
+        });
+
+      });
 
 
-    if (!filtered.length) {
+    document
+      .querySelectorAll("[data-pending]")
+      .forEach(button => {
 
-        list.innerHTML = `
+        button.addEventListener("click", () => {
 
-            <div class="empty">
+          const id =
+            button.dataset.pending;
 
-                <div class="empty-icon">
-                    📋
-                </div>
+          updateStatus(id, "pending");
 
-                <strong>
-                    अभी कोई complaint नहीं है
-                </strong>
+        });
 
-                <span>
-                    इस category में कोई complaint उपलब्ध नहीं है।
-                </span>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
+      });
 
 
-    list.innerHTML =
-        filtered
-            .map(
-                createComplaintCard
-            )
-            .join("");
+    document
+      .querySelectorAll("[data-solved]")
+      .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+          const id =
+            button.dataset.solved;
+
+          updateStatus(id, "solved");
+
+        });
+
+      });
+
+  }
 
 
-    /* ---------------------------------------------
-       CARD CLICK
-    --------------------------------------------- */
+  /* =========================================================
+     COMPLAINT CARD
+  ========================================================= */
 
-    list
-        .querySelectorAll(
-            "[data-complaint-card]"
-        )
-        .forEach(
-            card => {
-
-                card.addEventListener(
-                    "click",
-                    event => {
-
-                        if (
-                            event.target.closest(
-                                "button"
-                            )
-                            ||
-                            event.target.closest(
-                                "a"
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const id =
-                            card.dataset.complaintCard;
-
-
-                        const complaint =
-                            complaints.find(
-                                item =>
-                                    String(
-                                        item.id
-                                    ) ===
-                                    String(id)
-                            );
-
-
-                        if (complaint) {
-
-                            showDetails(
-                                complaint
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-    /* ---------------------------------------------
-       DETAILS
-    --------------------------------------------- */
-
-    list
-        .querySelectorAll(
-            "[data-view]"
-        )
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-
-                        const id =
-                            button.dataset.view;
-
-
-                        const complaint =
-                            complaints.find(
-                                item =>
-                                    String(
-                                        item.id
-                                    ) ===
-                                    String(id)
-                            );
-
-
-                        if (complaint) {
-
-                            showDetails(
-                                complaint
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-    /* ---------------------------------------------
-       STATUS
-    --------------------------------------------- */
-
-    list
-        .querySelectorAll(
-            "[data-status]"
-        )
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-
-                        updateStatus(
-                            button.dataset.id,
-                            button.dataset.status
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   CREATE CARD
-===================================================== */
-
-function createComplaintCard(
-    complaint
-) {
+  function renderComplaintCard(complaint) {
 
     const status =
-        String(
-            complaint.status ||
-            "new"
-        ).toLowerCase();
+      complaint.status || "new";
 
 
-    const statusText =
-        status === "new"
-            ? "New"
-            : status === "pending"
-                ? "Pending"
-                : status === "solved"
-                    ? "Solved"
-                    : status;
-
-
-    const id =
-        complaint.publicComplaintId ||
-        complaint.complaintId ||
-        complaint.id ||
-        "-";
-
-
-    const name =
-        complaint.citizenName ||
-        "Citizen";
-
-
-    const text =
-        complaint.complaintText ||
-        "Complaint details उपलब्ध नहीं हैं।";
-
-
-    const phone =
-        complaint.citizenPhone ||
-        "-";
-
-
-    const ward =
-        complaint.wardNumber ||
-        account?.ward ||
-        "-";
-
-
-    const date =
-        formatDate(
-            complaint.createdAt
-        );
-
-
-    const images =
-        Array.isArray(
-            complaint.media?.images
-        )
-            ? complaint.media.images
-            : [];
-
-
-    const imageCount =
-        images.length;
-
-
-    const hasVideo =
-        !!complaint.media?.video;
+    const createdDate =
+      formatDate(complaint.createdAt);
 
 
     return `
+      <div class="complaint-card">
 
-        <article
-            class="complaint-card"
-            data-complaint-card="${escapeHtml(
-                complaint.id
-            )}"
-        >
+        <div class="complaint-top">
 
-            <div class="complaint-top">
+          <div class="complaint-id">
+            Complaint ID:
+            ${escapeHtml(
+              complaint.publicComplaintId ||
+              complaint.complaintId ||
+              complaint.id
+            )}
+          </div>
 
-                <div>
+          <div class="status status-${status}">
+            ${escapeHtml(status)}
+          </div>
 
-                    <div class="complaint-id">
-                        ID: ${escapeHtml(id)}
-                    </div>
-
-                    <h3 class="complaint-name">
-                        ${escapeHtml(name)}
-                    </h3>
-
-                </div>
+        </div>
 
 
-                <span
-                    class="status status-${escapeHtml(
-                        status
-                    )}"
-                >
-                    ${escapeHtml(statusText)}
-                </span>
+        <div class="complaint-info">
 
-            </div>
+          <div>
+            <strong>Name:</strong>
+            ${escapeHtml(
+              complaint.citizenName || "-"
+            )}
+          </div>
 
+          <div>
+            <strong>Mobile:</strong>
+            ${escapeHtml(
+              complaint.citizenPhone || "-"
+            )}
+          </div>
 
-            <p class="complaint-text">
-                ${escapeHtml(text)}
-            </p>
+          <div>
+            <strong>Ward:</strong>
+            ${escapeHtml(
+              String(complaint.wardNumber || "-")
+            )}
+          </div>
 
+          <div>
+            <strong>Date:</strong>
+            ${escapeHtml(createdDate)}
+          </div>
 
-            <div class="complaint-details">
-
-                <span>
-                    📱 ${escapeHtml(phone)}
-                </span>
-
-                <span>
-                    📍 Ward ${escapeHtml(ward)}
-                </span>
-
-                <span>
-                    📅 ${escapeHtml(date)}
-                </span>
-
-                ${
-                    imageCount > 0
-                    ? `
-                        <span>
-                            📷 ${imageCount}
-                        </span>
-                    `
-                    : ""
-                }
-
-                ${
-                    hasVideo
-                    ? `
-                        <span>
-                            🎥 Video
-                        </span>
-                    `
-                    : ""
-                }
-
-            </div>
+        </div>
 
 
-            <div class="complaint-actions">
+        <div class="complaint-actions">
 
+          <button
+            class="btn btn-details"
+            data-details="${escapeHtml(complaint.id)}">
+            Details
+          </button>
+
+
+          ${
+            status === "new"
+              ? `
                 <button
-                    class="action-button"
-                    data-view="${escapeHtml(
-                        complaint.id
-                    )}"
-                    type="button"
-                >
-                    👁 Details
+                  class="btn btn-pending"
+                  data-pending="${escapeHtml(complaint.id)}">
+                  Mark Pending
                 </button>
+              `
+              : ""
+          }
 
 
-                ${
-                    status === "new"
-                    ? `
-                        <button
-                            class="action-button"
-                            data-id="${escapeHtml(
-                                complaint.id
-                            )}"
-                            data-status="pending"
-                            type="button"
-                        >
-                            Pending करें
-                        </button>
-                    `
-                    : ""
-                }
+          ${
+            status !== "solved"
+              ? `
+                <button
+                  class="btn btn-solved"
+                  data-solved="${escapeHtml(complaint.id)}">
+                  Mark Solved
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+      </div>
+    `;
+
+  }
 
 
-                ${
-                    status !== "solved"
-                    ? `
-                        <button
-                            class="action-button primary"
-                            data-id="${escapeHtml(
-                                complaint.id
-                            )}"
-                            data-status="solved"
-                            type="button"
-                        >
-                            ✓ Solved करें
-                        </button>
-                    `
-                    : ""
-                }
+  /* =========================================================
+     SHOW DETAILS
+  ========================================================= */
 
-            </div>
+  function showDetails(complaint) {
 
-        </article>
+    const media =
+      complaint.media || {};
+
+    const images =
+      Array.isArray(media.images)
+        ? media.images
+        : [];
+
+    const video =
+      media.video || null;
+
+
+    let html = `
+
+      <div class="detail-row">
+        <strong>Complaint ID:</strong>
+        ${escapeHtml(
+          complaint.publicComplaintId ||
+          complaint.complaintId ||
+          complaint.id
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Status:</strong>
+        ${escapeHtml(
+          complaint.status || "-"
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Name:</strong>
+        ${escapeHtml(
+          complaint.citizenName || "-"
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Mobile:</strong>
+        ${escapeHtml(
+          complaint.citizenPhone || "-"
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Ward:</strong>
+        ${escapeHtml(
+          String(complaint.wardNumber || "-")
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Address:</strong>
+        ${escapeHtml(
+          complaint.address || "-"
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Complaint:</strong>
+        ${escapeHtml(
+          complaint.complaintText || "-"
+        )}
+      </div>
+
+
+      <div class="detail-row">
+        <strong>Date:</strong>
+        ${escapeHtml(
+          formatDate(complaint.createdAt)
+        )}
+      </div>
 
     `;
 
-}
+
+    if (complaint.solvedAt) {
+
+      html += `
+        <div class="detail-row">
+          <strong>Solved Date:</strong>
+          ${escapeHtml(
+            formatDate(complaint.solvedAt)
+          )}
+        </div>
+      `;
+
+    }
 
 
-/* =====================================================
-   UPDATE STATUS
-===================================================== */
+    /* =======================================================
+       GPS
+    ======================================================= */
 
-async function updateStatus(
-    id,
-    newStatus
-) {
+    if (
+      complaint.location &&
+      typeof complaint.location.latitude === "number" &&
+      typeof complaint.location.longitude === "number"
+    ) {
+
+      const lat =
+        complaint.location.latitude;
+
+      const lng =
+        complaint.location.longitude;
+
+
+      html += `
+        <div class="detail-row">
+
+          <strong>GPS:</strong>
+
+          <a
+            class="map-link"
+            href="https://www.google.com/maps?q=${encodeURIComponent(lat)},${encodeURIComponent(lng)}"
+            target="_blank"
+            rel="noopener">
+            📍 Open Location
+          </a>
+
+        </div>
+      `;
+
+    }
+
+
+    /* =======================================================
+       MEDIA
+    ======================================================= */
+
+    if (images.length > 0 || video) {
+
+      html += `
+        <div class="media-section">
+          <h3>Complaint Media</h3>
+      `;
+
+
+      if (images.length > 0) {
+
+        html += `
+          <div class="image-grid">
+        `;
+
+
+        images.forEach(image => {
+
+          if (!image?.url) return;
+
+          html += `
+            <div>
+
+              <img
+                src="${escapeAttribute(image.url)}"
+                alt="Complaint image">
+
+              <br>
+
+              <a
+                class="download-btn"
+                href="${escapeAttribute(image.url)}"
+                target="_blank"
+                rel="noopener"
+                download>
+                Download Image
+              </a>
+
+            </div>
+          `;
+
+        });
+
+
+        html += `
+          </div>
+        `;
+
+      }
+
+
+      if (video?.url) {
+
+        html += `
+          <div
+            class="video-box"
+            style="margin-top:15px;">
+
+            <video
+              controls
+              preload="metadata"
+              src="${escapeAttribute(video.url)}">
+            </video>
+
+            <br>
+
+            <a
+              class="download-btn"
+              href="${escapeAttribute(video.url)}"
+              target="_blank"
+              rel="noopener"
+              download>
+              Download Video
+            </a>
+
+          </div>
+        `;
+
+      }
+
+
+      html += `
+        </div>
+      `;
+
+    }
+
+
+    detailsContent.innerHTML = html;
+
+    detailsModal.classList.add("show");
+
+  }
+
+
+  /* =========================================================
+     CLOSE MODAL
+  ========================================================= */
+
+  closeModal.addEventListener("click", () => {
+
+    detailsModal.classList.remove("show");
+
+  });
+
+
+  detailsModal.addEventListener("click", (event) => {
+
+    if (event.target === detailsModal) {
+
+      detailsModal.classList.remove("show");
+
+    }
+
+  });
+
+
+  /* =========================================================
+     DELETE COMPLAINT MEDIA FROM FIREBASE STORAGE
+  ========================================================= */
+
+  async function deleteComplaintMedia(media) {
+
+    const paths = [];
+
+
+    /*
+     * Images
+     */
+
+    if (Array.isArray(media?.images)) {
+
+      for (const image of media.images) {
+
+        if (image?.path) {
+
+          paths.push(image.path);
+
+        }
+
+      }
+
+    }
+
+
+    /*
+     * Video
+     */
+
+    if (media?.video?.path) {
+
+      paths.push(media.video.path);
+
+    }
+
+
+    /*
+     * No media
+     */
+
+    if (paths.length === 0) {
+
+      return;
+
+    }
+
+
+    const failed = [];
+
+
+    /*
+     * Delete every file separately.
+     *
+     * Maximum:
+     * 2 images + 1 video
+     */
+
+    for (const path of paths) {
+
+      try {
+
+        console.log(
+          "Deleting complaint media:",
+          path
+        );
+
+        const fileRef =
+          ref(storage, path);
+
+        await deleteObject(fileRef);
+
+        console.log(
+          "Deleted successfully:",
+          path
+        );
+
+      } catch (error) {
+
+        /*
+         * File already deleted = okay.
+         */
+
+        if (
+          error?.code ===
+          "storage/object-not-found"
+        ) {
+
+          console.log(
+            "File already deleted:",
+            path
+          );
+
+          continue;
+
+        }
+
+
+        console.error(
+          "Storage delete failed:",
+          path,
+          error
+        );
+
+        failed.push(path);
+
+      }
+
+    }
+
+
+    if (failed.length > 0) {
+
+      throw new Error(
+        "Complaint ki kuch media files Storage se delete nahi ho paayi."
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     UPDATE STATUS
+  ========================================================= */
+
+  async function updateStatus(id, newStatus) {
 
     const complaint =
-        complaints.find(
-            item =>
-                String(
-                    item.id
-                ) ===
-                String(id)
-        );
+      complaints.find(
+        item => item.id === id
+      );
 
 
     if (!complaint) {
+
+      alert("Complaint nahi mili.");
+
+      return;
+
+    }
+
+
+    if (
+      newStatus === "solved" &&
+      complaint.status === "solved"
+    ) {
+
+      return;
+
+    }
+
+
+    if (newStatus === "solved") {
+
+      const confirmed =
+        confirm(
+          "Complaint ko Solved mark karna hai?\n\n" +
+          "Is complaint ki photos aur video Firebase Storage se permanently delete ho jayengi."
+        );
+
+
+      if (!confirmed) {
+
         return;
+
+      }
+
     }
 
 
     try {
 
-        const complaintRef =
-            doc(
-                db,
-                ...COMPLAINTS_PATH,
-                id
-            );
+      /*
+       * Buttons temporarily disable
+       */
+
+      document
+        .querySelectorAll(".btn")
+        .forEach(btn => {
+          btn.disabled = true;
+        });
 
 
-        const updateData = {
-
-            status:
-                newStatus
-
-        };
-
-
-        if (
-            newStatus ===
-            "solved"
-        ) {
-
-            updateData.solvedAt =
-                serverTimestamp();
-
-        } else {
-
-            updateData.solvedAt =
-                null;
-
-        }
-
-
-        await updateDoc(
-            complaintRef,
-            updateData
+      const complaintRef =
+        doc(
+          db,
+          "parshd",
+          "complaints",
+          "data",
+          id
         );
 
 
-        complaint.status =
-            newStatus;
+      /* =====================================================
+         NORMAL PENDING STATUS
+      ===================================================== */
+
+      if (newStatus === "pending") {
+
+        await updateDoc(
+          complaintRef,
+          {
+            status: "pending",
+            solvedAt: null
+          }
+        );
 
 
-        complaint.solvedAt =
-            updateData.solvedAt;
+        complaint.status = "pending";
+        complaint.solvedAt = null;
 
 
         renderComplaints();
 
-
-        if (
-            modal.classList.contains(
-                "active"
-            )
-        ) {
-
-            showDetails(
-                complaint
-            );
-
-        }
-
-
-        if (
-            newStatus ===
-            "solved"
-        ) {
-
-            alert(
-                "Complaint Solved mark कर दी गई है।"
-            );
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Status update error:",
-            error
+        alert(
+          "Complaint Pending mark kar di gayi hai."
         );
+
+        return;
+
+      }
+
+
+      /* =====================================================
+         SOLVED
+      ===================================================== */
+
+      if (newStatus === "solved") {
+
+        /*
+         * STEP 1
+         * First complaint status = solved.
+         *
+         * Complaint record delete nahi hoga.
+         */
+
+        await updateDoc(
+          complaintRef,
+          {
+            status: "solved",
+            solvedAt: serverTimestamp()
+          }
+        );
+
+
+        complaint.status = "solved";
+
+
+        /*
+         * STEP 2
+         * Ab sirf isi complaint ki Storage media
+         * delete hogi.
+         */
+
+        try {
+
+          await deleteComplaintMedia(
+            complaint.media
+          );
+
+        } catch (mediaError) {
+
+          console.error(
+            "Media deletion error:",
+            mediaError
+          );
+
+
+          /*
+           * Complaint solved rahegi.
+           * Media deletion fail hone par complaint
+           * record ko delete nahi karenge.
+           */
+
+          alert(
+            "Complaint Solved ho gayi hai, lekin media Storage se delete karte waqt problem aayi.\n\n" +
+            mediaError.message
+          );
+
+          await loadComplaints();
+
+          return;
+
+        }
+
+
+        /*
+         * STEP 3
+         * Storage se media successfully delete hone ke baad
+         * Firestore me media references bhi empty kar do.
+         */
+
+        await updateDoc(
+          complaintRef,
+          {
+            media: {
+              images: [],
+              video: null
+            }
+          }
+        );
+
+
+        /*
+         * Local data bhi update.
+         */
+
+        complaint.media = {
+          images: [],
+          video: null
+        };
+
+
+        /*
+         * Solved date Firestore server timestamp hai,
+         * isliye fresh data reload karenge.
+         */
+
+        await loadComplaints();
 
 
         alert(
-            error?.message ||
-            "Complaint status update नहीं हो पाया।"
+          "Complaint Solved kar di gayi.\n\n" +
+          "Is complaint ki photos aur video Firebase Storage se delete ho gayi hain."
         );
 
-    }
+      }
 
-}
+    } catch (error) {
 
-
-/* =====================================================
-   DETAILS MODAL
-===================================================== */
-
-function showDetails(
-    complaint
-) {
-
-    const id =
-        complaint.publicComplaintId ||
-        complaint.complaintId ||
-        complaint.id ||
-        "-";
+      console.error(
+        "Status update error:",
+        error
+      );
 
 
-    const location =
-        complaint.location;
+      alert(
+        "Status update nahi ho paya.\n\n" +
+        (error.message || "Unknown error")
+      );
 
 
-    const media =
-        complaint.media ||
-        {};
+      /*
+       * Fresh Firestore data reload
+       */
 
+      await loadComplaints();
 
-    /* =================================================
-       PHOTOS
-    ================================================= */
+    } finally {
 
-    let imagesHTML = "";
-
-
-    if (
-        Array.isArray(
-            media.images
-        )
-        &&
-        media.images.length
-    ) {
-
-        const validImages =
-            media.images
-                .map(
-                    image =>
-                        getMediaUrl(
-                            image
-                        )
-                )
-                .filter(
-                    url => !!url
-                );
-
-
-        if (validImages.length) {
-
-            imagesHTML = `
-
-                <div class="detail-row">
-
-                    <small>
-                        Photos
-                    </small>
-
-                    <div class="media-grid">
-
-                        ${
-                            validImages
-                                .map(
-                                    url => `
-
-                                        <a
-                                            href="${escapeHtml(url)}"
-                                            target="_blank"
-                                            rel="noopener"
-                                        >
-
-                                            <img
-                                                src="${escapeHtml(url)}"
-                                                alt="Complaint Photo"
-                                                loading="lazy"
-                                            >
-
-                                        </a>
-
-                                    `
-                                )
-                                .join("")
-                        }
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
+      document
+        .querySelectorAll(".btn")
+        .forEach(btn => {
+          btn.disabled = false;
+        });
 
     }
 
+  }
 
-    /* =================================================
-       VIDEO
-    ================================================= */
 
-    let videoHTML = "";
+  /* =========================================================
+     DATE FORMAT
+  ========================================================= */
 
+  function formatDate(timestamp) {
 
-    const videoUrl =
-        getMediaUrl(
-            media.video
-        );
-
-
-    if (videoUrl) {
-
-        videoHTML = `
-
-            <div class="detail-row">
-
-                <small>
-                    Video
-                </small>
-
-                <video
-                    class="video-preview"
-                    controls
-                    preload="metadata"
-                >
-
-                    <source
-                        src="${escapeHtml(videoUrl)}"
-                    >
-
-                    आपका browser video support नहीं करता।
-
-                </video>
-
-
-                <a
-                    class="media-link"
-                    href="${escapeHtml(videoUrl)}"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    🎥 Video खोलें
-                </a>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =================================================
-       LOCATION
-    ================================================= */
-
-    let locationHTML = "";
-
-
-    if (
-        location
-        &&
-        location.latitude !== undefined
-        &&
-        location.longitude !== undefined
-    ) {
-
-        const mapUrl =
-            `https://www.google.com/maps?q=${
-                encodeURIComponent(
-                    location.latitude
-                )
-            },${
-                encodeURIComponent(
-                    location.longitude
-                )
-            }`;
-
-
-        locationHTML = `
-
-            <div class="detail-row">
-
-                <small>
-                    GPS Location
-                </small>
-
-                <strong>
-                    ${escapeHtml(
-                        location.latitude
-                    )},
-                    ${escapeHtml(
-                        location.longitude
-                    )}
-                </strong>
-
-                <br>
-
-                <small>
-                    Accuracy:
-                    ${escapeHtml(
-                        location.accuracy ??
-                        "-"
-                    )} meters
-                </small>
-
-                <a
-                    class="map-link"
-                    href="${escapeHtml(mapUrl)}"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    📍 Map पर देखें
-                </a>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =================================================
-       MODAL HTML
-    ================================================= */
-
-    modalContent.innerHTML = `
-
-        <div class="detail-row">
-
-            <small>
-                Complaint ID
-            </small>
-
-            <strong>
-                ${escapeHtml(id)}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Citizen Name
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.citizenName ||
-                    "-"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Mobile
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.citizenPhone ||
-                    "-"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Ward
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.wardNumber ||
-                    "-"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Address
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.address ||
-                    "-"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Complaint
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.complaintText ||
-                    "-"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Status
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    complaint.status ||
-                    "new"
-                )}
-            </strong>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <small>
-                Created
-            </small>
-
-            <strong>
-                ${escapeHtml(
-                    formatDate(
-                        complaint.createdAt
-                    )
-                )}
-            </strong>
-
-        </div>
-
-
-        ${
-            complaint.solvedAt
-            ? `
-                <div class="detail-row">
-
-                    <small>
-                        Solved
-                    </small>
-
-                    <strong>
-                        ${escapeHtml(
-                            formatDate(
-                                complaint.solvedAt
-                            )
-                        )}
-                    </strong>
-
-                </div>
-            `
-            : ""
-        }
-
-
-        ${locationHTML}
-
-        ${imagesHTML}
-
-        ${videoHTML}
-
-
-        <div class="modal-status-actions">
-
-            ${
-                complaint.status !== "pending"
-                &&
-                complaint.status !== "solved"
-                ? `
-                    <button
-                        class="action-button"
-                        id="modalPendingButton"
-                        type="button"
-                    >
-                        Pending करें
-                    </button>
-                `
-                : ""
-            }
-
-
-            ${
-                complaint.status !== "solved"
-                ? `
-                    <button
-                        class="action-button primary"
-                        id="modalSolvedButton"
-                        type="button"
-                    >
-                        ✓ Solved करें
-                    </button>
-                `
-                : ""
-            }
-
-        </div>
-
-    `;
-
-
-    /* =================================================
-       PENDING
-    ================================================= */
-
-    const pendingButton =
-        document.getElementById(
-            "modalPendingButton"
-        );
-
-
-    if (pendingButton) {
-
-        pendingButton.addEventListener(
-            "click",
-            async () => {
-
-                await updateStatus(
-                    complaint.id,
-                    "pending"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =================================================
-       SOLVED
-    ================================================= */
-
-    const solvedButton =
-        document.getElementById(
-            "modalSolvedButton"
-        );
-
-
-    if (solvedButton) {
-
-        solvedButton.addEventListener(
-            "click",
-            async () => {
-
-                await updateStatus(
-                    complaint.id,
-                    "solved"
-                );
-
-            }
-        );
-
-    }
-
-
-    modal.classList.add(
-        "active"
-    );
-
-}
-
-
-/* =====================================================
-   MEDIA URL
-===================================================== */
-
-function getMediaUrl(
-    media
-) {
-
-    if (!media) {
-        return "";
-    }
-
-
-    if (
-        typeof media ===
-        "string"
-    ) {
-
-        return media;
-
-    }
-
-
-    return (
-        media.url ||
-        media.downloadURL ||
-        media.downloadUrl ||
-        ""
-    );
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
-
-document
-    .getElementById(
-        "closeModal"
-    )
-    .addEventListener(
-        "click",
-        closeModal
-    );
-
-
-modal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            modal
-        ) {
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-function closeModal() {
-
-    modal.classList.remove(
-        "active"
-    );
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-document
-    .getElementById(
-        "backButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "dashboard.html";
-
-        }
-    );
-
-
-/* =====================================================
-   FIRESTORE TIME
-===================================================== */
-
-function getTime(
-    value
-) {
-
-    if (!value) {
-        return 0;
+    if (!timestamp) {
+      return "-";
     }
 
 
     try {
 
-        /* Firestore Timestamp */
+      let date;
 
-        if (
-            typeof value.toDate ===
-            "function"
-        ) {
 
-            return value
-                .toDate()
-                .getTime();
+      if (
+        typeof timestamp.toDate === "function"
+      ) {
 
+        date = timestamp.toDate();
+
+      } else if (
+        timestamp.seconds
+      ) {
+
+        date =
+          new Date(
+            timestamp.seconds * 1000
+          );
+
+      } else {
+
+        date =
+          new Date(timestamp);
+
+      }
+
+
+      if (isNaN(date.getTime())) {
+        return "-";
+      }
+
+
+      return date.toLocaleString(
+        "en-IN",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
         }
-
-
-        /* Firestore timestamp object */
-
-        if (
-            typeof value.seconds ===
-            "number"
-        ) {
-
-            return (
-                value.seconds * 1000
-            );
-
-        }
-
-
-        /* Date */
-
-        if (
-            value instanceof Date
-        ) {
-
-            return value.getTime();
-
-        }
-
-
-        /* String / number */
-
-        const time =
-            new Date(
-                value
-            ).getTime();
-
-
-        return Number.isFinite(
-            time
-        )
-            ? time
-            : 0;
+      );
 
     } catch {
 
-        return 0;
+      return "-";
 
     }
 
-}
+  }
 
 
-/* =====================================================
-   FORMAT DATE
-===================================================== */
+  /* =========================================================
+     HTML ESCAPE
+  ========================================================= */
 
-function formatDate(
-    value
-) {
+  function escapeHtml(value) {
 
-    if (!value) {
-        return "-";
-    }
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
-
-    try {
-
-        let date;
+  }
 
 
-        if (
-            typeof value.toDate ===
-            "function"
-        ) {
+  function escapeAttribute(value) {
 
-            date =
-                value.toDate();
+    return escapeHtml(value);
 
-        } else if (
-            value instanceof Date
-        ) {
-
-            date =
-                value;
-
-        } else if (
-            typeof value.seconds ===
-            "number"
-        ) {
-
-            date =
-                new Date(
-                    value.seconds *
-                    1000
-                );
-
-        } else {
-
-            date =
-                new Date(
-                    value
-                );
-
-        }
-
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-
-            return "-";
-
-        }
-
-
-        return date.toLocaleString(
-            "hi-IN",
-            {
-                dateStyle:
-                    "medium",
-
-                timeStyle:
-                    "short"
-            }
-        );
-
-    } catch {
-
-        return "-";
-
-    }
-
-}
-
-
-/* =====================================================
-   HTML SECURITY
-===================================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-loadComplaints();
+  }
 
 </script>
 
 </body>
-
 </html>
