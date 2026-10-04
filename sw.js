@@ -1,4 +1,4 @@
-const CACHE_NAME = "parshd-v3";
+const CACHE_NAME = "parshd-v4";
 
 const APP_SHELL = [
   "./",
@@ -99,32 +99,28 @@ self.addEventListener("fetch", (event) => {
   }
 
 
-  /*
-   * IMPORTANT:
-   *
-   * complaint.html और complaints.js को हमेशा
-   * network से latest version लेने की कोशिश करेंगे.
-   *
-   * इससे Complaint ON/OFF वाला नया code
-   * पुराने PWA cache में फंसा नहीं रहेगा.
-   */
-
   const pathname =
     url.pathname;
 
 
-  const isComplaintFile =
-    pathname.endsWith("/complaint.html") ||
-    pathname.endsWith("/js/complaints.js");
+  // =====================================================
+  // ADMIN + JS FILES
+  // हमेशा latest network version लेने की कोशिश
+  // =====================================================
+
+  const isAdminOrJsFile =
+    pathname.includes("/admin/") ||
+    pathname.includes("/js/");
 
 
-  if (isComplaintFile) {
+  if (isAdminOrJsFile) {
 
     event.respondWith(
 
       fetch(request, {
         cache: "no-store"
       })
+
       .then((networkResponse) => {
 
         if (
@@ -152,12 +148,8 @@ self.addEventListener("fetch", (event) => {
         return networkResponse;
 
       })
-      .catch(() => {
 
-        /*
-         * Internet unavailable होने पर
-         * cached version fallback.
-         */
+      .catch(() => {
 
         return caches.match(request);
 
@@ -170,13 +162,78 @@ self.addEventListener("fetch", (event) => {
   }
 
 
-  // =======================================================
+  /*
+   * IMPORTANT:
+   *
+   * complaint.html और complaints.js को हमेशा
+   * network से latest version लेने की कोशिश करेंगे.
+   *
+   * इससे Complaint ON/OFF वाला नया code
+   * पुराने PWA cache में फंसा नहीं रहेगा.
+   */
+
+  const isComplaintFile =
+    pathname.endsWith("/complaint.html") ||
+    pathname.endsWith("/js/complaints.js");
+
+
+  if (isComplaintFile) {
+
+    event.respondWith(
+
+      fetch(request, {
+        cache: "no-store"
+      })
+
+      .then((networkResponse) => {
+
+        if (
+          networkResponse &&
+          networkResponse.status === 200
+        ) {
+
+          const responseClone =
+            networkResponse.clone();
+
+
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+
+              cache.put(
+                request,
+                responseClone
+              );
+
+            });
+
+        }
+
+
+        return networkResponse;
+
+      })
+
+      .catch(() => {
+
+        return caches.match(request);
+
+      })
+
+    );
+
+    return;
+
+  }
+
+
+  // =====================================================
   // बाकी files: cache first
-  // =======================================================
+  // =====================================================
 
   event.respondWith(
 
     caches.match(request)
+
       .then((cachedResponse) => {
 
         if (cachedResponse) {
@@ -185,6 +242,7 @@ self.addEventListener("fetch", (event) => {
 
 
         return fetch(request)
+
           .then((networkResponse) => {
 
             if (
@@ -213,6 +271,7 @@ self.addEventListener("fetch", (event) => {
             return networkResponse;
 
           })
+
           .catch(() => {
 
             return caches.match(
