@@ -21,6 +21,10 @@ import {
 } from
     "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
+import {
+    registerParshdNotification
+} from "../js/parshd-notifications.js";
+
 
 // =========================================================
 // ELEMENTS
@@ -1282,6 +1286,21 @@ async function initializeDashboard() {
         currentUser =
             auth.currentUser;
 
+        await requireParshadLogin("./index.html");
+
+currentUser = auth.currentUser;
+
+try {
+    await registerParshdNotification();
+} catch (error) {
+    console.warn(
+        "Parshd notification registration skipped:",
+        error
+    );
+}
+
+// बाकी existing dashboard code
+        
 
         if (!currentUser) {
 
