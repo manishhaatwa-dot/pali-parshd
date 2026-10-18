@@ -7,7 +7,8 @@
 import {
     getMessaging,
     getToken,
-    deleteToken
+    deleteToken,
+    onMessage
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging.js";
 
 import {
@@ -458,3 +459,57 @@ export {
     saveParshdFcmToken,
     registerParshdNotification
 };
+
+/**
+ * Parshd foreground FCM handler
+ * Displays notifications when the dashboard is open.
+ */
+let parshdForegroundHandlerRegistered = false;
+
+function registerParshdForegroundHandler() {
+    if (!messaging || parshdForegroundHandlerRegistered) {
+        return;
+    }
+
+    onMessage(messaging, async (payload) => {
+        console.log("Parshd foreground FCM message:", payload);
+
+        const notification = payload.notification || {};
+        const data = payload.data || {};
+
+        const title = notification.title || "नई शिकायत प्राप्त हुई";
+        const body = notification.body || "Parshd में नई शिकायत प्राप्त हुई है।";
+
+        if (Notification.permission !== "granted") {
+            console.warn("Parshd notification permission is not granted.");
+            return;
+        }
+
+        try {
+            const registration = await navigator.serviceWorker.ready;
+
+            await registration.showNotification(title, {
+                body,
+                icon: notification.icon || "../assets/icons/icon-192.png",
+                badge: notification.badge || "../assets/icons/icon-192.png",
+                data: {
+                    type: data.type || "parshd_new_complaint",
+                    complaintId: data.complaintId || "",
+                    publicComplaintId: data.publicComplaintId || "",
+                    wardNumber: data.wardNumber || ""
+                },
+                tag: data.complaintId
+                    ? `parshd-${data.complaintId}`
+                    : "parshd-new-complaint"
+            });
+        } catch (error) {
+            console.error("Parshd foreground notification display failed:", error);
+        }
+    });
+
+    parshdForegroundHandlerRegistered = true;
+}
+
+registerParshdForegroundHandler();
+
+export { registerParshdForegroundHandler };
