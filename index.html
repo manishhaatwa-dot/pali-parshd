@@ -2495,22 +2495,20 @@
         );
 
 
-    if (!ward) {
+  if (!ward) {
 
-        appLoader.style.display =
-            "none";
+    // PWA session check hone tak landing page hidden rahega.
+    landingPage.classList.add("hidden");
 
-        landingPage.classList.remove(
-            "hidden"
-        );
+    // Loader ko visible rakhenge.
+    appLoader.style.display = "flex";
 
-    } else {
+} else {
 
-        landingPage.classList.add(
-            "hidden"
-        );
+    // Citizen ward portal ko pehle jaisa hi rakho.
+    landingPage.classList.add("hidden");
 
-    }
+}
 
 
     document.getElementById(
@@ -2772,130 +2770,67 @@
 ===================================================== -->
 
 <script type="module">
-
-import {
-    auth,
-    db
-} from "./js/firebase-config.js";
-
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-
-/* =====================================================
-   CHECK INSTALLED PWA
-===================================================== */
-
-function isParshdStandalonePWA() {
-
-    return (
-        window.matchMedia(
-            "(display-mode: standalone)"
-        ).matches
-        ||
-        window.navigator.standalone === true
-    );
-
-}
-
-
-/* =====================================================
-   REDIRECT LOGGED-IN PARSHAD
-===================================================== */
+import { auth, db } from "./js/firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 async function redirectLoggedInParshad() {
+    const params = new URLSearchParams(window.location.search);
+    const ward = params.get("ward");
 
-    // Normal browser website par landing page
-    // exactly same rahegi.
-    if (!isParshdStandalonePWA()) {
-        return;
-    }
+    const isStandalonePWA =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
 
+    // Citizen portal aur normal browser ko na badlein.
+    if (ward || !isStandalonePWA) return;
+
+    const landingPage = document.getElementById("landingPage");
+    const appLoader = document.getElementById("appLoader");
+    let redirecting = false;
 
     try {
-
-        // Firebase saved login session restore hone ka wait
         await auth.authStateReady();
 
+        const user = auth.currentUser;
 
-        const user =
-            auth.currentUser;
+        if (!user || !user.emailVerified) return;
 
+        const parshadRef = doc(
+            db,
+            "parshd",
+            "parshads",
+            "data",
+            user.uid
+        );
 
-        // Login nahi hai
-        if (!user) {
-            return;
-        }
+        const snapshot = await getDoc(parshadRef);
 
+        if (!snapshot.exists()) return;
 
-        // Email verified nahi hai
-        if (!user.emailVerified) {
-            return;
-        }
+        const account = snapshot.data();
 
-
-        // Parshad account record
-        const parshadRef =
-            doc(
-                db,
-                "parshd",
-                "parshads",
-                "data",
-                user.uid
-            );
-
-
-        const snapshot =
-            await getDoc(
-                parshadRef
-            );
-
-
-        if (!snapshot.exists()) {
-            return;
-        }
-
-
-        const account =
-            snapshot.data();
-
-
-        // Sirf approved Parshad ko Dashboard
-        // par direct bhejna hai.
         if (
-            account.status === "approved"
-            &&
+            account.status === "approved" &&
             account.approved === true
         ) {
-
-            window.location.replace(
-                "./admin/dashboard.html"
-            );
-
+            redirecting = true;
+            window.location.replace("./admin/dashboard.html");
+            return;
         }
-
-    }
-
-    catch (error) {
-
+    } catch (error) {
         console.warn(
             "Parshad PWA session redirect skipped:",
             error
         );
-
+    } finally {
+        if (!redirecting) {
+            if (appLoader) appLoader.style.display = "none";
+            if (landingPage) landingPage.classList.remove("hidden");
+        }
     }
-
 }
 
-
-/* =====================================================
-   START
-===================================================== */
-
 redirectLoggedInParshad();
-
 </script>
 
 <!-- =====================================================
